@@ -1,0 +1,156 @@
+UserScreen As screen:
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+
+    mainContainer6 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+        transparentContainer18 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(0, 0, 0, 0.5)
+            Height: =Parent.Height
+            Width: =Parent.Width
+            ZIndex: =1
+
+            Image5_7 As image:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =40
+                Image: =backarrow
+                OnSelect: =Navigate(Dashboard_Screen,ScreenTransition.Fade)
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Width: =40
+                X: =53
+                Y: =131
+                ZIndex: =1
+
+        HeaderComponent_16 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =2
+
+        bodyContainer17 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255,255,255, 1)
+            Height: =930
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =640
+            Y: =205
+            ZIndex: =3
+
+            UserGallery_1 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =724
+                Items: |-
+                    =Filter(
+                            //Attendees,
+                            SortByColumns( col_allUsers,col_name,order),
+                            
+                                searchInput_2.Text in 'Full Name'&&
+                               ! StartsWith('Full Name',"#")
+                            
+                        )
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplatePadding: =10
+                TemplateSize: =80
+                Width: =588
+                X: =30
+                Y: =176
+                ZIndex: =1
+
+                Container14_2 As groupContainer.manualLayoutContainer:
+                    Height: =80
+                    Width: =620
+                    ZIndex: =1
+
+                    Label32_1 As label:
+                        Height: =80
+                        OnSelect: |-
+                            =Set(_V_item,ThisItem);
+                            Navigate(RoleChangeScreen)
+                        Size: =21
+                        Text: =ThisItem.'Full Name'
+                        Width: =620
+                        ZIndex: =1
+
+            searchInput_2 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                BorderThickness: =3
+                Default: =""
+                Height: =50
+                HintText: ="Search by Name"
+                PaddingLeft: =50
+                RadiusBottomLeft: =10
+                RadiusBottomRight: =10
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Size: =15
+                Width: =210
+                X: =392
+                Y: =30
+                ZIndex: =3
+
+            Icon15_1 As icon.Search:
+                Color: =RGBA(0, 0, 0, 1)
+                Height: =36
+                Icon: =Icon.Search
+                Width: =51
+                X: =392
+                Y: =36
+                ZIndex: =4
+
+            Container4_14 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(0,0,0,0.3)
+                Height: =67
+                PaddingTop: =10
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =588
+                X: =30
+                Y: =105
+                ZIndex: =5
+
+                Module_Type_Label_10 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =Parent.Height
+                    Size: =18
+                    Text: ="User Name ("&CountRows(UserGallery_1.AllItems)&")" 
+                    Width: =249
+                    X: =14
+                    ZIndex: =2
+
+                Icon13_2 As icon.ArrowsUpDown:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Height: =40
+                    Icon: =Icon.Sort
+                    OnSelect: |-
+                        =UpdateContext({col_name:"fullname"});
+                        If(
+                            order=SortOrder.Descending,
+                        UpdateContext({order:SortOrder.Ascending}),
+                        UpdateContext({order:SortOrder.Descending})
+                        )
+                    Width: =40
+                    X: =525
+                    Y: =Parent.Height/2-Self.Height/2
+                    ZIndex: =3
+
+        Label30 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            PaddingLeft: =15
+            Size: =21
+            Text: ="Users"
+            Width: =408
+            X: =118
+            Y: =114
+            ZIndex: =4
+

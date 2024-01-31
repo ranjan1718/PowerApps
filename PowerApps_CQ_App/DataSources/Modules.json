@@ -1,0 +1,128 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_modules",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_module",
+    "MaxGetRowsCount": 500,
+    "Name": "Modules",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_module_AsyncOperations": "System Jobs",
+      "ulcq_module_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_module_DuplicateBaseRecord": "Duplicate Records (ulcq_module_DuplicateBaseRecord)",
+      "ulcq_module_DuplicateMatchingRecord": "Duplicate Records (ulcq_module_DuplicateMatchingRecord)",
+      "ulcq_module_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_module_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_module_ProcessSession": "Process Sessions",
+      "ulcq_module_SyncErrors": "Sync Errors",
+      "ulcq_moduleid": "Module",
+      "ulcq_ModuleType": "Module Type",
+      "ulcq_name": "Name",
+      "ulcq_questions": "Questions",
+      "ulcq_ratingtype": "Rating Type",
+      "ulcq_scope": "Scope",
+      "ulcq_weightage": "Weightage",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Modules",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Modules (Views)",
+    "Name": "_ulcq_module_views",
+    "RelatedEntityName": "Modules",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "83e24ee4-db61-4983-878f-6d5ca68b73cf": "Module Lookup View",
+      "d213304e-d50c-4afa-8b60-2ca4c69ac798": "Module Associated View",
+      "e6634d57-80b1-4a25-9b90-0a62db87a298": "Module Advanced Find View",
+      "e903fffc-b132-4bdb-89a9-717a5fb44995": "Active Modules",
+      "f4ab3e51-c3fd-437a-8c77-e81d3da1719c": "Inactive Modules"
+    }
+  },
+  {
+    "DisplayName": "Status (Modules)",
+    "Name": "ulcq_module_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Modules"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Modules",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Modules)",
+    "Name": "ulcq_module_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Modules"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Modules",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Rating Type Choice",
+    "Name": "ulcq_ratingtypechoice",
+    "OptionSetInfoNameMapping": {
+      "1": "Yes/No",
+      "2": "1-4",
+      "3": "Percentage",
+      "4": "Pass/Fail"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "ulcq_ratingtype",
+        "OptionSetReferenceEntityName": "Modules"
+      },
+      "OptionSetReferenceItem1": {
+        "OptionSetReferenceColumnName": "ulcq_ratingtype",
+        "OptionSetReferenceEntityName": "Results"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "ulcq_ratingtype",
+    "RelatedEntityName": "Modules",
+    "Type": "OptionSetInfo"
+  }
+]

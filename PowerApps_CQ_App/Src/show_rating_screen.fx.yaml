@@ -1,0 +1,229 @@
+show_rating_screen As screen:
+    OnVisible: |-
+        =//Set(_V_sortorder,SortOrder.Ascending)
+        Set(
+            _V_sortorder,
+            SortOrder.Ascending
+        );
+        ForAll(
+            col_attendees,
+            If(
+                Sum(
+                    Filter(
+                        col_resultdata_1,
+                        attendeeId = ThisRecord.attendeeid
+                    ),
+                    Percentage_2
+                ) < 75,
+                Collect(All_Attendees,ThisRecord.Name)
+            )
+        );
+        
+        /*'CQAppPercentageNotifyFlow1'.Run(
+                    User().Email,
+                    ThisRecord.Name
+                )*/
+        If(Sum(col_resultdata_1,Percentage_2)<CountRows(Distinct(col_resultdata_1,AttendeeName))*75,'CQAppPercentageNotifyFlow1'.Run(User().Email,JSON(All_Attendees)))
+
+    mainContainer1 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+        headingContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255,	139	,76,1)
+            Height: =74
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =612
+            X: =14
+            Y: =120
+            ZIndex: =2
+
+            summarylabel As label:
+                FontWeight: =FontWeight.Semibold
+                Height: =Parent.Height
+                PaddingLeft: =10
+                Size: =21
+                Text: ="Summary"
+                Width: =530
+                X: =15
+                ZIndex: =1
+
+            backIcon As icon.BackArrow:
+                Height: =52
+                Icon: =Icon.BackArrow
+                OnSelect: =Back()
+                Tooltip: ="Hi"
+                Visible: =false
+                Width: =76
+                X: =6
+                Y: =12
+                ZIndex: =2
+
+            "InfoButtonCanvas1 As 'Information button'":
+                BasePaletteColor: =RGBA(15, 108, 189, 1)
+                Content: ="Information"
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                FontSize: =20
+                FontWeight: =FontWeight.Bold
+                Height: =74
+                IconSize: ='InfoButtonCanvas.IconSize'.Large
+                Width: =46
+                X: =157
+                Y: =0
+                ZIndex: =4
+
+            Icon6 As icon.Information:
+                Height: =30
+                Icon: =Icon.Information
+                Tooltip: ="Information"
+                Width: =49
+                X: =545
+                Y: =23
+                ZIndex: =6
+
+        questionLabel As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =56
+            PaddingLeft: =15
+            Size: =21
+            Text: =_V_module
+            Width: =Parent.Width-5
+            X: =11
+            Y: =205
+            ZIndex: =4
+
+        show_summary_Container As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            DropShadow: =DropShadow.None
+            Height: =867
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =640
+            Y: =268
+            ZIndex: =5
+
+            summaryheaderContainer As groupContainer.manualLayoutContainer:
+                BorderStyle: =BorderStyle.None
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(219, 219, 219, 1)
+                Height: =71
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Width: =Parent.Width-10
+                X: =5
+                ZIndex: =1
+
+                Label8 As label:
+                    Height: =70
+                    PaddingLeft: =20
+                    Size: =21
+                    Text: ="Attendee Name"
+                    Width: =425
+                    Y: =1
+                    ZIndex: =1
+
+                Label10_2 As label:
+                    Align: =Align.Center
+                    Height: =70
+                    Size: =21
+                    Text: ="Percentage"
+                    Width: =186
+                    X: =425
+                    Y: =1
+                    ZIndex: =3
+
+                Icon9 As icon.ArrowsUpDown:
+                    Height: =30
+                    Icon: =Icon.Sort
+                    OnSelect: |-
+                        =If(_V_sortorder=SortOrder.Descending,
+                        Set(_V_sortorder,SortOrder.Ascending),
+                        Set(_V_sortorder,SortOrder.Descending)
+                        )
+                        ;
+                    Width: =39
+                    X: =591
+                    Y: =23
+                    ZIndex: =4
+
+            summary_Gallery As gallery.galleryVertical:
+                BorderStyle: =BorderStyle.None
+                DelayItemLoading: =true
+                Height: =792
+                Items: |-
+                    =Sort(col_attendees As R, Sum(
+                        Filter(
+                            col_resultdata_1,
+                            AttendeeName = R.Name
+                        ),
+                        Percentage_2),
+                        _V_sortorder
+                    )
+                    //col_attendees
+                    //Col_sd
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateFill: =RGBA(0, 0, 0, 0.05)
+                TemplateSize: =90
+                Width: =Parent.Width
+                Y: =75
+                ZIndex: =2
+
+                gallery_value_Container As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =77
+                    RadiusBottomLeft: =10
+                    RadiusBottomRight: =10
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =Parent.Width-18
+                    X: =4
+                    ZIndex: =1
+
+                    attendeeNameLabel As label:
+                        Height: =77
+                        OnSelect: =Navigate(Currrent_result_screen);
+                        PaddingLeft: =10
+                        Size: =15
+                        Text: =ThisItem.Name
+                        Width: =412
+                        X: =5
+                        ZIndex: =1
+
+                    percentageLabel As label:
+                        Align: =Align.Center
+                        Color: |-
+                            =If(Sum(
+                                Filter(
+                                    col_resultdata_1,
+                                    AttendeeName = ThisItem.Name
+                                ),
+                                Percentage_2)>75,Color.Green,Color.Red)
+                        FontWeight: =FontWeight.Bold
+                        Height: =70
+                        Size: =15
+                        Text: |
+                            =
+                            Sum(
+                                Filter(
+                                    col_resultdata_1,
+                                    AttendeeName = ThisItem.Name
+                                ),
+                                Percentage_2)&"%"
+                        Width: =177
+                        X: =425
+                        Y: =7
+                        ZIndex: =2
+
+        HeaderComponent_8 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =6
+

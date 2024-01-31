@@ -1,0 +1,403 @@
+Chef_User_Profile As screen:
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =ClearCollect(col_Results,Table());
+        ForAll(col_allAttendee As CAA,
+            Collect(col_Results,
+            Filter(Results,Name= CAA.Name)
+            
+            )
+        );
+        Set(_V_showgallery,true);
+
+    TransparentContainer16 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+    MainContainer_2 As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =2
+
+        subContainer1_1 As groupContainer.manualLayoutContainer:
+            Height: =1036
+            Visible: =false
+            Width: =640
+            Y: =100
+            ZIndex: =2
+
+            headerContainer2_1 As groupContainer.manualLayoutContainer:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =3
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(255, 139, 76, 1)
+                Height: =80
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Visible: =false
+                Width: =Parent.Width-10
+                X: =4
+                ZIndex: =1
+
+                Icon4_8 As icon.BackArrow:
+                    Color: =RGBA(39, 67, 125, 1)
+                    Height: =50
+                    Icon: =Icon.BackArrow
+                    OnSelect: =Back()
+                    Width: =50
+                    X: =28
+                    Y: =16
+                    ZIndex: =1
+
+                Label18_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =Parent.Height
+                    Size: =21
+                    Text: ="My Profile"
+                    Width: =292
+                    X: =94
+                    ZIndex: =2
+
+        HeaderComponent_18 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =3
+
+        subContainer2_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.ExtraBold
+            Fill: =RGBA(255,255,255, 1)
+            Height: =945
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =640
+            Y: =191
+            ZIndex: =4
+
+            attendee_detailsContainer_8 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =291
+                PaddingTop: =20
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =630
+                X: =10
+                Y: =26
+                ZIndex: =5
+
+                nameLabel27_14 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =18
+                    Text: |-
+                        ="Name :"
+                    Width: =100
+                    X: =250
+                    Y: =20
+                    ZIndex: =15
+
+                namevalueLabel27_15 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =16
+                    Text: =User().FullName
+                    Width: =200
+                    X: =380
+                    Y: =nameLabel27_14.Y
+                    ZIndex: =16
+
+                RoleLabel27_34 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    PaddingRight: =15
+                    Size: =18
+                    Text: |-
+                        ="Role :"
+                    Width: =100
+                    X: =250
+                    Y: =nameLabel27_14.Y+nameLabel27_14.Height+5
+                    ZIndex: =17
+
+                Label27_35 As label:
+                    Height: =38
+                    Size: =16
+                    Text: =LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name
+                    Width: =200
+                    X: =380
+                    Y: =RoleLabel27_34.Y
+                    ZIndex: =18
+
+                classLabel27_36 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =18
+                    Text: |-
+                        ="Class :"
+                    Width: =90
+                    X: =250
+                    Y: =RoleLabel27_34.Y+RoleLabel27_34.Height+5
+                    ZIndex: =19
+
+                Label27_37 As label:
+                    Height: =38
+                    Size: =16
+                    Text: |-
+                        =//LookUp(Users,'Full Name'=User().FullName).Class
+                        "..."
+                    Width: =200
+                    X: =380
+                    Y: =classLabel27_36.Y
+                    ZIndex: =20
+
+                channelLabel27_38 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =18
+                    Text: |-
+                        ="Channel :"
+                    Width: =120
+                    X: =250
+                    Y: =classLabel27_36.Y+classLabel27_36.Height+5
+                    ZIndex: =21
+
+                Label27_39 As label:
+                    Height: =38
+                    Size: =16
+                    Text: ="..."
+                    Width: =200
+                    X: =380
+                    Y: =channelLabel27_38.Y
+                    ZIndex: =22
+
+                areaLabel27_40 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =37
+                    Size: =18
+                    Text: |-
+                        ="Area :"
+                    Width: =100
+                    X: =250
+                    Y: =channelLabel27_38.Y+channelLabel27_38.Height+5
+                    ZIndex: =23
+
+                Label27_41 As label:
+                    Height: =38
+                    Size: =16
+                    Text: =LookUp(Users,'Full Name'=User().FullName).Area.Name
+                    Width: =200
+                    X: =380
+                    Y: =areaLabel27_40.Y
+                    ZIndex: =24
+
+                TerritoryLabel27_42 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =18
+                    Text: |-
+                        ="Territory :"
+                    Width: =130
+                    X: =250
+                    Y: =areaLabel27_40.Y+areaLabel27_40.Height+5
+                    ZIndex: =25
+
+                Label27_43 As label:
+                    Height: =38
+                    Size: =16
+                    Text: =LookUp(Users,'Full Name'=User().FullName).Territory.Name
+                    Width: =200
+                    X: =380
+                    Y: =TerritoryLabel27_42.Y
+                    ZIndex: =26
+
+                Image6_4 As image:
+                    Height: =Self.Width
+                    Image: =User().Image
+                    ImagePosition: =ImagePosition.Fill
+                    RadiusBottomLeft: =100
+                    RadiusBottomRight: =100
+                    RadiusTopLeft: =100
+                    RadiusTopRight: =100
+                    Width: =Parent.Width/3.2
+                    X: =27
+                    Y: =40
+                    ZIndex: =27
+
+            Container8_8 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =610
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =590
+                X: =26
+                Y: =335
+                ZIndex: =6
+
+                Gallery3_12 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =547
+                    Items: |-
+                        =With(
+                            {
+                                records: SortByColumns( col_allAttendee,col_name,order)
+                            },
+                            ForAll(
+                            Sequence(CountRows(records)),
+                            Patch(  
+                                    Last(FirstN(records,Value)),
+                                    {rowNumber:Value}
+                                )
+                            
+                            )
+                        )
+                        
+                        
+                        
+                        //Filter(Results,Name=User().FullName)
+                        //Results
+                        //Distinct(Filter(Results,Name=User().FullName), 'Module Type')
+                        //col_ResultDetail
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    OnSelect: =
+                    TemplateFill: =If(Mod(ThisItem.rowNumber,2)=0,RGBA(219, 219, 219, 1),RGBA(0,0,0,0))
+                    TemplatePadding: =4
+                    TemplateSize: =80
+                    Width: =Parent.Width
+                    X: =1
+                    Y: =63
+                    ZIndex: =1
+
+                    Container26_7 As groupContainer.manualLayoutContainer:
+                        DropShadow: =DropShadow.Semilight
+                        Height: =80
+                        PaddingLeft: =5
+                        PaddingRight: =10
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Width: =Parent.Width-10
+                        ZIndex: =5
+
+                        Gal_Module_Label_10 As label:
+                            Height: =Parent.Height
+                            OnSelect: |-
+                                =Set(Gal_mod_Type,Self.Text);
+                                ClearCollect(col_examsid,Table());
+                                Collect(col_examsid,
+                                        Distinct(Filter(/*Results*/ col_Results,
+                                                         !IsBlank(ExamID)
+                                                        ),ExamID
+                                                )
+                                        );
+                                ClearCollect(col_attendeeResult,Table());
+                                ForAll(col_examsid As CEA,
+                                    If(!IsBlank(LookUp(col_Results,ExamID=CEA.Value && Name=ThisItem.Name,ExamID)),
+                                    Collect(col_attendeeResult,
+                                        {
+                                            ModuleName:LookUp(col_Results,ExamID=CEA.Value && !IsBlank(ExamID) && Name=ThisItem.Name ,'Module Type'.Name),
+                                            Percentage:Sum(Filter(col_Results,ExamID=CEA.Value,Name=ThisItem.Name ,!IsBlank(ExamID) ),Percentage),
+                                            Date:LookUp(col_Results,ExamID=CEA.Value && Name=ThisItem.Name,Date),
+                                            ExamID:LookUp(col_Results,ExamID=CEA.Value && Name=ThisItem.Name,ExamID),
+                                            Chef:LookUp(col_Results,ExamID=CEA.Value && Name=ThisItem.Name && !IsBlank(ExamID),Chef)
+                                        }
+                                          )
+                                    )
+                                );
+                                
+                                Navigate(chef_attendee_view_screen);
+                            PaddingLeft: =20
+                            Text: =ThisItem.Name
+                            Width: =212
+                            X: =13
+                            ZIndex: =1
+
+                        Gal_Date_Label_6 As label:
+                            Align: =Align.Center
+                            Height: =Parent.Height
+                            OnSelect: =Navigate(Question_Info_Screen)
+                            Text: =
+                            Width: =120
+                            X: =422
+                            ZIndex: =3
+
+                Container4_13 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Fill: =RGBA(0,0,0,0.3)
+                    Height: =63
+                    PaddingTop: =10
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Width: =Parent.Width
+                    ZIndex: =2
+
+                    Module_Type_Label_9 As label:
+                        FontWeight: =FontWeight.Bold
+                        Height: =58
+                        PaddingLeft: =15
+                        Size: =18
+                        Text: ="Attendees ("&CountRows(col_allAttendee)&")" 
+                        Width: =249
+                        X: =15
+                        ZIndex: =2
+
+                    Icon13_1 As icon.ArrowsUpDown:
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =40
+                        Icon: =Icon.Sort
+                        OnSelect: |-
+                            =UpdateContext({col_name:"ulcq_name"});
+                            If(
+                                order=SortOrder.Descending,
+                            UpdateContext({order:SortOrder.Ascending}),
+                            UpdateContext({order:SortOrder.Descending})
+                            )
+                        Width: =40
+                        X: =525
+                        Y: =Parent.Height/2-Self.Height/2
+                        ZIndex: =3
+
+        Label18_7 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =101
+            Size: =21
+            Text: ="My Profile"
+            Width: =292
+            X: =228
+            Y: =90
+            ZIndex: =5
+
+        Image8_2 As image:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =40
+            Image: =backarrow
+            OnSelect: |-
+                =Navigate(
+                    Dashboard_Screen,
+                    ScreenTransition.Fade
+                )
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =40
+            X: =40
+            Y: =118
+            ZIndex: =6
+

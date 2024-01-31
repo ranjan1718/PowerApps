@@ -1,0 +1,705 @@
+Attendee_Screen As screen:
+    BackgroundImage: =Analytics
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =
+        
+        //Clear(col_deleteAttendee);
+        ClearCollect(col_deleteAttendee1,Table());
+
+    Container15 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Attendee_Main_Container As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =2
+
+        sub_main_Container As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.ExtraBold
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =966
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =50
+            RadiusTopRight: =50
+            Width: =640
+            Y: =170
+            ZIndex: =2
+
+            header_galleryContainer4 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Fill: |-
+                    =//RGBA(255, 232, 191, 1)
+                    RGBA(0,0,0,0.1)
+                Height: =60
+                PaddingLeft: =10
+                PaddingRight: =10
+                RadiusBottomLeft: =1
+                RadiusBottomRight: =1
+                RadiusTopLeft: =1
+                RadiusTopRight: =1
+                Width: =637
+                Y: =99
+                ZIndex: =2
+
+                Label4_12 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =55
+                    PaddingBottom: =17
+                    PaddingLeft: =10
+                    Size: =15
+                    Text: ="Attendees"&" ("&CountRows(col_allAttendee)&")"
+                    Width: =165
+                    X: =Checkbox1.Width
+                    Y: =5
+                    ZIndex: =2
+
+                Label4_13 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =55
+                    PaddingBottom: =17
+                    Size: =15
+                    Text: ="Territory"
+                    Width: =154
+                    X: =266
+                    Y: =5
+                    ZIndex: =3
+
+                Icon5 As icon.ArrowsUpDown:
+                    Color: =RGBA(0, 0, 0, 1)
+                    FocusedBorderThickness: =5
+                    Height: =30
+                    Icon: =Icon.Sort
+                    OnSelect: |-
+                        =Set(_V_sortcolumn,"ulcq_name");
+                        Set(_V_sortmode,
+                            If(
+                                _V_sortmode=SortOrder.Descending,
+                                SortOrder.Ascending,
+                                SortOrder.Descending
+                            )
+                        )
+                    Width: =30
+                    X: =195
+                    Y: =14
+                    ZIndex: =4
+
+                Icon5_1 As icon.ArrowsUpDown:
+                    Color: =RGBA(0, 0, 0, 1)
+                    FocusedBorderThickness: =5
+                    Height: =32
+                    Icon: =Icon.Sort
+                    OnSelect: |-
+                        =Set(_V_sortcolumn,"ulcq_territory");
+                        Set(_V_sortmode,
+                            If(
+                                _V_sortmode=SortOrder.Descending,
+                                SortOrder.Ascending,
+                                SortOrder.Descending
+                            )
+                        )
+                    Width: =32
+                    X: =372
+                    Y: =14
+                    ZIndex: =5
+
+                Add_Icon As icon.Add:
+                    DisabledBorderColor: =RGBA(79, 90, 94, 1)
+                    DisabledColor: =RGBA(106, 122, 127, 1)
+                    Height: =40
+                    Icon: =Icon.Add
+                    OnSelect: |-
+                        =ResetForm(Form1_4);
+                        NewForm(Form1_4);
+                        Navigate(Edit_Screen);
+                    Tooltip: ="Add"
+                    Visible: =If(_V_editoption,true,false)
+                    Width: =40
+                    X: =554
+                    Y: =11
+                    ZIndex: =6
+
+                Button2 As button:
+                    Fill: =RGBA(204, 72, 0, 1)
+                    Height: =45
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |-
+                        =/*ForAll(
+                            col_deleteAttendee,
+                            Remove(
+                                Attendees,ThisRecord
+                                )
+                        )*/
+                        Set(_v_delpopup,true);
+                        //Remove(Attendees,col_deleteAttendee)
+                    Size: =16
+                    Text: ="Delete"
+                    Visible: =false
+                    Width: =125
+                    X: =398
+                    Y: =10
+                    ZIndex: =7
+
+                Icon3 As icon.Trash:
+                    Color: =RGBA(184, 0, 0, 1)
+                    DisabledColor: =RGBA(79, 90, 94, 1)
+                    Height: =40
+                    Icon: =Icon.Trash
+                    OnSelect: =Set(_v_delpopup,true);
+                    Visible: =If(CountRows(col_deleteAttendee1)>0,true,false)
+                    Width: =40
+                    X: =497
+                    Y: =11
+                    ZIndex: =8
+
+            Container6_3 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =876
+                RadiusBottomLeft: =10
+                RadiusBottomRight: =10
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Width: =640
+                Y: =165
+                ZIndex: =3
+
+                Gallery3_4 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =776
+                    Items: |
+                        =With({
+                            records:SortByColumns(
+                            Filter(
+                                //Attendees,
+                                col_allAttendee,
+                                
+                                    searchInput.Text in Name
+                                
+                            ),
+                            Text(_V_sortcolumn),
+                            _V_sortmode
+                        )},
+                        ForAll(
+                            Sequence(CountRows(records)),
+                            Patch(  
+                                    Last(FirstN(records,Value)),
+                                    {rowNumber:Value}
+                                )
+                            
+                            )
+                        )
+                        //col_allAttendee
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    OnSelect: |
+                        =//ResetForm(Form2_1);
+                        //ViewForm(Form2_1);
+                        Navigate(Attendee_Detls_Screen);
+                        Set(Gal_name, ThisItem.Name)
+                    TemplateFill: =If(Mod(ThisItem.rowNumber,2)=0, RGBA(0, 0, 0, 0.1),RGBA(0, 0, 0, 0))
+                    TemplatePadding: =10
+                    TemplateSize: =80
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                    value_Container2 As groupContainer.manualLayoutContainer:
+                        DropShadow: =DropShadow.Regular
+                        Height: =80
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Width: =Parent.TemplateWidth-5
+                        ZIndex: =1
+
+                        deleteIcon6 As icon.Trash:
+                            Color: =RGBA(255, 0, 0, 1)
+                            DisabledBorderColor: =RGBA(77, 77, 77, 1)
+                            DisabledColor: =RGBA(79, 90, 94, 1)
+                            DisplayMode: =If(CountRows(col_deleteAttendee1)>0,DisplayMode.Disabled,DisplayMode.Edit)
+                            Height: =30
+                            Icon: =Icon.Trash
+                            OnSelect: |+
+                                =//Set(_V_deleteId,ThisItem.Attendees);
+                                //Collect(col_deleteAttendee,ThisItem);
+                                Set(_V_delete,ThisItem);
+                                Set(_v_delpopup1, true);
+                                
+                            Visible: =If(_V_editoption,true,false)
+                            Width: =30
+                            X: =553
+                            Y: =24
+                            ZIndex: =1
+
+                        editIcon5 As icon.Trash:
+                            Color: =RGBA(54, 176, 75, 1)
+                            DisabledColor: =RGBA(79, 90, 94, 1)
+                            Height: =30
+                            Icon: =Icon.Edit
+                            OnSelect: |-
+                                =Set(_V_id,ThisItem.Attendees);
+                                ResetForm(Form1_4);
+                                EditForm(Form1_4);
+                                Navigate(Edit_Screen);
+                            Visible: =If(_V_editoption,true,false)
+                            Width: =30
+                            X: =502
+                            Y: =27
+                            ZIndex: =2
+
+                        nameLabel2 As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            OnSelect: |-
+                                =Navigate(Attendee_Detls_Screen);
+                                ClearCollect(col_distexam,Table());
+                                ClearCollect(col_selectedresult,Table());
+                                Collect(col_distexam,
+                                        Distinct(Filter(col_Results,Name=ThisItem.Name,!IsBlank(ExamID)),
+                                        ExamID)
+                                     );
+                                ForAll(col_distexam As CDE,
+                                Collect(col_selectedresult,
+                                    {
+                                        ModuleName:LookUp(col_Results,ExamID=CDE.Value ,'Module Type'.Name),
+                                            Percentage:Sum(Filter(col_Results,ExamID=CDE.Value,!IsBlank(ExamID) ),Percentage),
+                                            Date:LookUp(col_Results,ExamID=CDE.Value,Date),
+                                            ExamID:CDE.Value,
+                                            Chef:LookUp(col_Results,ExamID=CDE.Value,Chef)
+                                    }
+                                    )
+                                );
+                                Set(Gal_name, ThisItem.Name);
+                            PaddingLeft: =15
+                            Text: =ThisItem.Name
+                            Width: =165
+                            X: =Checkbox1.Width
+                            ZIndex: =3
+
+                        territoryLabel3 As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            OnSelect: |-
+                                =Navigate(Attendee_Detls_Screen);
+                                Set(Gal_name, ThisItem.Name)
+                            Text: =ThisItem.Territory
+                            Width: =196
+                            X: =256
+                            ZIndex: =4
+
+                        Checkbox1 As checkbox:
+                            BorderStyle: =BorderStyle.None
+                            CheckboxSize: =30
+                            Default: =If(ThisItem in col_deleteAttendee1,true,false)
+                            Height: =Parent.Height
+                            OnCheck: =Collect(col_deleteAttendee1,ThisItem)
+                            OnUncheck: =Remove(col_deleteAttendee1,ThisItem)
+                            PressedBorderColor: |-
+                                =//ColorFade(Self.BorderColor, -30%)
+                                RGBA(0,0,0,0)
+                            Size: =21
+                            Text: =""
+                            Width: =30
+                            ZIndex: =5
+
+            SearchContainer11_3 As groupContainer.manualLayoutContainer:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =3
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(255, 139, 76, 1)
+                Height: =80
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Visible: =false
+                Width: =Parent.Width-10
+                X: =4
+                Y: =13
+                ZIndex: =4
+
+                Icon4_4 As icon.BackArrow:
+                    Color: =RGBA(0, 16, 96, 1)
+                    Height: =50
+                    Icon: =Icon.BackArrow
+                    OnSelect: =Navigate(Dashboard_Screen); 
+                    Width: =50
+                    X: =28
+                    Y: =16
+                    ZIndex: =1
+
+                Label3_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =Parent.Height
+                    Size: =21
+                    Text: ="Attendees"
+                    Visible: =false
+                    Width: =292
+                    X: =122
+                    ZIndex: =2
+
+                Button5 As button:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Fill: =RGBA(54, 176, 75, 1)
+                    Height: =66
+                    Size: =24
+                    Text: ="Button"
+                    Width: =190
+                    X: =90
+                    ZIndex: =3
+
+            backIcon6 As icon.BackArrow:
+                Color: =RGBA(0, 16, 96, 1)
+                Height: =50
+                Icon: =Icon.BackArrow
+                OnSelect: =Navigate(Dashboard_Screen); 
+                Visible: =false
+                Width: =50
+                X: =16
+                Y: =23
+                ZIndex: =5
+
+            searchInput As text:
+                BorderThickness: =3
+                Default: =""
+                HintText: ="Search by Name"
+                PaddingLeft: =50
+                RadiusBottomLeft: =10
+                RadiusBottomRight: =10
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Size: =15
+                Width: =210
+                X: =390
+                Y: =28
+                ZIndex: =6
+
+            searchIcon As icon.Search:
+                Height: =35
+                Icon: =Icon.Search
+                PaddingLeft: =5
+                Width: =35
+                X: =393
+                Y: =33
+                ZIndex: =7
+
+            Button6 As button:
+                Fill: =RGBA(255, 90, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Set(_V_bulkattendee_popup,true)
+                Size: =13
+                Text: ="Add bulk Attendees"
+                Visible: =If(_V_editoption,true,false)
+                Width: =200
+                X: =163
+                Y: =28
+                ZIndex: =8
+
+        popup_delete_Container As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(191, 184, 184, 0.21)
+            Height: =1136
+            Visible: =PopUp
+            Width: =640
+            ZIndex: =3
+
+            Delete_Container10_3 As groupContainer.manualLayoutContainer:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =225
+                Visible: =PopUp
+                X: =66
+                Y: =460
+                ZIndex: =1
+
+                confirm_Label3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =60
+                    Size: =18
+                    Text: ="Do you want to delete "
+                    Width: =Parent.Width-25
+                    X: =10
+                    Y: =36
+                    ZIndex: =1
+
+                cancelButton6 As button:
+                    Fill: =RGBA(116, 116, 116, 1)
+                    Height: =50
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: =Set(PopUp, false);
+                    Text: ="No"
+                    Width: =114
+                    X: =188
+                    Y: =140
+                    ZIndex: =2
+
+                confirmButton As button:
+                    DisabledBorderColor: =RGBA(255, 0, 0, 1)
+                    Fill: =RGBA(255, 0, 0, 1)
+                    Height: =50
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |-
+                        =//RemoveIf(col_allattendees,Attendees=_V_deleteId);
+                        Remove(Attendees,LookUp(Attendees,Attendees=Gallery3_4.Selected.Attendees));
+                        ClearCollect(col_allAttendee,Attendees);
+                        Set(PopUp, false);
+                    Text: ="Confirm"
+                    Width: =114
+                    X: =347
+                    Y: =140
+                    ZIndex: =3
+
+        HeaderComponent_9 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =4
+
+        Label33 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            Size: =21
+            Text: ="Attendees"
+            Width: =200
+            X: =Parent.Width/2-Self.Width/2
+            Y: =HeaderComponent_9.Height+5
+            ZIndex: =5
+
+    delepopupContainer As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =_v_delpopup
+        Width: =Parent.Width
+        ZIndex: =3
+
+        deleteContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            Label6 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                Size: =21
+                Text: ="Do you want to delete?"
+                Width: =500
+                Y: =4
+                ZIndex: =1
+
+            Gallery3 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =155
+                Items: =col_deleteAttendee1
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplatePadding: =1
+                TemplateSize: =40
+                Width: =500
+                Y: =74
+                ZIndex: =2
+
+                Label12 As label:
+                    OnSelect: =Select(Parent)
+                    PaddingLeft: =20
+                    Size: =16
+                    Text: =ThisItem.Name
+                    Width: =490
+                    ZIndex: =1
+
+            Button3 As button:
+                Fill: =RGBA(116, 116, 116, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Set(_v_delpopup,false);
+                Size: =18
+                Text: ="Cancel"
+                Width: =150
+                X: =70
+                Y: =240
+                ZIndex: =3
+
+            Button3_1 As button:
+                Fill: =RGBA(255, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Remove(Attendees,
+                        col_deleteAttendee1);
+                    Remove(
+                            col_allAttendee,
+                            col_deleteAttendee1);
+                    Clear(col_deleteAttendee1);
+                    Set(_v_delpopup,false)
+                Size: =18
+                Text: ="OK"
+                Width: =150
+                X: =290
+                Y: =240
+                ZIndex: =4
+
+    delepopupContainer_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: |
+            =_v_delpopup1
+        Width: =Parent.Width
+        ZIndex: =4
+
+        deleteContainer_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            Label6_1 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =62
+                Size: =21
+                Text: ="Do you want to delete?"
+                Width: =500
+                Y: =4
+                ZIndex: =1
+
+            Button3_4 As button:
+                Fill: =RGBA(116, 116, 116, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Set(_v_delpopup1,false);
+                Size: =18
+                Text: ="Cancel"
+                Width: =150
+                X: =70
+                Y: =240
+                ZIndex: =3
+
+            Button3_5 As button:
+                Fill: =RGBA(255, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateContext({_V_item:Gallery3_4.Selected});
+                    Remove(Attendees,_V_item);
+                    Remove(//Attendees,
+                            col_allAttendee,
+                            _V_delete);
+                    //Clear(col_deleteAttendee);
+                    Set(_v_delpopup1,false)
+                Size: =18
+                Text: ="OK"
+                Width: =150
+                X: =290
+                Y: =240
+                ZIndex: =4
+
+            Label6_4 As label:
+                Height: =70
+                PaddingLeft: =15
+                Size: =16
+                Text: =Gallery3_4.Selected.Name
+                Width: =500
+                Y: =66
+                ZIndex: =5
+
+    Container2 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =_V_bulkattendee_popup
+        Width: =Parent.Width
+        ZIndex: =5
+
+        Container4 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =310
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            excelattachment As attachments:
+                BorderColor: =
+                DisplayMode: =Parent.DisplayMode
+                Height: =167
+                IsInDataCard: =true
+                Items: =
+                MaxAttachments: =1
+                MaxAttachmentsText: =
+                NoAttachmentsText: =
+                PaddingBottom: =5
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                PaddingRight: =5
+                PaddingTop: =5
+                Size: =21
+                Tooltip: =
+                Width: =470
+                X: =16
+                Y: =6
+                ZIndex: =1
+
+            Button7 As button:
+                Fill: =RGBA(45, 128, 40, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =If(CountRows(excelattachment.Attachments)=1,
+                    ExcelToSharepointLibrary.Run({file:{contentBytes:Last(excelattachment.Attachments).Value,name:Last(excelattachment.Attachments).Name}});
+                    Set(_V_msg,false);
+                    Set(_V_bulkattendee_popup,false),
+                    Set(_V_msg,true)
+                    )
+                Text: ="OK"
+                Width: =140
+                X: =324
+                Y: =228
+                ZIndex: =2
+
+            Button7_1 As button:
+                Fill: =RGBA(106, 122, 127, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_bulkattendee_popup,false);
+                    Set(_V_msg,false);
+                Text: ="Cancel"
+                Width: =140
+                X: =67
+                Y: =228
+                ZIndex: =3
+
+            Label27 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =25
+                Text: ="*No Attachments present"
+                Visible: =_V_msg
+                Width: =219
+                X: =280
+                Y: =285
+                ZIndex: =4
+
+    Image5 As image:
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Image: =backarrow
+        OnSelect: =Navigate(Dashboard_Screen,ScreenTransition.Fade); 
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Width: =35
+        X: =40
+        Y: =HeaderComponent_9.Height+20
+        ZIndex: =6
+

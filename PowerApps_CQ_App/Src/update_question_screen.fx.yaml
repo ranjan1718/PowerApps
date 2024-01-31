@@ -1,0 +1,514 @@
+update_question_screen As screen:
+
+    Container8 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.03)
+        Height: =1136
+        Width: =640
+        ZIndex: =1
+
+        Form1 As form:
+            DataSource: =Modules
+            DefaultMode: =FormMode.New
+            Height: =550
+            Item: =LookUp(Modules,Module=_V_Selected_ID)
+            Visible: |-
+                =//If(!IsBlank(_V_galSelectedItem),false,true)
+                true
+            Width: =640
+            Y: =160
+            ZIndex: =2
+
+            Questions_DataCard1 As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ulcq_questions"
+                Default: =ThisItem.Questions
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Modules],DataSourceInfo.DisplayName,"ulcq_questions")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@Modules], DataSourceInfo.MaxLength, "ulcq_questions")
+                Required: =false
+                Update: =DataCardValue3.Text
+                Width: =640
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =48
+                    Size: =18
+                    Text: ="*"&Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue3 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderThickness: =1
+                    Default: |-
+                        =//ThisItem.Questions
+                        Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Fill: =RGBA(241, 244, 249, 1)
+                    Height: =60
+                    HintText: ="Type Question"
+                    MaxLength: =Parent.MaxLength
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =15
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey3.Y + DataCardKey3.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage2 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue3.Y + DataCardValue3.Height
+                    ZIndex: =3
+
+                StarVisible2 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey3.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey3.Y
+                    ZIndex: =4
+
+            Scope_DataCard1 As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ulcq_scope"
+                Default: =ThisItem.Scope
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Modules],DataSourceInfo.DisplayName,"ulcq_scope")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@Modules], DataSourceInfo.MaxLength, "ulcq_scope")
+                Required: =false
+                Update: =DataCardValue4.Text
+                Width: =640
+                X: =0
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey4 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =48
+                    Size: =18
+                    Text: ="*"&Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue4 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderThickness: =1
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Fill: =RGBA(241, 244, 249, 1)
+                    Height: =60
+                    HintText: ="Type Scope"
+                    MaxLength: =Parent.MaxLength
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =15
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage3 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue4.Y + DataCardValue4.Height
+                    ZIndex: =3
+
+                StarVisible3 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey4.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey4.Y
+                    ZIndex: =4
+
+            "'Rating Type_DataCard1' As typedDataCard.comboBoxOptionSetSingleEditCard":
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ulcq_ratingtype"
+                Default: =ThisItem.'Rating Type'
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Modules],DataSourceInfo.DisplayName,"ulcq_ratingtype")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =DataCardValue5.Selected.Value
+                Width: =640
+                X: =0
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey5 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =48
+                    Size: =18
+                    Text: ="*"&Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =14
+                    ZIndex: =1
+
+                DataCardValue5 As combobox:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderThickness: =1
+                    ChevronBackground: =RGBA(204, 72, 0, 1)
+                    ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                    DefaultSelectedItems: |
+                        =[Parent.Default]
+                    DisplayFields: =["Value"]
+                    DisplayMode: =Parent.DisplayMode
+                    Fill: =RGBA(241, 244, 249, 1)
+                    Height: =60
+                    IsSearchable: =false
+                    Items: =Choices('Rating Type Choice')
+                    PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                    SearchFields: =["Value"]
+                    SearchItems: =[]
+                    SelectMultiple: =false
+                    Size: =15
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey5.Y + DataCardKey5.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage4 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue5.Y + DataCardValue5.Height
+                    ZIndex: =3
+
+                StarVisible4 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey5.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey5.Y
+                    ZIndex: =4
+
+            Weightage_DataCard1 As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ulcq_weightage"
+                Default: =ThisItem.Weightage
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Modules],DataSourceInfo.DisplayName,"ulcq_weightage")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =Value(DataCardValue6.Text)
+                Width: =640
+                X: =0
+                Y: =3
+                ZIndex: =1
+
+                DataCardKey6 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =48
+                    Size: =18
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue6 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderThickness: =1
+                    Default: =If(Form1.Mode=FormMode.New,0,Parent.Default)
+                    DelayOutput: =true
+                    DisplayMode: =DisplayMode.Disabled
+                    Format: =TextFormat.Number
+                    Height: =60
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =15
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey6.Y + DataCardKey6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage9 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue6.Y + DataCardValue6.Height
+                    ZIndex: =3
+
+                StarVisible9 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey6.Y
+                    ZIndex: =4
+
+        Button1 As button:
+            DisabledColor: =RGBA(149, 149, 149, 1)
+            DisabledFill: =RGBA(202, 202, 202, 1)
+            DisplayMode: |-
+                =//If(IsBlank(DataCardValue5.Selected)||IsBlank(DataCardValue4.Text)||IsBlank(DataCardValue3.Text),DisplayMode.Disabled,DisplayMode.Edit)
+                DisplayMode.Edit
+            Fill: =RGBA(99, 139, 44, 1)
+            Height: =50
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =If(
+                    IsBlank(DataCardValue5.Selected) || IsBlank(DataCardValue4.Text) || IsBlank(DataCardValue3.Text),
+                    UpdateContext({_V_errorMessage: true}),
+                    If(
+                        Form1.Mode = FormMode.Edit,
+                        Patch(
+                            Modules,
+                            LookUp(
+                                Modules,
+                                Module = _V_Selected_ID
+                            ),
+                            {
+                                Questions: DataCardValue3.Text,
+                                Scope: DataCardValue4.Text,
+                                'Rating Type': DataCardValue5.Selected.Value,
+                                Weightage: Value(DataCardValue6.Text)
+                            }
+                        );//new col add
+                        Patch(
+                            col_allModules,
+                            LookUp(
+                                col_allModules,
+                                Module = _V_Selected_ID
+                            ),
+                            {
+                                Questions: DataCardValue3.Text,
+                                Scope: DataCardValue4.Text,
+                                'Rating Type': DataCardValue5.Selected.Value,
+                                Weightage: Value(DataCardValue6.Text)
+                            }
+                        )
+                        ,
+                        Patch(
+                            Modules,
+                            Defaults(Modules),
+                            {
+                                Questions: DataCardValue3.Text,
+                                Scope: DataCardValue4.Text,
+                                'Rating Type': DataCardValue5.Selected.Value,
+                                'Module Type': LookUp('Module Names',Name=_V_module_name),
+                                Weightage: Value(DataCardValue6.Text)
+                            }
+                        );
+                        Patch(
+                            col_allModules,
+                            Defaults(col_allModules),
+                            {
+                                Questions: DataCardValue3.Text,
+                                Scope: DataCardValue4.Text,
+                                'Rating Type': DataCardValue5.Selected.Value,
+                                'Module Type': LookUp('Module Names',Name=_V_module_name),
+                                Weightage: Value(DataCardValue6.Text)
+                            }
+                        )
+                    );
+                    If(
+                        Form1.Mode = FormMode.Edit,
+                        Patch(
+                            col_selectedModule,
+                            LookUp(
+                                col_selectedModule,
+                                Module = _V_Selected_ID
+                            ),
+                            {
+                                Questions: DataCardValue3.Text,
+                                Scope: DataCardValue4.Text,
+                                'Rating Type': DataCardValue5.Selected.Value,
+                                Weightage: Value(DataCardValue6.Text)
+                            }
+                        ),
+                        Collect(
+                            col_selectedModule,
+                            Patch(
+                                LookUp(
+                                    Modules,
+                                    'Module Type'.Name = _V_module_name
+                                ),
+                                {
+                                    Questions: DataCardValue3.Text,
+                                    Scope: DataCardValue4.Text,
+                                    'Rating Type': DataCardValue5.Selected.Value,
+                                    'Module Type': LookUp('Module Names',Name=_V_module_name),
+                                    Weightage: Value(DataCardValue6.Text)
+                                }
+                            )
+                        );
+                        Navigate(view_question_screen);
+                        UpdateContext({_V_errorMessage: false})
+                );
+                Navigate(view_question_screen);
+                    
+                );
+                //Navigate(view_question_screen);
+            PressedFill: =Self.Fill
+            Size: =17
+            Text: ="Submit"
+            Width: =150
+            X: =430
+            Y: =1034
+            ZIndex: =3
+
+        Button1_1 As button:
+            Fill: =RGBA(149, 149, 149, 1)
+            Height: =50
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Navigate(view_question_screen); 
+            PressedFill: =Self.Fill
+            Size: =17
+            Text: ="Cancel"
+            Width: =150
+            X: =83
+            Y: =1034
+            ZIndex: =4
+
+        HdContainer1_9 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(204, 72, 0, 1)
+            Height: =95
+            Visible: =false
+            Width: =640
+            ZIndex: =5
+
+            Label2_17 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =42
+                Size: =15
+                Text: =User().FullName
+                Width: =192
+                X: =442
+                Y: =46
+                ZIndex: =2
+
+            Label2_16 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =45
+                Size: =15
+                Text: ="Welcome,"
+                Width: =147
+                X: =442
+                Y: =14
+                ZIndex: =3
+
+            Image3_8 As image:
+                Height: =88
+                Image: =image
+                OnSelect: =Navigate(Dashboard_Screen)
+                Width: =133
+                X: =1
+                Y: =2
+                ZIndex: =4
+
+            Icon6_6 As icon.Home:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =50
+                Icon: =Icon.Home
+                OnSelect: =Navigate(Dashboard_Screen);
+                Width: =50
+                X: =149
+                Y: =20
+                ZIndex: =5
+
+        Label16 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =29
+            Size: =12
+            Text: ="* Please fill all the fields"
+            Visible: =_V_errorMessage
+            Width: =210
+            X: =430
+            Y: =1084
+            ZIndex: =7
+
+        HeaderComponent_4 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =8
+

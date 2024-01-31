@@ -1,0 +1,945 @@
+Attendee_Detls_Screen As screen:
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |
+        =UpdateContext({_V_sort:"ModuleName"});
+        UpdateContext({_V_order:SortOrder.Ascending});
+
+    TransparentContainer20 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+    MainContainer As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =2
+
+        Container1_14 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(204, 72, 0, 1)
+            Height: =90
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Visible: =false
+            Width: =640
+            ZIndex: =1
+
+            Label2_29 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =42
+                Size: =15
+                Text: =User().FullName
+                Width: =192
+                X: =371
+                Y: =48
+                ZIndex: =2
+
+            Label2_28 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =45
+                Size: =15
+                Text: ="Welcome,"
+                Width: =147
+                X: =416
+                Y: =2
+                ZIndex: =3
+
+            Image3_14 As image:
+                Height: =Parent.Height*.8
+                Image: =image
+                OnSelect: =Navigate(Dashboard_Screen)
+                Width: =Parent.Width*.15
+                X: =5
+                Y: =10
+                ZIndex: =4
+
+            Icon6_12 As icon.Home:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =50
+                Icon: =Icon.Home
+                OnSelect: =Navigate(Dashboard_Screen);
+                Width: =50
+                X: =140
+                Y: =20
+                ZIndex: =5
+
+            Image1 As image:
+                Height: =Parent.Height
+                Image: =User().Image
+                Width: =Parent.Width*.12
+                X: =560
+                ZIndex: =6
+
+        Container13_2 As groupContainer.manualLayoutContainer:
+            Height: =991
+            Visible: =false
+            Width: =640
+            Y: =145
+            ZIndex: =2
+
+            Container14_3 As groupContainer.manualLayoutContainer:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =3
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(255, 139, 76, 1)
+                Height: =80
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Width: =Parent.Width-10
+                X: =4
+                Y: =13
+                ZIndex: =1
+
+                Icon4_3 As icon.BackArrow:
+                    Color: =RGBA(39, 67, 125, 1)
+                    Height: =50
+                    Icon: =Icon.BackArrow
+                    OnSelect: =Back()
+                    Width: =50
+                    X: =28
+                    Y: =16
+                    ZIndex: =1
+
+                Label18 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =Parent.Height
+                    Size: =21
+                    Text: ="Attendee Details"
+                    Width: =292
+                    X: =122
+                    ZIndex: =2
+
+            Container15_1 As groupContainer.manualLayoutContainer:
+                Height: =945
+                Width: =640
+                Y: =91
+                ZIndex: =2
+
+                Container7_2 As groupContainer.manualLayoutContainer:
+                    Height: =710
+                    RadiusBottomLeft: =10
+                    RadiusBottomRight: =10
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =640
+                    Y: =231
+                    ZIndex: =2
+
+                    Container4_3 As groupContainer.manualLayoutContainer:
+                        DropShadow: =DropShadow.Regular
+                        Fill: =RGBA(202, 202, 202, 1)
+                        Height: =80
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =637
+                        X: =3
+                        ZIndex: =1
+
+                        Module_Type_Label As label:
+                            FontWeight: =FontWeight.Bold
+                            Height: =Parent.Height
+                            Size: =15
+                            Text: ="Module Type"
+                            Width: =182
+                            X: =17
+                            ZIndex: =2
+
+                        Percentage_Label As label:
+                            Align: =Align.Center
+                            FontWeight: =FontWeight.Bold
+                            Height: =Parent.Height
+                            Size: =15
+                            Text: ="Percentage"
+                            Width: =154
+                            X: =277
+                            ZIndex: =3
+
+                        Date_Label As label:
+                            Align: =Align.Center
+                            FontWeight: =FontWeight.Bold
+                            Height: =Parent.Height
+                            Size: =15
+                            Text: ="Date"
+                            Width: =101
+                            X: =507
+                            ZIndex: =4
+
+                        Icon17 As icon.ArrowsUpDown:
+                            Color: =RGBA(0, 0, 0, 1)
+                            Height: =40
+                            Icon: =Icon.Sort
+                            OnSelect: |
+                                =UpdateContext({_V_sort:"ModuleName"});
+                                If(_V_order=SortOrder.Ascending,
+                                UpdateContext({_V_order:SortOrder.Descending}),
+                                UpdateContext({_V_order:SortOrder.Ascending})
+                                );
+                            Width: =40
+                            X: =153
+                            Y: =18
+                            ZIndex: =5
+
+                        Icon17_1 As icon.ArrowsUpDown:
+                            Color: =RGBA(0, 0, 0, 1)
+                            Height: =40
+                            Icon: =Icon.Sort
+                            OnSelect: |
+                                =UpdateContext({_V_sort:"Percentage"});
+                                If(_V_order=SortOrder.Ascending,
+                                UpdateContext({_V_order:SortOrder.Descending}),
+                                UpdateContext({_V_order:SortOrder.Ascending})
+                                );
+                            Width: =40
+                            X: =418
+                            Y: =18
+                            ZIndex: =6
+
+                        Icon17_2 As icon.ArrowsUpDown:
+                            Color: =RGBA(0, 0, 0, 1)
+                            Height: =40
+                            Icon: =Icon.Sort
+                            OnSelect: |
+                                =UpdateContext({_V_sort:"Date"});
+                                If(_V_order=SortOrder.Ascending,
+                                UpdateContext({_V_order:SortOrder.Descending}),
+                                UpdateContext({_V_order:SortOrder.Ascending})
+                                );
+                            Width: =40
+                            X: =591
+                            Y: =18
+                            ZIndex: =7
+
+                    Container8_2 As groupContainer.manualLayoutContainer:
+                        Height: =614
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =637
+                        X: =3
+                        Y: =96
+                        ZIndex: =2
+
+                        Gallery3_3 As gallery.galleryVertical:
+                            DelayItemLoading: =true
+                            Height: =614
+                            Items: |-
+                                =//Results
+                                //Filter(col_Results,Name=Gal_name)
+                                SortByColumns(col_selectedresult,_V_sort,_V_order)
+                            Layout: =Layout.Vertical
+                            LoadingSpinner: =LoadingSpinner.Data
+                            OnSelect: =
+                            TemplateSize: =90
+                            Width: =637
+                            ZIndex: =1
+
+                            Container26_1 As groupContainer.manualLayoutContainer:
+                                DropShadow: =DropShadow.Regular
+                                Height: =80
+                                PaddingLeft: =10
+                                PaddingRight: =10
+                                RadiusBottomLeft: =5
+                                RadiusBottomRight: =5
+                                RadiusTopLeft: =5
+                                RadiusTopRight: =5
+                                Width: =627
+                                ZIndex: =5
+
+                                Gal_Module_Label As label:
+                                    Height: =Parent.Height
+                                    OnSelect: |-
+                                        =Set(Gal_mod_Type,Self.Text);
+                                        Navigate(Question_Info_Screen);
+                                    Text: =ThisItem.ModuleName
+                                    Width: =212
+                                    X: =15
+                                    ZIndex: =1
+
+                                Gal_Percentage_Label As label:
+                                    Align: =Align.Center
+                                    Height: =Parent.Height
+                                    OnSelect: |
+                                        =Navigate(Question_Info_Screen);
+                                    Text: =ThisItem.Percentage
+                                    Width: =141
+                                    X: =280
+                                    ZIndex: =2
+
+                                Gal_Date_Label As label:
+                                    Align: =Align.Center
+                                    Height: =Parent.Height
+                                    OnSelect: =Navigate(Question_Info_Screen)
+                                    Text: =Text(ThisItem.Date,"dd/mm/yyyy")
+                                    Width: =117
+                                    X: =500
+                                    ZIndex: =3
+
+                attendee_detailsContainer As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =226
+                    PaddingTop: =20
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Width: =640
+                    Y: =5
+                    ZIndex: =3
+
+                    attendeenameContainer As groupContainer.horizontalAutoLayoutContainer:
+                        DropShadow: =DropShadow.Regular
+                        Height: =Parent.Height/3-10
+                        LayoutMode: =LayoutMode.Auto
+                        RadiusBottomLeft: =15
+                        RadiusBottomRight: =15
+                        RadiusTopLeft: =15
+                        RadiusTopRight: =15
+                        Width: =Parent.Width-10
+                        X: =5
+                        Y: =5
+                        ZIndex: =1
+
+                        Label19 As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            PaddingLeft: =20
+                            Size: =18
+                            Text: |-
+                                ="Name:"
+                            Width: =Parent.Width*.2
+                            ZIndex: =1
+
+                        Label20 As label:
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            Size: =15
+                            Text: =Gallery3_4.Selected.Name
+                            Width: =Parent.Width-Label19.Width
+                            ZIndex: =2
+
+                    classContainer As groupContainer.horizontalAutoLayoutContainer:
+                        DropShadow: =DropShadow.Regular
+                        Height: =Parent.Height/3-10
+                        LayoutMode: =LayoutMode.Auto
+                        RadiusBottomLeft: =15
+                        RadiusBottomRight: =15
+                        RadiusTopLeft: =15
+                        RadiusTopRight: =15
+                        Width: =Parent.Width-10
+                        X: =5
+                        Y: =attendeenameContainer.Y+attendeenameContainer.Height+10
+                        ZIndex: =2
+
+                        Label22 As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            PaddingLeft: =20
+                            Size: =18
+                            Text: |-
+                                ="Class:"
+                            Width: =Parent.Width*.2
+                            ZIndex: =1
+
+                        Label23 As label:
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            Size: =15
+                            Text: =Gallery3_4.Selected.Class
+                            Width: =Parent.Width-Label22.Width-10
+                            ZIndex: =2
+
+                    area_territory_Container As groupContainer.horizontalAutoLayoutContainer:
+                        DropShadow: =DropShadow.Regular
+                        Height: =Parent.Height/3-10
+                        LayoutMode: =LayoutMode.Auto
+                        RadiusBottomLeft: =15
+                        RadiusBottomRight: =15
+                        RadiusTopLeft: =15
+                        RadiusTopRight: =15
+                        Width: =Parent.Width-10
+                        X: =5
+                        Y: =classContainer.Y+classContainer.Height+10
+                        ZIndex: =3
+
+                        Area_Label As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            PaddingLeft: =20
+                            Size: =18
+                            Text: |-
+                                ="Area:"
+                            Width: =Parent.Width*.2
+                            ZIndex: =1
+
+                        Area_input_Label As label:
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            Size: =15
+                            Text: =Gallery3_4.Selected.Area.Name
+                            Width: =Parent.Width*.25
+                            ZIndex: =2
+
+                        Territory_Label As label:
+                            FontWeight: =FontWeight.Semibold
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            Size: =18
+                            Text: |-
+                                ="Territory:"
+                            Width: =Parent.Width*.25
+                            ZIndex: =3
+
+                        Territory_input_Label As label:
+                            Height: =Parent.Height
+                            LayoutMinHeight: =70
+                            LayoutMinWidth: =560
+                            Size: =15
+                            Text: =Gallery3_4.Selected.Territory
+                            Width: =Parent.Width*.3
+                            ZIndex: =4
+
+        HeaderComponent_11 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =3
+
+        Container15_3 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Fill: =RGBA(255,255, 255, 1)
+            Height: =956
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =640
+            Y: =180
+            ZIndex: =4
+
+            Container7_4 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =594
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =586
+                X: =28
+                Y: =362
+                ZIndex: =2
+
+                Container4_4 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Fill: =RGBA(202, 202, 202, 1)
+                    Height: =82
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =Parent.Width-10
+                    X: =3
+                    ZIndex: =1
+
+                    Module_Type_Label_2 As label:
+                        FontWeight: =FontWeight.Bold
+                        Height: =Parent.Height
+                        Size: =15
+                        Text: ="Module Type"
+                        Width: =182
+                        X: =17
+                        ZIndex: =2
+
+                    Percentage_Label_4 As label:
+                        Align: =Align.Center
+                        FontWeight: =FontWeight.Bold
+                        Height: =Parent.Height
+                        Size: =15
+                        Text: ="Percentage"
+                        Width: =154
+                        X: =225
+                        ZIndex: =3
+
+                    Date_Label_2 As label:
+                        Align: =Align.Center
+                        FontWeight: =FontWeight.Bold
+                        Height: =80
+                        Size: =15
+                        Text: ="Date"
+                        Width: =85
+                        X: =455
+                        ZIndex: =4
+
+                    Icon17_3 As icon.ArrowsUpDown:
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =40
+                        Icon: =Icon.Sort
+                        OnSelect: |
+                            =UpdateContext({_V_sort:"ModuleName"});
+                            If(_V_order=SortOrder.Ascending,
+                            UpdateContext({_V_order:SortOrder.Descending}),
+                            UpdateContext({_V_order:SortOrder.Ascending})
+                            );
+                        Width: =40
+                        X: =153
+                        Y: =18
+                        ZIndex: =5
+
+                    Icon17_4 As icon.ArrowsUpDown:
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =40
+                        Icon: =Icon.Sort
+                        OnSelect: |
+                            =UpdateContext({_V_sort:"Percentage"});
+                            If(_V_order=SortOrder.Ascending,
+                            UpdateContext({_V_order:SortOrder.Descending}),
+                            UpdateContext({_V_order:SortOrder.Ascending})
+                            );
+                        Width: =40
+                        X: =379
+                        Y: =18
+                        ZIndex: =6
+
+                    Icon17_5 As icon.ArrowsUpDown:
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =40
+                        Icon: =Icon.Sort
+                        OnSelect: |
+                            =UpdateContext({_V_sort:"Date"});
+                            If(_V_order=SortOrder.Ascending,
+                            UpdateContext({_V_order:SortOrder.Descending}),
+                            UpdateContext({_V_order:SortOrder.Ascending})
+                            );
+                        Width: =40
+                        X: =527
+                        Y: =18
+                        ZIndex: =7
+
+                Container8_3 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =512
+                    RadiusBottomLeft: =10
+                    RadiusBottomRight: =10
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =Parent.Width
+                    X: =3
+                    Y: =82
+                    ZIndex: =2
+
+                    Gallery3_8 As gallery.galleryVertical:
+                        DelayItemLoading: =true
+                        Height: =499
+                        Items: |-
+                            =//Results
+                            //Filter(col_Results,Name=Gal_name)
+                            With({
+                                records:SortByColumns(col_selectedresult,_V_sort,_V_order)
+                            },
+                            ForAll(
+                                Sequence(CountRows(records)),
+                                Patch(  
+                                        Last(FirstN(records,Value)),
+                                        {rowNumber:Value}
+                                    )
+                                
+                                )
+                            )
+                        Layout: =Layout.Vertical
+                        LoadingSpinner: =LoadingSpinner.Data
+                        OnSelect: =
+                        TemplateFill: = If(Mod(ThisItem.rowNumber,2)=0,RGBA(0,0,0,0.1),RGBA(0,0,0,0))
+                        TemplateSize: =80
+                        Width: =Parent.Width-10
+                        ZIndex: =1
+
+                        Container26_3 As groupContainer.manualLayoutContainer:
+                            DropShadow: =DropShadow.Regular
+                            Height: =80
+                            PaddingLeft: =10
+                            PaddingRight: =10
+                            RadiusBottomLeft: =5
+                            RadiusBottomRight: =5
+                            RadiusTopLeft: =5
+                            RadiusTopRight: =5
+                            Width: =Parent.Width-10
+                            ZIndex: =5
+
+                            Gal_Module_Label_2 As label:
+                                Height: =Parent.Height
+                                OnSelect: |-
+                                    =Set(Gal_mod_Type,Self.Text);
+                                    Navigate(Question_Info_Screen);
+                                Text: =ThisItem.ModuleName
+                                Width: =212
+                                X: =15
+                                ZIndex: =1
+
+                            Gal_Percentage_Label_2 As label:
+                                Align: =Align.Center
+                                Height: =Parent.Height
+                                OnSelect: |
+                                    =Navigate(Question_Info_Screen);
+                                Text: =ThisItem.Percentage
+                                Width: =141
+                                X: =228
+                                ZIndex: =2
+
+                            Gal_Date_Label_2 As label:
+                                Align: =Align.Center
+                                Height: =Parent.Height
+                                OnSelect: =Navigate(Question_Info_Screen)
+                                Text: =Text(ThisItem.Date,"dd/mm/yyyy")
+                                Width: =117
+                                X: =436
+                                ZIndex: =3
+
+            attendee_detailsContainer_2 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =226
+                PaddingTop: =20
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Visible: =false
+                Width: =640
+                Y: =5
+                ZIndex: =3
+
+                attendeenameContainer_1 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =Parent.Height/3-10
+                    LayoutMode: =LayoutMode.Auto
+                    RadiusBottomLeft: =15
+                    RadiusBottomRight: =15
+                    RadiusTopLeft: =15
+                    RadiusTopRight: =15
+                    Width: =Parent.Width-10
+                    X: =5
+                    Y: =5
+                    ZIndex: =1
+
+                    Label19_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =20
+                        Size: =18
+                        Text: |-
+                            ="Name:"
+                        Width: =Parent.Width*.2
+                        ZIndex: =1
+
+                    Label20_1 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =Gallery3_4.Selected.Name
+                        Width: =Parent.Width-Label19_1.Width
+                        ZIndex: =2
+
+                classContainer_1 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =Parent.Height/3-10
+                    LayoutMode: =LayoutMode.Auto
+                    RadiusBottomLeft: =15
+                    RadiusBottomRight: =15
+                    RadiusTopLeft: =15
+                    RadiusTopRight: =15
+                    Width: =Parent.Width-10
+                    X: =5
+                    Y: =attendeenameContainer_1.Y+attendeenameContainer_1.Height+10
+                    ZIndex: =2
+
+                    Label22_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =20
+                        Size: =18
+                        Text: |-
+                            ="Class:"
+                        Width: =Parent.Width*.2
+                        ZIndex: =1
+
+                    Label23_1 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =Gallery3_4.Selected.Class
+                        Width: =Parent.Width-Label22_1.Width-10
+                        ZIndex: =2
+
+                area_territory_Container_1 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =Parent.Height/3-10
+                    LayoutMode: =LayoutMode.Auto
+                    RadiusBottomLeft: =15
+                    RadiusBottomRight: =15
+                    RadiusTopLeft: =15
+                    RadiusTopRight: =15
+                    Width: =Parent.Width-10
+                    X: =5
+                    Y: =classContainer_1.Y+classContainer_1.Height+10
+                    ZIndex: =3
+
+                    Area_Label_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =20
+                        Size: =18
+                        Text: |-
+                            ="Area:"
+                        Width: =Parent.Width*.2
+                        ZIndex: =1
+
+                    Area_input_Label_1 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =Gallery3_4.Selected.Area.Name
+                        Width: =Parent.Width*.25
+                        ZIndex: =2
+
+                    Territory_Label_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =18
+                        Text: |-
+                            ="Territory:"
+                        Width: =Parent.Width*.25
+                        ZIndex: =3
+
+                    Territory_input_Label_1 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =Gallery3_4.Selected.Territory
+                        Width: =Parent.Width*.3
+                        ZIndex: =4
+
+            attendee_detailsContainer_7 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =337
+                PaddingTop: =20
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =630
+                X: =10
+                Y: =14
+                ZIndex: =4
+
+                nameLabel27_15 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =15
+                    Text: |-
+                        ="Name :"
+                    Width: =100
+                    X: =305
+                    Y: =18
+                    ZIndex: =15
+
+                namevalueLabel27_16 As label:
+                    Height: =56
+                    Size: =15
+                    Text: =Gallery3_4.Selected.Name
+                    Width: =227
+                    X: =399
+                    Y: =13
+                    ZIndex: =16
+
+                Label27_34 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    PaddingLeft: =0
+                    PaddingRight: =15
+                    Size: =15
+                    Text: |-
+                        ="Role :"
+                    Width: =100
+                    X: =307
+                    Y: =59
+                    ZIndex: =17
+
+                Label27_36 As label:
+                    Height: =38
+                    Size: =15
+                    Text: =LookUp(Users,'Full Name'=Gallery3_4.Selected.Name).'Roles (ulcq_Roles)'.Name
+                    Width: =197
+                    X: =403
+                    Y: =59
+                    ZIndex: =18
+
+                Label27_38 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =15
+                    Text: |-
+                        ="Class :"
+                    Width: =82
+                    X: =309
+                    Y: =97
+                    ZIndex: =19
+
+                Label27_40 As label:
+                    Height: =38
+                    Size: =15
+                    Text: |-
+                        =//LookUp(Users,'Full Name'=User().FullName).Class
+                        "..."
+                    Width: =193
+                    X: =407
+                    Y: =97
+                    ZIndex: =20
+
+                Label27_42 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    PaddingLeft: =0
+                    Size: =15
+                    Text: |-
+                        ="Channel :"
+                    Width: =100
+                    X: =309
+                    Y: =135
+                    ZIndex: =21
+
+                Label27_44 As label:
+                    Height: =38
+                    Size: =15
+                    Text: ="..."
+                    Width: =100
+                    X: =407
+                    Y: =135
+                    ZIndex: =22
+
+                Label27_45 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =37
+                    Size: =15
+                    Text: |-
+                        ="Area :"
+                    Width: =100
+                    X: =304
+                    Y: =173
+                    ZIndex: =23
+
+                Label27_46 As label:
+                    Height: =38
+                    Size: =15
+                    Text: =LookUp(Users,'Full Name'=Gallery3_4.Selected.Name).Area.Name
+                    Width: =193
+                    X: =407
+                    Y: =173
+                    ZIndex: =24
+
+                Label27_47 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =38
+                    Size: =15
+                    Text: |-
+                        ="Territory :"
+                    Width: =110
+                    X: =292
+                    Y: =209
+                    ZIndex: =25
+
+                Label27_48 As label:
+                    Height: =38
+                    Size: =15
+                    Text: =LookUp(Users,'Full Name'=Gallery3_4.Selected.Name).Territory.Name
+                    Width: =196
+                    X: =404
+                    Y: =211
+                    ZIndex: =26
+
+                Image6_5 As image:
+                    Height: =Self.Width
+                    Image: =User().Image
+                    ImagePosition: =ImagePosition.Fill
+                    RadiusBottomLeft: =100
+                    RadiusBottomRight: =100
+                    RadiusTopLeft: =100
+                    RadiusTopRight: =100
+                    Width: =Parent.Width/3
+                    X: =40
+                    Y: =40
+                    ZIndex: =27
+
+                Button4_4 As button:
+                    Fill: =RGBA(240, 98, 15, 1)
+                    Height: =55
+                    OnSelect: =Navigate('Generate QR Screen',ScreenTransition.Fade)
+                    Text: |-
+                        =If(
+                            IsBlank(
+                                LookUp(
+                                    Attendees,
+                                    Name = User().FullName
+                                ).QR_Link
+                            ),"Generate QR Code","Show QR Code")
+                    Width: =250
+                    X: =159
+                    Y: =272
+                    ZIndex: =28
+
+        Image10_2 As image:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =40
+            Image: =backarrow
+            ImagePosition: =ImagePosition.Fill
+            OnSelect: =Back(ScreenTransition.Fade)
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =40
+            X: =40
+            Y: =118
+            ZIndex: =5
+
+    Label34 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =85
+        Size: =21
+        Text: ="Attendee Detail"
+        Width: =377
+        X: =142
+        Y: =95
+        ZIndex: =3
+

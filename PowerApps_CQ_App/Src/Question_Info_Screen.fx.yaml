@@ -1,0 +1,293 @@
+Question_Info_Screen As screen:
+
+    Container28 As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =1
+
+        Container1_17 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(204, 72, 0, 1)
+            Height: =90
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Visible: =false
+            Width: =640
+            ZIndex: =1
+
+            Label2_31 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =42
+                Size: =15
+                Text: =User().FullName
+                Width: =192
+                X: =442
+                Y: =46
+                ZIndex: =2
+
+            Label2_30 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =45
+                Size: =15
+                Text: ="Welcome,"
+                Width: =147
+                X: =442
+                Y: =14
+                ZIndex: =3
+
+            Image3_15 As image:
+                Height: =88
+                Image: =image
+                OnSelect: =Navigate(Dashboard_Screen)
+                Width: =133
+                X: =1
+                Y: =2
+                ZIndex: =4
+
+            Icon6_13 As icon.Home:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =50
+                Icon: =Icon.Home
+                OnSelect: =Navigate(Dashboard_Screen);
+                Width: =50
+                X: =140
+                Y: =20
+                ZIndex: =5
+
+        Container16_1 As groupContainer.manualLayoutContainer:
+            Height: =1046
+            Width: =640
+            Y: =90
+            ZIndex: =2
+
+            Container14_4 As groupContainer.manualLayoutContainer:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =3
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(255, 139, 76, 1)
+                Height: =80
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Width: =Parent.Width-10
+                X: =4
+                Y: =13
+                ZIndex: =1
+
+                Icon4_5 As icon.BackArrow:
+                    Color: =RGBA(39, 67, 125, 1)
+                    Height: =50
+                    Icon: =Icon.BackArrow
+                    OnSelect: =Back()
+                    Width: =50
+                    X: =28
+                    Y: =16
+                    ZIndex: =1
+
+                Label18_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =Parent.Height
+                    Size: =21
+                    Text: ="Attendee Result"
+                    Width: =292
+                    X: =122
+                    ZIndex: =2
+
+            Container14_5 As groupContainer.manualLayoutContainer:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =3
+                DropShadow: =DropShadow.Regular
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =190
+                PaddingLeft: =10
+                PaddingRight: =10
+                RadiusBottomLeft: =10
+                RadiusBottomRight: =10
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Width: =Parent.Width-20
+                X: =10
+                Y: =101
+                ZIndex: =2
+
+                Label8_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =83
+                    Size: =18
+                    Text: |
+                        ="Module Type:  " 
+                    Width: =200
+                    X: =13
+                    Y: =78
+                    ZIndex: =2
+
+                Label6_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =83
+                    Size: =18
+                    Text: |-
+                        ="Attendee Name:"
+                    Width: =200
+                    X: =13
+                    Y: =6
+                    ZIndex: =4
+
+                Label6_8 As label:
+                    Height: =83
+                    Size: =15
+                    Text: =Gallery3_4.Selected.Name
+                    Width: =380
+                    X: =216
+                    Y: =6
+                    ZIndex: =5
+
+                Label6_9 As label:
+                    Height: =83
+                    Size: =15
+                    Text: =Gallery3_8.Selected.ModuleName
+                    Width: =383
+                    X: =213
+                    Y: =78
+                    ZIndex: =6
+
+            Container17_1 As groupContainer.manualLayoutContainer:
+                Height: =743
+                Width: =640
+                Y: =303
+                ZIndex: =4
+
+                Container4_5 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Fill: =RGBA(237, 237, 237, 1)
+                    Height: =70
+                    RadiusBottomLeft: =10
+                    RadiusBottomRight: =10
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =637
+                    X: =3
+                    ZIndex: =1
+
+                    Label4_17 As label:
+                        Align: =Align.Center
+                        FontWeight: =FontWeight.Bold
+                        Height: =65
+                        Size: =15
+                        Text: ="Remark"
+                        Width: =190
+                        X: =299
+                        ZIndex: =2
+
+                    Label4_15 As label:
+                        FontWeight: =FontWeight.Bold
+                        Height: =65
+                        Size: =15
+                        Text: ="Question"
+                        Width: =154
+                        X: =24
+                        Y: =5
+                        ZIndex: =3
+
+                    Label4_16 As label:
+                        Align: =Align.Center
+                        FontWeight: =FontWeight.Bold
+                        Height: =65
+                        Size: =15
+                        Text: ="Rating"
+                        Width: =101
+                        X: =190
+                        ZIndex: =4
+
+                    Label4_18 As label:
+                        FontWeight: =FontWeight.Bold
+                        Height: =65
+                        Size: =15
+                        Text: ="Percentage"
+                        Width: =143
+                        X: =486
+                        ZIndex: =5
+
+                Container18_1 As groupContainer.manualLayoutContainer:
+                    Height: =662
+                    Width: =637
+                    X: =3
+                    Y: =80
+                    ZIndex: =2
+
+                    Gallery3_5 As gallery.galleryVertical:
+                        DelayItemLoading: =true
+                        Height: =647
+                        Items: |-
+                            =/*Filter(
+                                Results,
+                                'Module Type'.Name = Gallery3_7.Selected.ModuleName && Name=User().FullName && ExamID=Gallery3_7.Selected.ExamID
+                            )*/
+                            Filter(col_Results,'Module Type'.Name=Gallery3_8.Selected.ModuleName,Date=Gallery3_8.Selected.Date,Name=Gallery3_4.Selected.Name,ExamID=Gallery3_8.Selected.ExamID)
+                        Layout: =Layout.Vertical
+                        LoadingSpinner: =LoadingSpinner.Data
+                        OnSelect: |
+                            =
+                        TemplateFill: = RGBA(0, 0, 0, 0)
+                        TemplateSize: =100
+                        Width: =637
+                        ZIndex: =1
+
+                        Container27_1 As groupContainer.manualLayoutContainer:
+                            DropShadow: =DropShadow.Regular
+                            Height: =Max(100, Label9_21.Height)
+                            PaddingLeft: =10
+                            PaddingRight: =10
+                            RadiusBottomLeft: =5
+                            RadiusBottomRight: =5
+                            RadiusTopLeft: =5
+                            RadiusTopRight: =5
+                            Width: =627
+                            ZIndex: =6
+
+                        Label9_19 As label:
+                            Height: =90
+                            OnSelect: =
+                            Size: =15
+                            Text: =ThisItem.Questions
+                            Width: =135
+                            X: =25
+                            ZIndex: =7
+
+                        Label9_20 As label:
+                            Align: =Align.Center
+                            Height: =90
+                            OnSelect: =
+                            Size: =15
+                            Text: =ThisItem.Rating
+                            Width: =111
+                            X: =180
+                            Y: =5
+                            ZIndex: =8
+
+                        Label9_21 As label:
+                            Align: =Align.Center
+                            Height: =Parent.TemplateHeight
+                            OnSelect: =
+                            Text: =ThisItem.Remarks
+                            Width: =190
+                            X: =293
+                            ZIndex: =9
+
+                        Label9_22 As label:
+                            Align: =Align.Center
+                            Color: = RGBA(0, 0, 0, 1)
+                            FontWeight: =FontWeight.Semibold
+                            Height: =90
+                            OnSelect: =
+                            Size: =15
+                            Text: =ThisItem.Percentage&"%"
+                            Width: =128
+                            X: =480
+                            ZIndex: =10
+
+        HeaderComponent_12 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =3
+

@@ -1,0 +1,124 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_roles",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_role",
+    "MaxGetRowsCount": 500,
+    "Name": "Roles",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_acce": "Acce",
+      "ulcq_name": "Name",
+      "ulcq_role_AsyncOperations": "System Jobs",
+      "ulcq_role_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_role_DuplicateBaseRecord": "Duplicate Records (ulcq_role_DuplicateBaseRecord)",
+      "ulcq_role_DuplicateMatchingRecord": "Duplicate Records (ulcq_role_DuplicateMatchingRecord)",
+      "ulcq_role_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_role_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_role_ProcessSession": "Process Sessions",
+      "ulcq_role_SyncErrors": "Sync Errors",
+      "ulcq_roleid": "Role",
+      "ulcq_systemuser_Roles_ulcq_role": "Users",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Roles",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Roles (Views)",
+    "Name": "_ulcq_role_views",
+    "RelatedEntityName": "Roles",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "0263a47e-e5ff-491c-b20a-f041b0146d35": "Role Associated View",
+      "6f2c5273-049e-4de7-b3b6-714dbd52a94b": "Active Roles",
+      "9f6101ff-faa9-42e8-b806-4b65f4b6ffa3": "Inactive Roles",
+      "d51caeeb-fd8d-48c3-872a-2150c44c9f19": "Role Advanced Find View",
+      "dfadb0e9-ed53-4c8b-8cd6-da3ba294430e": "Role Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Roles)",
+    "Name": "ulcq_role_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Roles"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Roles",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Roles)",
+    "Name": "ulcq_role_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Roles"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Roles",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Role Access Choice",
+    "Name": "ulcq_roleaccesschoice",
+    "OptionSetInfoNameMapping": {
+      "1": "Only access all CDEs under his/her area",
+      "974290001": "Only access all CDEs under his/her territory",
+      "974290002": "Only access own data",
+      "974290003": "All analysis except editing modules, can view modules (974290003)",
+      "974290004": "All analysis except editing modules, can view modules (974290004)",
+      "974290005": "All analysis except editing modules, can view modules (974290005)",
+      "974290006": "Superuser"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "ulcq_acce",
+        "OptionSetReferenceEntityName": "Roles"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "ulcq_acce",
+    "RelatedEntityName": "Roles",
+    "Type": "OptionSetInfo"
+  }
+]

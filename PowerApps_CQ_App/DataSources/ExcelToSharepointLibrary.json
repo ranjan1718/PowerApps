@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "22beeeea-238d-41c1-bb7e-4b681e7f4bef",
+    "Name": "ExcelToSharepointLibrary",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "48aa0b92-deb9-ee11-9078-002248c5e225"
+  }
+]

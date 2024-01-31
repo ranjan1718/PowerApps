@@ -1,0 +1,2316 @@
+Marking_screen As screen:
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =UpdateContext({Var_AutoIncrementId: 0});
+        Set(
+            _V_weightage,
+            LookUp(
+                Modules,
+                Questions = Label9.Text,
+                Weightage
+            )
+        )
+
+    main_Container1 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        PaddingLeft: =20
+        Width: =Parent.Width
+        X: =
+        Y: =
+        ZIndex: =1
+
+        "'marking container' As groupContainer.manualLayoutContainer":
+            Height: =816
+            PaddingLeft: =5
+            PaddingRight: =5
+            Visible: =false
+            Width: =640
+            Y: =319
+            ZIndex: =2
+
+            Gallery6 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =CountRows(col_attendees)*Max(80,remark_Input.Height)+100
+                Items: =col_attendees
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateFill: =RGBA(0, 0, 0, 0.04)
+                TemplatePadding: =10
+                TemplateSize: =Max(80,remark_Input.Height+40)
+                Y: =84
+                ZIndex: =1
+
+                gallery_valueContainer As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =Max(73,remark_Input.Height+30)
+                    RadiusBottomLeft: =10
+                    RadiusBottomRight: =10
+                    RadiusTopLeft: =10
+                    RadiusTopRight: =10
+                    Width: =Parent.TemplateWidth-10
+                    X: =3
+                    ZIndex: =1
+
+                    remark_Label As label:
+                        AutoHeight: =true
+                        Height: =50
+                        Text: =remark_Input.Text
+                        Width: =200
+                        X: =390
+                        Y: =15
+                        ZIndex: =1
+
+                    attendee_name_label As label:
+                        Height: =50
+                        PaddingLeft: =15
+                        Text: =ThisItem.Name
+                        Width: =228
+                        Y: =15
+                        ZIndex: =2
+
+                    percentage_input As text:
+                        BorderColor: =RGBA(0, 0, 0, 1)
+                        Default: =LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID && AttendeeName=ThisItem.Name&&RatingType='Rating Type Choice'.Percentage/*&& Id=_V_questionID*/).Rating
+                        DisplayMode: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.Percentage,DisplayMode.Edit,DisplayMode.Disabled)
+                        Format: =TextFormat.Number
+                        Height: =47
+                        HintText: =""
+                        MaxLength: =100
+                        OnChange: |
+                            =If(
+                                Value(Self.Text) > 100,
+                                Notify("Percentage cannot exceed 100");
+                                Reset(percentage_input)
+                            );
+                            Set(
+                                _V_percent22,
+                                Value(Self.Text) / 100
+                            );
+                            Set(
+                                _V_percent99,
+                                Value(
+                                    LookUp(
+                                        Modules,
+                                        Questions = Gallery5.Selected.Questions
+                                    ).Weightage * _V_percent22
+                                )
+                            );
+                            If( Var_EnableOnchangeCode_pc,
+                            If(
+                                !IsBlank(
+                                    LookUp(
+                                        col_resultdata_1,
+                                        /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                    )
+                                ),
+                                Patch(
+                                    col_resultdata_1,
+                                    /*
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                    )*/
+                                    {Id: LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = _V_questionID /*ThisItem.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                        ).Id},
+                                    {
+                                        
+                                        Rating: percentage_input.Text,
+                                        Percentage: _V_percent99,
+                                        Percentage_2: RoundUp(
+                                            (LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ) * Value(percentage_input.Text)) / 100,
+                                            0
+                                        ),
+                                        Weightage: LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ),
+                                        RatingType:LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            'Rating Type'
+                                        )
+                                    }
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Rating: percentage_input.Text,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Label9_1.Text,
+                                        Module: Label7_1.Text,
+                                        Questionid: ThisItem.QuestionID,
+                                        attendeeid: ThisItem.attendeeId,
+                                        Percentage: _V_percent99,
+                                        Percentage_2: RoundUp(
+                                            (LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ) * Value(percentage_input.Text) / 100),
+                                            0
+                                        ),
+                                        Weightage: LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ),
+                                        RatingType:LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            'Rating Type'
+                                        )
+                                    }
+                                )
+                            )
+                            );
+                            UpdateContext({Var_EnableOnchangeCode_pc:false});
+                            /*
+                             If(!IsBlank(LookUp(col_resultdata_1,ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId)),
+                             
+                                Patch(
+                                    col_resultdata_1,
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                        attendeeid=ThisItem.attendeeId
+                                    ),
+                                    {Rating: Self.Text,Percentage:_V_percent99}
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Rating: Self.Text,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Gallery5.Selected.Questions,
+                                        Module:Label7.Text,
+                                        Questionid:ThisItem.QuestionID,
+                                        attendeeid:ThisItem.attendeeId,
+                                        Percentage:_V_percent99
+                                        
+                                    }
+                                )
+                            );*/
+                        OnSelect: |-
+                            =UpdateContext({Var_EnableOnchangeCode_pc:true});
+                        Visible: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.Percentage,true,false)
+                        Width: =130
+                        X: =228
+                        Y: =15
+                        ZIndex: =3
+
+                    remark_Input As text:
+                        BorderColor: =RGBA(0, 0, 0, 1)
+                        Default: =LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID/*ThisItem.QuestionID*/ && AttendeeName=ThisItem.Name ,Remarks)
+                        Height: =Max(47,remark_Label.Height)
+                        Mode: =TextMode.MultiLine
+                        OnChange: |
+                            =/*If(!IsBlank(LookUp(col_resultdata_1,ThisItem.Name = AttendeeName))  ,*/
+                             If(!IsBlank(LookUp(col_resultdata_1,ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId)),
+                             
+                                Patch(
+                                    col_resultdata_1,
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                        attendeeid=ThisItem.attendeeId
+                                    ),
+                                    {Remarks: Self.Text}
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Remarks: Self.Text,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Gallery5.Selected.Questions,
+                                        Module:Label7_1.Text,
+                                        Questionid:ThisItem.QuestionID,
+                                        attendeeid:ThisItem.attendeeId
+                                    }
+                                )
+                            );
+                        Width: =200
+                        X: =390
+                        Y: =15
+                        ZIndex: =4
+
+                    "'1-4_ComboBox' As combobox":
+                        BorderColor: =RGBA(26, 26, 26, 1)
+                        ChevronBackground: =RGBA(204, 72, 0, 1)
+                        ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                        DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID/*ThisItem.QuestionID*/ && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'1-4',Rating)]
+                        DisplayFields: =["Value"]
+                        Height: =47
+                        IsSearchable: =false
+                        Items: =["1","2","3","4"]
+                        OnChange: |
+                            =
+                            Set(
+                                _V_percent44,
+                                Value(
+                                    (LookUp(
+                                        Modules,
+                                        Questions = Label9_1.Text,
+                                        Weightage
+                                    ) * Value(Self.Selected.Value))
+                                ) / 4
+                            );
+                            If(Var_EnableOnchangeCode_1_4,
+                            If(
+                                !IsBlank(
+                                    LookUp(
+                                        col_resultdata_1,
+                                        /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                    ) 
+                                ) ,
+                                Patch(
+                                    col_resultdata_1,
+                                    {
+                                        Id: 
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = _V_questionID /*.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                        )
+                                        .Id
+                                    }
+                                    ,{
+                                    
+                                        Rating: Self.Selected.Value,
+                                        Percentage: _V_percent44,
+                                        Percentage_2: RoundUp((LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ) * Value(Self.Selected.Value)) / 4,0),
+                                        Weightage: LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ),
+                                        RatingType:LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            'Rating Type'
+                                        )
+                                    }
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Rating: Self.Selected.Value,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Label9_1.Text,
+                                        Module: Label7_1.Text,
+                                        Questionid: ThisItem.QuestionID,
+                                        attendeeid: ThisItem.attendeeId,
+                                        Percentage: _V_percent44,
+                                        Percentage_2: RoundUp((LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ) * Value(Self.Selected.Value)) / 4,0),
+                                        Weightage: LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ),
+                                        RatingType:LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            'Rating Type'
+                                        )
+                                    }
+                                )
+                            )
+                            );
+                            
+                            UpdateContext({Var_EnableOnchangeCode_1_4:false});
+                            /*
+                            ForAll(
+                                col_resultdata_1,
+                                Patch(
+                                    Results,
+                                    Defaults(Results),
+                                    {
+                                        'Module Type': If(
+                                            ThisRecord.Module = "H1 EXAM",
+                                            'Module Type Choice Set'.'H1 EXAM',
+                                            If(
+                                                ThisRecord.Module = "H2 EXAM",
+                                                'Module Type Choice Set'.'H2 EXAM',
+                                                If(
+                                                    ThisRecord.Module = "MCQT - Monthly Culinary Quotient Training",
+                                                    'Module Type Choice Set'.'MCQT - Monthly Culinary Quotient Training',
+                                                    If(
+                                                        ThisRecord.Module = "ROTA",
+                                                        'Module Type Choice Set'.ROTA
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        Name: AttendeeName,
+                                        Questions: Questions,
+                                        Remarks: Remarks,
+                                        Percentage: Percentage            
+                                    }
+                                )
+                            );
+                            */
+                            /*Set(
+                                totalQuestions,
+                                totalQuestions - 1
+                            );*/
+                            /*If(
+                                !IsBlank(
+                                    LookUp(
+                                        col_resultdata_1,
+                                        ThisItem.QuestionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                    )
+                                ),
+                                Patch(
+                                    col_resultdata_1,
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                    ),
+                                    {Percentage:12}
+                                ),
+                                Collect(
+                                    col_resultdata_1,
+                                    {Percentage:67}
+                                )
+                            )*/
+                        OnSelect: |-
+                            =UpdateContext({Var_EnableOnchangeCode_1_4:true});
+                        PaddingLeft: =12
+                        SearchFields: =["Value"]
+                        SearchItems: =[]
+                        SelectionFill: =RGBA(204, 72, 0, 1)
+                        SelectMultiple: =false
+                        Visible: |
+                            =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'1-4',true,false)
+                        Width: =130
+                        X: =228
+                        Y: =15
+                        ZIndex: =5
+
+                    "'pass/fail_ComboBox' As combobox":
+                        ChevronBackground: =RGBA(204, 72, 0, 1)
+                        ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                        DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=/*ThisItem.QuestionID*/_V_questionID && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'Pass/Fail').Rating]
+                        DisplayFields: =["Value"]
+                        DisplayMode: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Pass/Fail',DisplayMode.Edit,DisplayMode.Disabled)
+                        Height: =47
+                        IsSearchable: =false
+                        Items: =["Pass","Fail"]
+                        OnChange: |-
+                            =If(
+                                Self.Selected.Value = "Pass",
+                                Set(
+                                    _V_percent3,
+                                    Value(
+                                        LookUp(
+                                            Modules,
+                                            Questions = Gallery5.Selected.Questions,
+                                            Weightage
+                                        )
+                                    )
+                                ),
+                                Self.Selected.Value = "Fail",
+                                Set(
+                                    _V_percent3,
+                                    Value("0")
+                                )
+                            );
+                            If(Var_EnableOnchangeCode,
+                            If(
+                                 Self.Selected.Value = "Pass",
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        /*LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                        )*/
+                                        {Id: 
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                        )
+                                        .Id},
+                                        {
+                                            Rating: Self.Selected.Value,
+                                            Percentage: _V_percent3,
+                                            Percentage_2: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            Questions:Label9_1.Text,
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent3,
+                                            Percentage_2: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    )
+                                ),
+                                Self.Selected.Value = "Fail",
+                                //Fail Part
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        /*LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                        )*/
+                                        {Id: LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid =_V_questionID /*ThisItem.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                            ).Id
+                                        },
+                                        {
+                                            
+                                            Rating: Self.Selected.Value,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: 0,
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: 0,
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    )
+                                )
+                            )
+                            );
+                            UpdateContext({Var_EnableOnchangeCode:false});
+                            /*
+                            If(
+                                Self.Selected.Value="Pass",
+                                Set(
+                                    _V_percent3,
+                                    Value(
+                                        LookUp(
+                                            Modules,
+                                            Questions=Gallery5.Selected.Questions,
+                                            Weightage
+                                        )
+                                   )
+                                ),Self.Selected.Value="Fail",
+                                Set(_V_percent3,Value("0"))
+                            );
+                            */
+                            /*
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            If(
+                                Self.Selected.Value="Pass",
+                                Set(
+                                    _V_percent3,
+                                    Value(
+                                        LookUp(
+                                            Modules,
+                                            Questions=Gallery5.Selected.Questions,
+                                            Weightage
+                                        )
+                                   )
+                                ),Set(_V_percent3,Value("0"))
+                            );
+                            
+                            If(
+                                !IsBlank(
+                                    LookUp(
+                                        col_resultdata_1,
+                                        ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId
+                                    )
+                                ),
+                             
+                                Patch(
+                                    col_resultdata_1,
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                        attendeeid=ThisItem.attendeeId
+                                    ),
+                                    {
+                                        Rating:Self.Selected.Value,
+                                        Percentage:_V_percent3
+                                    }
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Rating:Self.Selected.Value,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Gallery5.Selected.Questions,
+                                        Module:Label7.Text,
+                                        Questionid:ThisItem.QuestionID,
+                                        attendeeid:ThisItem.attendeeId,
+                                        Percentage:_V_percent3
+                                    }
+                                )
+                            );
+                            /*
+                            //update 
+                            
+                            /*
+                            ForAll(
+                                col_resultdata_1,
+                                Patch(
+                                    Results,
+                                    Defaults(Results),
+                                    {
+                                        'Module Type': If(
+                                            ThisRecord.Module = "H1 EXAM",
+                                            'Module Type Choice Set'.'H1 EXAM',
+                                            If(
+                                                ThisRecord.Module = "H2 EXAM",
+                                                'Module Type Choice Set'.'H2 EXAM',
+                                                If(
+                                                    ThisRecord.Module = "MCQT - Monthly Culinary Quotient Training",
+                                                    'Module Type Choice Set'.'MCQT - Monthly Culinary Quotient Training',
+                                                    If(
+                                                        ThisRecord.Module = "ROTA",
+                                                        'Module Type Choice Set'.ROTA
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        Name: AttendeeName,
+                                        Questions: Questions,
+                                        Remarks: Remarks,
+                                        Percentage: Percentage 
+                                    }
+                                )
+                            );
+                            */
+                        OnSelect: |-
+                            =UpdateContext({Var_EnableOnchangeCode:true});
+                        PaddingLeft: =12
+                        SearchFields: =["Value"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Visible: |
+                            =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Pass/Fail',true,false)
+                        Width: =130
+                        X: =228
+                        Y: =15
+                        ZIndex: =6
+
+                    ComboBox_yesno As combobox:
+                        ChevronBackground: =RGBA(204, 72, 0, 1)
+                        ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                        DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=ThisItem.QuestionID && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'Yes/No' && Id=_V_questionID,Rating)]
+                        DisplayFields: =["Value"]
+                        DisplayMode: |-
+                            =/*If(LookUp(Modules,'Module Type'=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Yes/No',DisplayMode.Edit,DisplayMode.Disabled)*/
+                            DisplayMode.Edit
+                        Height: =47
+                        IsSearchable: =false
+                        Items: =["Yes","No"]
+                        OnChange: |
+                            =If(
+                                Self.Selected.Value = "Yes",
+                                Set(
+                                    _V_percent8,
+                                    LookUp(
+                                        Modules,
+                                        Questions = Label9_1.Text,
+                                        Weightage
+                                    )
+                                ),
+                                Set(
+                                    _V_percent8,
+                                    0
+                                )
+                            );
+                            If(Var_EnableOnchangeCode_yn,
+                            If(
+                                Self.Selected.Value = "Yes",
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        /*LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                        )*/
+                                        { Id: LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                            ).Id
+                                            },
+                                        {
+                                           
+                                            Rating: Self.Selected.Value,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    )
+                                ),
+                                //No part
+                                Self.Selected.Value="No",
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID = Questionid*/Questionid=_V_questionID && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                        ),
+                                        {
+                                            Id: LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                            ).Id,
+                                            Rating: Self.Selected.Value,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: 0,
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: 0,
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            'Rating Type'
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                            );
+                            UpdateContext({Var_EnableOnchangeCode_yn:false});
+                            
+                            
+                            
+                            
+                             /*If(
+                                !IsBlank(
+                                    LookUp(
+                                        col_resultdata_1,
+                                        ThisItem.QuestionID=Questionid && 
+                                        ThisItem.Name=AttendeeName && 
+                                        attendeeid=ThisItem.attendeeId
+                                        )
+                                    ),
+                             
+                                Patch(
+                                    col_resultdata_1,
+                                    LookUp(
+                                        col_resultdata_1,
+                                        AttendeeName = ThisItem.Name && 
+                                        Questionid=ThisItem.QuestionID &&
+                                        attendeeid=ThisItem.attendeeId
+                                    ),
+                                    {
+                                        Rating:Self.Selected.Value,
+                                        Percentage:_V_percent8
+                                    }
+                                ),
+                                UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                Collect(
+                                    col_resultdata_1,
+                                    {
+                                        Id: Var_AutoIncrementId,
+                                        Rating:Self.Selected.Value,
+                                        AttendeeName: ThisItem.Name,
+                                        Questions: Label9.Text,
+                                        Module:Label7.Text,
+                                        Questionid:ThisItem.QuestionID,
+                                        attendeeid:ThisItem.attendeeId,
+                                        Percentage:_V_percent8
+                                    }
+                                )
+                            );*/
+                        OnSelect: |-
+                            =UpdateContext({Var_EnableOnchangeCode_yn:true});
+                        SearchFields: =["Value"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Visible: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Yes/No',true,false)
+                        Width: =130
+                        X: =228
+                        Y: =15
+                        ZIndex: =7
+
+            header_gallery_Container As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Semilight
+                Fill: =RGBA(202, 202, 202, 1)
+                Height: =81
+                Width: =Parent.Width
+                Y: =3
+                ZIndex: =2
+
+                nameLabel As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =79
+                    PaddingLeft: =10
+                    Size: =15
+                    Text: ="Name"
+                    Width: =158
+                    X: =13
+                    Y: =2
+                    ZIndex: =1
+
+                ratingLabel As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =81
+                    PaddingLeft: =0
+                    Size: =15
+                    Text: ="Rating"
+                    Width: =116
+                    X: =Label2.X+Label2.Width
+                    ZIndex: =2
+
+                remarksLabel As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =81
+                    Size: =15
+                    Text: ="Remarks"
+                    Width: =209
+                    X: =402
+                    ZIndex: =3
+
+                Label2 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =70
+                    Size: =18
+                    Text: ="*"
+                    Width: =22
+                    X: =240
+                    Y: =2
+                    ZIndex: =4
+
+            submit_button_2 As button:
+                DisplayMode: =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0 && !IsEmpty(col_resultdata_1),DisplayMode.Edit,DisplayMode.Disabled)
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =53
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =UpdateContext({lastexamid:Max(Results,ExamID)});
+                    If(IsBlank(lastexamid),UpdateContext({_V_examid:1}),UpdateContext({_V_examid:(lastexamid+1)}));
+                    ForAll(
+                        col_resultdata_1,
+                        Patch(
+                            Results,
+                            Defaults(Results),
+                            {
+                                Name: ThisRecord.AttendeeName,
+                                Rating:ThisRecord.Rating,
+                                Questions: ThisRecord.Questions,
+                                'Module Type':LookUp('Module Names',Name=moduleComboBox.Selected.Name),
+                                Remarks: ThisRecord.Remarks,
+                                Date: Today(),
+                                Percentage: ThisRecord.Percentage_2,
+                                ExamID:_V_examid,
+                                Chef:LookUp(Users,'Full Name'=User().FullName)
+                                
+                            }
+                        )
+                    );
+                    /*ForAll(col_attendees As CA,
+                    Patch(col_attendees,
+                                {Total:Sum(
+                        Filter(
+                            col_resultdata_1,
+                            AttendeeName = CA.Name
+                        ),
+                        Percentage_2)
+                     )
+                    );*/
+                    
+                    Navigate(show_rating_screen);
+                    /*ClearCollect(
+                        col_submitData,
+                        Filter(
+                            col_resultdata_1,
+                            Rating = Blank() || Rating = ""
+                        )
+                    );
+                    Distinct(
+                        col_submitData,
+                        Rating
+                    );*/
+                Size: =18
+                Text: ="Submit"
+                Visible: =_V_currentindex=CountRows(Filter(Modules,'Module Type'.Name=_V_module))
+                Width: =180
+                X: =432
+                Y: =716
+                ZIndex: =3
+
+            Label3_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =20
+                Size: =12
+                Text: ="* Please fill all the ratings field"
+                Visible: |-
+                    =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0,false,true)
+                    //_V_currentindex=CountRows(Filter(Modules,'Module Type'=_V_module))  || CountRows(Filter(col_resultdata_1,Rating=Blank()))>0 || !IsEmpty(col_resultdata_1)
+                Width: =253
+                X: =359
+                Y: =783
+                ZIndex: =4
+
+        HeaderComponent_6 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =3
+
+        Label7_1 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =96
+            Size: =21
+            Text: =_V_module
+            Width: =424
+            X: =117
+            Y: =90
+            ZIndex: =4
+
+        subContainer6 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =938
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =Parent.Width
+            Y: =197
+            ZIndex: =5
+
+            questionContainer2_1 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =100
+                Width: =640
+                Y: =22
+                ZIndex: =1
+
+                nextArrow_1 As arrow.backArrow:
+                    DisplayMode: =If(_V_currentindex=1,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =60
+                    OnSelect: |-
+                        =Set(_V_currentindex,_V_currentindex-1);
+                        Set(_V_questionID,_V_questionID-1);
+                        //ClearCollect(Col_sd,col_attendees);
+                        //ForAll(Col_sd,Patch(col_attendees,ThisRecord,{QuestionID:_V_questionID}));
+                        Set(_V_weightage,LookUp(
+                                    Modules,
+                                    Questions = Label9_1.Text,
+                                    Weightage
+                                ))
+                    Width: =60
+                    X: =10
+                    Y: =20
+                    ZIndex: =1
+
+                leftArrow_1 As arrow:
+                    DisplayMode: =If(_V_currentindex=CountRows(Filter(Modules,'Module Type'.Name=_V_module)),DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =60
+                    OnSelect: |-
+                        =If(
+                             (IsBlank('1-4_ComboBox'.Selected.Value) && '1-4_ComboBox'.Visible = true) || (IsBlank(ComboBox_yesno.Selected.Value) && ComboBox_yesno.Visible = true) || (IsBlank(percentage_input.Text) && percentage_input.Visible = true) || (IsBlank('pass/fail_ComboBox'.Selected.Value) && 'pass/fail_ComboBox'.Visible = true),
+                            UpdateContext({_uc_errorMessage: true}),
+                        
+                            Set(
+                                _V_currentindex,
+                                _V_currentindex + 1
+                            );
+                            Set(
+                                _V_questionID,
+                                _V_questionID + 1
+                            );
+                            ClearCollect(
+                                Col_sd,
+                                col_attendees
+                            );
+                            ForAll(
+                                Col_sd,
+                                Patch(
+                                    col_attendees,
+                                    ThisRecord,
+                                    {QuestionID: _V_questionID}
+                                )
+                            );
+                            Set(
+                                _V_weightage,
+                                LookUp(
+                                    Modules,
+                                    Questions = Label9_1.Text,
+                                    Weightage
+                                )
+                            );
+                            UpdateContext({_uc_errorMessage: false})
+                        );
+                          
+                        //)
+                    Tooltip: =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))>0,"Please fill all the ratings field","")
+                    Width: =60
+                    X: =564
+                    Y: =20
+                    ZIndex: =2
+
+                Gallery5_1 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =Parent.Height
+                    Items: =Index(Filter(Modules,'Module Type'.Name=_V_module),_V_currentindex)
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    ShowScrollbar: =false
+                    TemplateSize: =129
+                    Width: =497
+                    X: =70
+                    ZIndex: =3
+
+                    Label9_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =79
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =15
+                        Size: =18
+                        Text: =ThisItem.Questions
+                        Width: =487
+                        Y: =10
+                        ZIndex: =1
+
+                Label3_4 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =20
+                    Size: =12
+                    Text: ="* Please fill all the ratings field"
+                    Visible: |-
+                        =//If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0,false,true)
+                        _uc_errorMessage
+                    Width: =253
+                    X: =385
+                    Y: =80
+                    ZIndex: =4
+
+            "'marking container_1' As groupContainer.manualLayoutContainer":
+                DropShadow: =DropShadow.None
+                Height: =816
+                PaddingLeft: =5
+                PaddingRight: =5
+                Width: =592
+                X: =25
+                Y: =122
+                ZIndex: =2
+
+                Gallery6_1 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =CountRows(col_attendees)*Max(80,remark_Input_1.Height)+100
+                    Items: =col_attendees
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    TemplateFill: =RGBA(0, 0, 0, 0.04)
+                    TemplatePadding: =10
+                    TemplateSize: =Max(80,remark_Input_1.Height+40)
+                    Width: =Parent.Width
+                    Y: =84
+                    ZIndex: =1
+
+                    gallery_valueContainer_1 As groupContainer.manualLayoutContainer:
+                        DropShadow: =DropShadow.None
+                        Height: =Max(73,remark_Input_1.Height+30)
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =Parent.Width-20
+                        X: =3
+                        ZIndex: =1
+
+                        remark_Label_1 As label:
+                            AutoHeight: =true
+                            Height: =50
+                            Text: =remark_Input_1.Text
+                            Width: =200
+                            X: =390
+                            Y: =15
+                            ZIndex: =1
+
+                        attendee_name_label_1 As label:
+                            Height: =50
+                            PaddingLeft: =15
+                            Text: =ThisItem.Name
+                            Width: =228
+                            Y: =15
+                            ZIndex: =2
+
+                        percentage_input_1 As text:
+                            BorderColor: =RGBA(0, 0, 0, 1)
+                            Default: =LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID && AttendeeName=ThisItem.Name&&RatingType='Rating Type Choice'.Percentage/*&& Id=_V_questionID*/).Rating
+                            DisplayMode: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.Percentage,DisplayMode.Edit,DisplayMode.Disabled)
+                            Format: =TextFormat.Number
+                            Height: =47
+                            HintText: =""
+                            MaxLength: =100
+                            OnChange: |
+                                =If(
+                                    Value(Self.Text) > 100,
+                                    Notify("Percentage cannot exceed 100");
+                                    Reset(percentage_input_1)
+                                );
+                                Set(
+                                    _V_percent22,
+                                    Value(Self.Text) / 100
+                                );
+                                Set(
+                                    _V_percent99,
+                                    Value(
+                                        LookUp(
+                                            Modules,
+                                            Questions = Gallery5.Selected.Questions
+                                        ).Weightage * _V_percent22
+                                    )
+                                );
+                                If( Var_EnableOnchangeCode_pc,
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        /*
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                        )*/
+                                        {Id: LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = _V_questionID /*ThisItem.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                            ).Id},
+                                        {
+                                            
+                                            Rating: percentage_input_1.Text,
+                                            Percentage: _V_percent99,
+                                            Percentage_2: RoundUp(
+                                                (LookUp(
+                                                    Modules,
+                                                    Questions = Label9.Text,
+                                                    Weightage
+                                                ) * Value(percentage_input_1.Text)) / 100,
+                                                0
+                                            ),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: percentage_input_1.Text,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent99,
+                                            Percentage_2: RoundUp(
+                                                (LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ) * Value(percentage_input_1.Text) / 100),
+                                                0
+                                            ),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    )
+                                )
+                                );
+                                UpdateContext({Var_EnableOnchangeCode_pc:false});
+                                /*
+                                 If(!IsBlank(LookUp(col_resultdata_1,ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId)),
+                                 
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                            attendeeid=ThisItem.attendeeId
+                                        ),
+                                        {Rating: Self.Text,Percentage:_V_percent99}
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Text,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Gallery5.Selected.Questions,
+                                            Module:Label7.Text,
+                                            Questionid:ThisItem.QuestionID,
+                                            attendeeid:ThisItem.attendeeId,
+                                            Percentage:_V_percent99
+                                            
+                                        }
+                                    )
+                                );*/
+                            OnSelect: |-
+                                =UpdateContext({Var_EnableOnchangeCode_pc:true});
+                            Visible: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.Percentage,true,false)
+                            Width: =130
+                            X: =228
+                            Y: =15
+                            ZIndex: =3
+
+                        remark_Input_1 As text:
+                            BorderColor: =RGBA(0, 0, 0, 1)
+                            Default: =LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID/*ThisItem.QuestionID*/ && AttendeeName=ThisItem.Name ,Remarks)
+                            Height: =Max(47,remark_Label_1.Height)
+                            Mode: =TextMode.MultiLine
+                            OnChange: |
+                                =/*If(!IsBlank(LookUp(col_resultdata_1,ThisItem.Name = AttendeeName))  ,*/
+                                 If(!IsBlank(LookUp(col_resultdata_1,ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId)),
+                                 
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                            attendeeid=ThisItem.attendeeId
+                                        ),
+                                        {Remarks: Self.Text}
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Remarks: Self.Text,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Gallery5.Selected.Questions,
+                                            Module:Label7_1.Text,
+                                            Questionid:ThisItem.QuestionID,
+                                            attendeeid:ThisItem.attendeeId
+                                        }
+                                    )
+                                );
+                            Width: =160
+                            X: =390
+                            Y: =15
+                            ZIndex: =4
+
+                        "'1-4_ComboBox_1' As combobox":
+                            BorderColor: =RGBA(26, 26, 26, 1)
+                            ChevronBackground: =RGBA(204, 72, 0, 1)
+                            ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                            DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=_V_questionID/*ThisItem.QuestionID*/ && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'1-4',Rating)]
+                            DisplayFields: =["Value"]
+                            Height: =47
+                            IsSearchable: =false
+                            Items: =["1","2","3","4"]
+                            OnChange: |
+                                =
+                                Set(
+                                    _V_percent44,
+                                    Value(
+                                        (LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        ) * Value(Self.Selected.Value))
+                                    ) / 4
+                                );
+                                If(Var_EnableOnchangeCode_1_4,
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        ) 
+                                    ) ,
+                                    Patch(
+                                        col_resultdata_1,
+                                        {
+                                            Id: 
+                                            LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = _V_questionID /*.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                            )
+                                            .Id
+                                        }
+                                        ,{
+                                        
+                                            Rating: Self.Selected.Value,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: RoundUp((LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ) * Value(Self.Selected.Value)) / 4,0),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating: Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9_1.Text,
+                                            Module: Label7_1.Text,
+                                            Questionid: ThisItem.QuestionID,
+                                            attendeeid: ThisItem.attendeeId,
+                                            Percentage: _V_percent44,
+                                            Percentage_2: RoundUp((LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ) * Value(Self.Selected.Value)) / 4,0),
+                                            Weightage: LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                Weightage
+                                            ),
+                                            RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                        }
+                                    )
+                                )
+                                );
+                                
+                                UpdateContext({Var_EnableOnchangeCode_1_4:false});
+                                /*
+                                ForAll(
+                                    col_resultdata_1,
+                                    Patch(
+                                        Results,
+                                        Defaults(Results),
+                                        {
+                                            'Module Type': If(
+                                                ThisRecord.Module = "H1 EXAM",
+                                                'Module Type Choice Set'.'H1 EXAM',
+                                                If(
+                                                    ThisRecord.Module = "H2 EXAM",
+                                                    'Module Type Choice Set'.'H2 EXAM',
+                                                    If(
+                                                        ThisRecord.Module = "MCQT - Monthly Culinary Quotient Training",
+                                                        'Module Type Choice Set'.'MCQT - Monthly Culinary Quotient Training',
+                                                        If(
+                                                            ThisRecord.Module = "ROTA",
+                                                            'Module Type Choice Set'.ROTA
+                                                        )
+                                                    )
+                                                )
+                                            ),
+                                            Name: AttendeeName,
+                                            Questions: Questions,
+                                            Remarks: Remarks,
+                                            Percentage: Percentage            
+                                        }
+                                    )
+                                );
+                                */
+                                /*Set(
+                                    totalQuestions,
+                                    totalQuestions - 1
+                                );*/
+                                /*If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            ThisItem.QuestionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                        )
+                                    ),
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                        ),
+                                        {Percentage:12}
+                                    ),
+                                    Collect(
+                                        col_resultdata_1,
+                                        {Percentage:67}
+                                    )
+                                )*/
+                            OnSelect: |-
+                                =UpdateContext({Var_EnableOnchangeCode_1_4:true});
+                            PaddingLeft: =12
+                            SearchFields: =["Value"]
+                            SearchItems: =[]
+                            SelectionFill: =RGBA(204, 72, 0, 1)
+                            SelectMultiple: =false
+                            Visible: |
+                                =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'1-4',true,false)
+                            Width: =130
+                            X: =228
+                            Y: =15
+                            ZIndex: =5
+
+                        "'pass/fail_ComboBox_1' As combobox":
+                            ChevronBackground: =RGBA(204, 72, 0, 1)
+                            ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                            DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=/*ThisItem.QuestionID*/_V_questionID && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'Pass/Fail').Rating]
+                            DisplayFields: =["Value"]
+                            DisplayMode: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Pass/Fail',DisplayMode.Edit,DisplayMode.Disabled)
+                            Height: =47
+                            IsSearchable: =false
+                            Items: =["Pass","Fail"]
+                            OnChange: |-
+                                =If(
+                                    Self.Selected.Value = "Pass",
+                                    Set(
+                                        _V_percent3,
+                                        Value(
+                                            LookUp(
+                                                Modules,
+                                                Questions = Gallery5.Selected.Questions,
+                                                Weightage
+                                            )
+                                        )
+                                    ),
+                                    Self.Selected.Value = "Fail",
+                                    Set(
+                                        _V_percent3,
+                                        Value("0")
+                                    )
+                                );
+                                If(Var_EnableOnchangeCode,
+                                If(
+                                     Self.Selected.Value = "Pass",
+                                    If(
+                                        !IsBlank(
+                                            LookUp(
+                                                col_resultdata_1,
+                                                /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                            )
+                                        ),
+                                        Patch(
+                                            col_resultdata_1,
+                                            /*LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                            )*/
+                                            {Id: 
+                                            LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                            )
+                                            .Id},
+                                            {
+                                                Rating: Self.Selected.Value,
+                                                Percentage: _V_percent3,
+                                                Percentage_2: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                Questions:Label9_1.Text,
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        ),
+                                        UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                        Collect(
+                                            col_resultdata_1,
+                                            {
+                                                Id: Var_AutoIncrementId,
+                                                Rating: Self.Selected.Value,
+                                                AttendeeName: ThisItem.Name,
+                                                Questions: Label9_1.Text,
+                                                Module: Label7_1.Text,
+                                                Questionid: ThisItem.QuestionID,
+                                                attendeeid: ThisItem.attendeeId,
+                                                Percentage: _V_percent3,
+                                                Percentage_2: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        )
+                                    ),
+                                    Self.Selected.Value = "Fail",
+                                    //Fail Part
+                                    If(
+                                        !IsBlank(
+                                            LookUp(
+                                                col_resultdata_1,
+                                                /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                            )
+                                        ),
+                                        Patch(
+                                            col_resultdata_1,
+                                            /*LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                            )*/
+                                            {Id: LookUp(
+                                                    col_resultdata_1,
+                                                    AttendeeName = ThisItem.Name && Questionid =_V_questionID /*ThisItem.QuestionID*/ && attendeeid = ThisItem.attendeeId
+                                                ).Id
+                                            },
+                                            {
+                                                
+                                                Rating: Self.Selected.Value,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: 0,
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        ),
+                                        UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                        Collect(
+                                            col_resultdata_1,
+                                            {
+                                                Id: Var_AutoIncrementId,
+                                                Rating: Self.Selected.Value,
+                                                AttendeeName: ThisItem.Name,
+                                                Questions: Label9_1.Text,
+                                                Module: Label7_1.Text,
+                                                Questionid: ThisItem.QuestionID,
+                                                attendeeid: ThisItem.attendeeId,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: 0,
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        )
+                                    )
+                                )
+                                );
+                                UpdateContext({Var_EnableOnchangeCode:false});
+                                /*
+                                If(
+                                    Self.Selected.Value="Pass",
+                                    Set(
+                                        _V_percent3,
+                                        Value(
+                                            LookUp(
+                                                Modules,
+                                                Questions=Gallery5.Selected.Questions,
+                                                Weightage
+                                            )
+                                       )
+                                    ),Self.Selected.Value="Fail",
+                                    Set(_V_percent3,Value("0"))
+                                );
+                                */
+                                /*
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                If(
+                                    Self.Selected.Value="Pass",
+                                    Set(
+                                        _V_percent3,
+                                        Value(
+                                            LookUp(
+                                                Modules,
+                                                Questions=Gallery5.Selected.Questions,
+                                                Weightage
+                                            )
+                                       )
+                                    ),Set(_V_percent3,Value("0"))
+                                );
+                                
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            ThisItem.QuestionID=Questionid && ThisItem.Name=AttendeeName && attendeeid=ThisItem.attendeeId
+                                        )
+                                    ),
+                                 
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && Questionid=ThisItem.QuestionID &&
+                                            attendeeid=ThisItem.attendeeId
+                                        ),
+                                        {
+                                            Rating:Self.Selected.Value,
+                                            Percentage:_V_percent3
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating:Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Gallery5.Selected.Questions,
+                                            Module:Label7.Text,
+                                            Questionid:ThisItem.QuestionID,
+                                            attendeeid:ThisItem.attendeeId,
+                                            Percentage:_V_percent3
+                                        }
+                                    )
+                                );
+                                /*
+                                //update 
+                                
+                                /*
+                                ForAll(
+                                    col_resultdata_1,
+                                    Patch(
+                                        Results,
+                                        Defaults(Results),
+                                        {
+                                            'Module Type': If(
+                                                ThisRecord.Module = "H1 EXAM",
+                                                'Module Type Choice Set'.'H1 EXAM',
+                                                If(
+                                                    ThisRecord.Module = "H2 EXAM",
+                                                    'Module Type Choice Set'.'H2 EXAM',
+                                                    If(
+                                                        ThisRecord.Module = "MCQT - Monthly Culinary Quotient Training",
+                                                        'Module Type Choice Set'.'MCQT - Monthly Culinary Quotient Training',
+                                                        If(
+                                                            ThisRecord.Module = "ROTA",
+                                                            'Module Type Choice Set'.ROTA
+                                                        )
+                                                    )
+                                                )
+                                            ),
+                                            Name: AttendeeName,
+                                            Questions: Questions,
+                                            Remarks: Remarks,
+                                            Percentage: Percentage 
+                                        }
+                                    )
+                                );
+                                */
+                            OnSelect: |-
+                                =UpdateContext({Var_EnableOnchangeCode:true});
+                            PaddingLeft: =12
+                            SearchFields: =["Value"]
+                            SearchItems: =[]
+                            SelectMultiple: =false
+                            Visible: |
+                                =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Pass/Fail',true,false)
+                            Width: =130
+                            X: =228
+                            Y: =15
+                            ZIndex: =6
+
+                        ComboBox_yesno_1 As combobox:
+                            ChevronBackground: =RGBA(204, 72, 0, 1)
+                            ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                            DefaultSelectedItems: =[LookUp(col_resultdata_1,attendeeid=ThisItem.attendeeId && Questionid=ThisItem.QuestionID && AttendeeName=ThisItem.Name && RatingType='Rating Type Choice'.'Yes/No' && Id=_V_questionID,Rating)]
+                            DisplayFields: =["Value"]
+                            DisplayMode: |-
+                                =/*If(LookUp(Modules,'Module Type'=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Yes/No',DisplayMode.Edit,DisplayMode.Disabled)*/
+                                DisplayMode.Edit
+                            Height: =47
+                            IsSearchable: =false
+                            Items: =["Yes","No"]
+                            OnChange: |
+                                =If(
+                                    Self.Selected.Value = "Yes",
+                                    Set(
+                                        _V_percent8,
+                                        LookUp(
+                                            Modules,
+                                            Questions = Label9_1.Text,
+                                            Weightage
+                                        )
+                                    ),
+                                    Set(
+                                        _V_percent8,
+                                        0
+                                    )
+                                );
+                                If(Var_EnableOnchangeCode_yn,
+                                If(
+                                    Self.Selected.Value = "Yes",
+                                    If(
+                                        !IsBlank(
+                                            LookUp(
+                                                col_resultdata_1,
+                                                /*ThisItem.QuestionID*/_V_questionID = Questionid && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                            )
+                                        ),
+                                        Patch(
+                                            col_resultdata_1,
+                                            /*LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = ThisItem.QuestionID && attendeeid = ThisItem.attendeeId
+                                            )*/
+                                            { Id: LookUp(
+                                                    col_resultdata_1,
+                                                    AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                                ).Id
+                                                },
+                                            {
+                                               
+                                                Rating: Self.Selected.Value,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType:LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        ),
+                                        UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                        Collect(
+                                            col_resultdata_1,
+                                            {
+                                                Id: Var_AutoIncrementId,
+                                                Rating: Self.Selected.Value,
+                                                AttendeeName: ThisItem.Name,
+                                                Questions: Label9_1.Text,
+                                                Module: Label7_1.Text,
+                                                Questionid: ThisItem.QuestionID,
+                                                attendeeid: ThisItem.attendeeId,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType:LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        )
+                                    ),
+                                    //No part
+                                    Self.Selected.Value="No",
+                                    If(
+                                        !IsBlank(
+                                            LookUp(
+                                                col_resultdata_1,
+                                                /*ThisItem.QuestionID = Questionid*/Questionid=_V_questionID && ThisItem.Name = AttendeeName && attendeeid = ThisItem.attendeeId
+                                            )
+                                        ),
+                                        Patch(
+                                            col_resultdata_1,
+                                            LookUp(
+                                                col_resultdata_1,
+                                                AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                            ),
+                                            {
+                                                Id: LookUp(
+                                                    col_resultdata_1,
+                                                    AttendeeName = ThisItem.Name && Questionid = /*ThisItem.QuestionID*/_V_questionID && attendeeid = ThisItem.attendeeId
+                                                ).Id,
+                                                Rating: Self.Selected.Value,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: 0,
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    'Rating Type'
+                                                )
+                                            }
+                                        ),
+                                        UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId + 1});
+                                        Collect(
+                                            col_resultdata_1,
+                                            {
+                                                Id: Var_AutoIncrementId,
+                                                Rating: Self.Selected.Value,
+                                                AttendeeName: ThisItem.Name,
+                                                Questions: Label9_1.Text,
+                                                Module: Label7_1.Text,
+                                                Questionid: ThisItem.QuestionID,
+                                                attendeeid: ThisItem.attendeeId,
+                                                Percentage: _V_percent44,
+                                                Percentage_2: 0,
+                                                Weightage: LookUp(
+                                                    Modules,
+                                                    Questions = Label9_1.Text,
+                                                    Weightage
+                                                ),
+                                                RatingType:LookUp(
+                                                Modules,
+                                                Questions = Label9_1.Text,
+                                                'Rating Type'
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                                );
+                                UpdateContext({Var_EnableOnchangeCode_yn:false});
+                                
+                                
+                                
+                                
+                                 /*If(
+                                    !IsBlank(
+                                        LookUp(
+                                            col_resultdata_1,
+                                            ThisItem.QuestionID=Questionid && 
+                                            ThisItem.Name=AttendeeName && 
+                                            attendeeid=ThisItem.attendeeId
+                                            )
+                                        ),
+                                 
+                                    Patch(
+                                        col_resultdata_1,
+                                        LookUp(
+                                            col_resultdata_1,
+                                            AttendeeName = ThisItem.Name && 
+                                            Questionid=ThisItem.QuestionID &&
+                                            attendeeid=ThisItem.attendeeId
+                                        ),
+                                        {
+                                            Rating:Self.Selected.Value,
+                                            Percentage:_V_percent8
+                                        }
+                                    ),
+                                    UpdateContext({Var_AutoIncrementId: Var_AutoIncrementId +1});
+                                    Collect(
+                                        col_resultdata_1,
+                                        {
+                                            Id: Var_AutoIncrementId,
+                                            Rating:Self.Selected.Value,
+                                            AttendeeName: ThisItem.Name,
+                                            Questions: Label9.Text,
+                                            Module:Label7.Text,
+                                            Questionid:ThisItem.QuestionID,
+                                            attendeeid:ThisItem.attendeeId,
+                                            Percentage:_V_percent8
+                                        }
+                                    )
+                                );*/
+                            OnSelect: |-
+                                =UpdateContext({Var_EnableOnchangeCode_yn:true});
+                            SearchFields: =["Value"]
+                            SearchItems: =[]
+                            SelectMultiple: =false
+                            Visible: =If(LookUp(Modules,'Module Type'.Name=_V_module && Questions=Gallery5.Selected.Questions).'Rating Type'='Rating Type Choice'.'Yes/No',true,false)
+                            Width: =130
+                            X: =228
+                            Y: =15
+                            ZIndex: =7
+
+                header_gallery_Container_1 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Semilight
+                    Fill: =RGBA(202, 202, 202, 1)
+                    Height: =81
+                    Width: =Parent.Width
+                    Y: =3
+                    ZIndex: =2
+
+                    nameLabel_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =79
+                        PaddingLeft: =10
+                        Size: =15
+                        Text: ="Name"
+                        Width: =158
+                        X: =13
+                        Y: =2
+                        ZIndex: =1
+
+                    ratingLabel_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =81
+                        PaddingLeft: =0
+                        Size: =15
+                        Text: ="Rating"
+                        Width: =116
+                        X: =Label2_1.X+Label2_1.Width
+                        ZIndex: =2
+
+                    remarksLabel_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =81
+                        PaddingRight: =15
+                        Size: =15
+                        Text: ="Remarks"
+                        Width: =189
+                        X: =402
+                        ZIndex: =3
+
+                    Label2_1 As label:
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =70
+                        Size: =18
+                        Text: ="*"
+                        Width: =22
+                        X: =240
+                        Y: =2
+                        ZIndex: =4
+
+                submit_button_3 As button:
+                    DisplayMode: =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0 && !IsEmpty(col_resultdata_1),DisplayMode.Edit,DisplayMode.Disabled)
+                    Fill: =RGBA(204, 72, 0, 1)
+                    Height: =53
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |
+                        =UpdateContext({lastexamid:Max(Results,ExamID)});
+                        If(IsBlank(lastexamid),UpdateContext({_V_examid:1}),UpdateContext({_V_examid:(lastexamid+1)}));
+                        ForAll(
+                            col_resultdata_1,
+                            Patch(
+                                Results,
+                                Defaults(Results),
+                                {
+                                    Name: ThisRecord.AttendeeName,
+                                    Rating:ThisRecord.Rating,
+                                    Questions: ThisRecord.Questions,
+                                    'Module Type':LookUp('Module Names',Name=moduleComboBox.Selected.Name),
+                                    Remarks: ThisRecord.Remarks,
+                                    Date: Today(),
+                                    Percentage: ThisRecord.Percentage_2,
+                                    ExamID:_V_examid,
+                                    Chef:LookUp(Users,'Full Name'=User().FullName)
+                                    
+                                }
+                            )
+                        );
+                        /*ForAll(col_attendees As CA,
+                        Patch(col_attendees,
+                                    {Total:Sum(
+                            Filter(
+                                col_resultdata_1,
+                                AttendeeName = CA.Name
+                            ),
+                            Percentage_2)
+                         )
+                        );*/
+                        
+                        Navigate(show_rating_screen);
+                        /*ClearCollect(
+                            col_submitData,
+                            Filter(
+                                col_resultdata_1,
+                                Rating = Blank() || Rating = ""
+                            )
+                        );
+                        Distinct(
+                            col_submitData,
+                            Rating
+                        );*/
+                    Size: =18
+                    Text: ="Submit"
+                    Visible: =_V_currentindex=CountRows(Filter(Modules,'Module Type'.Name=_V_module))
+                    Width: =180
+                    X: =432
+                    Y: =716
+                    ZIndex: =3
+
+                Label3_5 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =20
+                    Size: =12
+                    Text: ="* Please fill all the ratings field"
+                    Visible: |-
+                        =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0,false,true)
+                        //_V_currentindex=CountRows(Filter(Modules,'Module Type'=_V_module))  || CountRows(Filter(col_resultdata_1,Rating=Blank()))>0 || !IsEmpty(col_resultdata_1)
+                    Width: =253
+                    X: =359
+                    Y: =783
+                    ZIndex: =4
+
+        Image8_4 As image:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =40
+            Image: =backarrow
+            OnSelect: |-
+                =Back(
+                    ScreenTransition.Fade
+                );
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =40
+            X: =40
+            Y: =118
+            ZIndex: =6
+
+    questionContainer2 As groupContainer.manualLayoutContainer:
+        DropShadow: =DropShadow.None
+        Height: =100
+        Visible: =false
+        Width: =640
+        Y: =204
+        ZIndex: =2
+
+        nextArrow As arrow.backArrow:
+            DisplayMode: =If(_V_currentindex=1,DisplayMode.Disabled,DisplayMode.Edit)
+            Height: =60
+            OnSelect: |-
+                =Set(_V_currentindex,_V_currentindex-1);
+                Set(_V_questionID,_V_questionID-1);
+                //ClearCollect(Col_sd,col_attendees);
+                //ForAll(Col_sd,Patch(col_attendees,ThisRecord,{QuestionID:_V_questionID}));
+                Set(_V_weightage,LookUp(
+                            Modules,
+                            Questions = Label9.Text,
+                            Weightage
+                        ))
+            Width: =60
+            X: =10
+            Y: =20
+            ZIndex: =1
+
+        leftArrow As arrow:
+            DisplayMode: =If(_V_currentindex=CountRows(Filter(Modules,'Module Type'.Name=_V_module)),DisplayMode.Disabled,DisplayMode.Edit)
+            Height: =60
+            OnSelect: |-
+                =If(
+                     (IsBlank('1-4_ComboBox'.Selected.Value) && '1-4_ComboBox'.Visible = true) || (IsBlank(ComboBox_yesno.Selected.Value) && ComboBox_yesno.Visible = true) || (IsBlank(percentage_input.Text) && percentage_input.Visible = true) || (IsBlank('pass/fail_ComboBox'.Selected.Value) && 'pass/fail_ComboBox'.Visible = true),
+                    UpdateContext({_uc_errorMessage: true}),
+                
+                    Set(
+                        _V_currentindex,
+                        _V_currentindex + 1
+                    );
+                    Set(
+                        _V_questionID,
+                        _V_questionID + 1
+                    );
+                    ClearCollect(
+                        Col_sd,
+                        col_attendees
+                    );
+                    ForAll(
+                        Col_sd,
+                        Patch(
+                            col_attendees,
+                            ThisRecord,
+                            {QuestionID: _V_questionID}
+                        )
+                    );
+                    Set(
+                        _V_weightage,
+                        LookUp(
+                            Modules,
+                            Questions = Label9.Text,
+                            Weightage
+                        )
+                    );
+                    UpdateContext({_uc_errorMessage: false})
+                );
+                  
+                //)
+            Tooltip: =If(CountRows(Filter(col_resultdata_1,Rating=Blank()))>0,"Please fill all the ratings field","")
+            Width: =60
+            X: =564
+            Y: =20
+            ZIndex: =2
+
+        Gallery5 As gallery.galleryVertical:
+            DelayItemLoading: =true
+            Height: =Parent.Height
+            Items: =Index(Filter(Modules,'Module Type'.Name=_V_module),_V_currentindex)
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            ShowScrollbar: =false
+            TemplateSize: =129
+            Width: =497
+            X: =70
+            ZIndex: =3
+
+            Label9 As label:
+                FontWeight: =FontWeight.Semibold
+                Height: =79
+                OnSelect: =Select(Parent)
+                PaddingLeft: =15
+                Size: =18
+                Text: =ThisItem.Questions
+                Width: =487
+                Y: =10
+                ZIndex: =1
+
+        Label3 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =20
+            Size: =12
+            Text: ="* Please fill all the ratings field"
+            Visible: |-
+                =//If(CountRows(Filter(col_resultdata_1,Rating=Blank()))=0,false,true)
+                _uc_errorMessage
+            Width: =253
+            X: =385
+            Y: =80
+            ZIndex: =4
+

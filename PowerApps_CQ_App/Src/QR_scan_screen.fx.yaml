@@ -1,0 +1,3372 @@
+QR_scan_screen As screen:
+    BackgroundImage: =Analytics
+    Fill: =If(_V_cofirmationPOPUP||_V_alreadyPresentPopup,RGBA(0,0,0,0.4),Color.White)
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =UpdateContext({attendeeID:0});
+        Set(_V_entrypopup_visible,false);
+        ClearCollect(col_attendeeListdelete,Table());
+        //Clear(col_allattendees);
+        
+        ClearCollect(col_attendeeListdelete,Table());
+
+    Container15_2 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Container2_3 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =_V_bulkattendee_popup
+        Width: =Parent.Width
+        ZIndex: =2
+
+        Container4_1 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =310
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            excelattachment_1 As attachments:
+                BorderColor: =
+                DisplayMode: =Parent.DisplayMode
+                Height: =167
+                IsInDataCard: =true
+                Items: =
+                MaxAttachments: =1
+                MaxAttachmentsText: =
+                NoAttachmentsText: =
+                PaddingBottom: =5
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                PaddingRight: =5
+                PaddingTop: =5
+                Size: =21
+                Tooltip: =
+                Width: =470
+                X: =16
+                Y: =6
+                ZIndex: =1
+
+            Button7_3 As button:
+                Fill: =RGBA(45, 128, 40, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =If(CountRows(excelattachment_1.Attachments)=1,
+                    ExcelToSharepointLibrary.Run({file:{contentBytes:Last(excelattachment_1.Attachments).Value,name:Last(excelattachment_1.Attachments).Name}});
+                    Set(_V_msg,false);
+                    Set(_V_bulkattendee_popup,false),
+                    Set(_V_msg,true)
+                    )
+                Text: ="OK"
+                Width: =140
+                X: =324
+                Y: =228
+                ZIndex: =2
+
+            Button7_2 As button:
+                Fill: =RGBA(106, 122, 127, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_bulkattendee_popup,false);
+                    Set(_V_msg,false);
+                Text: ="Cancel"
+                Width: =140
+                X: =67
+                Y: =228
+                ZIndex: =3
+
+            Label27_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =25
+                Text: ="*No Attachments present"
+                Visible: =_V_msg
+                Width: =219
+                X: =280
+                Y: =285
+                ZIndex: =4
+
+    mainContainer3 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Visible: =false
+        Width: =Parent.Width
+        ZIndex: =3
+
+        buttonContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =81
+            RadiusBottomLeft: =30
+            RadiusBottomRight: =30
+            RadiusTopLeft: =30
+            RadiusTopRight: =30
+            Width: =606
+            X: =16
+            Y: =100
+            ZIndex: =2
+
+            QR_code_Button As button:
+                Fill: =If(_V_setcolor1,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                Height: =56
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_setcolor2,false);
+                    Set(_V_setcolor1,true);
+                    Set(_V_scanvisible,true);
+                    Set(_V_manualvisible,false);
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Text: ="Scan QR Code"
+                Visible: =false
+                Width: =156
+                X: =45
+                Y: =11
+                ZIndex: =1
+
+            manual_entry_Button As button:
+                Fill: =If(_V_manualvisible,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                Height: =54
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_isSelect_ManualEntry,true);
+                    Set(_V_isSelectScanQR,false);
+                    Set(_V_setcolor2,true);
+                    Set(_V_setcolor1,false);
+                    Set(_V_manualvisible,true);
+                    Set(_V_scanvisible,false);
+                    Set(_V_cameravisible,true);
+                Text: ="Manual Entry"
+                Width: =156
+                X: =375
+                Y: =11
+                ZIndex: =2
+
+            btn_Test As button:
+                Height: =54
+                OnSelect: |-
+                    =/*ClearCollect(
+                        col_scanAttendees,
+                        //BarcodeReader1.Barcodes
+                        {Name:"Soumyadeb Saha",
+                        Email:"abcd@gmail.com"
+                        }
+                    );
+                    
+                    Set(
+                        _V_scannedAttendee,
+                        Last(col_scanAttendees)
+                    )
+                    Set(_V_cofirmationPOPUP, true);
+                    Set(
+                        _V_scannedAttendee,
+                        LookUp(
+                            Attendees,
+                            Name = Last(col_scanAttendees).Name
+                        )
+                    );*/
+                    Set(_V_scanvisible,true)
+                Size: =24
+                Text: ="T"
+                Visible: =false
+                Width: =56
+                X: =31
+                Y: =13
+                ZIndex: =3
+
+            "BarcodeReader1 As 'Barcode Reader'":
+                BorderFillColor: =RGBA(246, 88, 16, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledContentColor: =RGBA(166, 166, 166, 1)
+                DisabledFillColor: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Edit
+                FillColor: =If(!_V_manualvisible,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                FontSize: =15
+                Height: =54
+                HoverBorderColor: =RGBA(88, 115, 171, 1)
+                HoverContentColor: =RGBA(255, 255, 255, 1)
+                HoverFillColor: =ColorFade(RGBA(246, 88, 16, 1),-20%)
+                OnCancel: =false
+                OnScan: |
+                    =ClearCollect(
+                        col_scanAttendees,
+                        BarcodeReader1.Barcodes
+                        //{Name:"Soumyadeb Saha",Email:"soumya@gmail.com"}
+                    );
+                    Set(
+                        _V_scannedAttendee,
+                        LookUp(
+                            Attendees,
+                            Email = Last(col_scanAttendees).Value
+                        )
+                    );
+                    Set(
+                        _V_cofirmationPOPUP,
+                        true
+                    );
+                    Set(_V_isSelect_ManualEntry,false);
+                    Set(_V_isSelectScanQR,true);
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedBorderColor: =RGBA(56, 96, 178, 1)
+                PressedContentColor: =RGBA(56, 96, 178, 1)
+                PressedFillColor: =RGBA(255, 255, 255, 1)
+                ScanningMode: ='BarcodeReader.ScanningMode'.AutomaticallyScan
+                Text: ="Scan QR Code"
+                TextAlignment: =Align.Center
+                TextColor: =RGBA(255, 255, 255, 1)
+                Width: =156
+                X: =120
+                Y: =11
+                ZIndex: =4
+
+        manual_entry_container As groupContainer.manualLayoutContainer:
+            Height: =904
+            PaddingTop: =10
+            Visible: =false
+            Width: =640
+            Y: =230
+            ZIndex: =3
+
+            add_attendee_Container As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =281
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Width: =606
+                X: =14
+                Y: =24
+                ZIndex: =1
+
+                attendee_Label As label:
+                    Align: =Align.Center
+                    Height: =70
+                    Size: =21
+                    Text: |-
+                        ="Attendee Name:"
+                    Width: =299
+                    X: =3
+                    Y: =13
+                    ZIndex: =1
+
+                attendee_ComboBox1 As combobox:
+                    Height: =59
+                    InputTextPlaceholder: ="Find Attendee"
+                    Items: =ComboBoxSample
+                    SearchItems: =Search(ComboBoxSample,attendee_ComboBox1.SearchText,"Value1")
+                    Size: =21
+                    Width: =522
+                    X: =46
+                    Y: =83
+                    ZIndex: =2
+
+            allattendee_Container As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =565
+                RadiusBottomLeft: =1
+                RadiusBottomRight: =1
+                RadiusTopLeft: =1
+                RadiusTopRight: =1
+                Width: =606
+                X: =14
+                Y: =330
+                ZIndex: =2
+
+                all_attendee_Label As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =70
+                    Size: =21
+                    Text: ="All Attendees"
+                    Width: =560
+                    X: =16
+                    Y: =10
+                    ZIndex: =1
+
+                Gallery4 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =485
+                    Items: =CustomGallerySample
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    TemplateSize: |-
+                        =//If(Self.Layout = Layout.Horizontal, Min(280, Self.Width - 60), Min(280, Self.Height - 60))
+                        80
+                    Width: =602
+                    X: =3
+                    Y: =80
+                    ZIndex: =2
+
+                    Container12 As groupContainer.manualLayoutContainer:
+                        Height: =78
+                        Width: =576
+                        X: =6
+                        Y: =10
+                        ZIndex: =1
+
+                        Label5 As label:
+                            Height: =70
+                            Size: =21
+                            Text: ="Text"
+                            Width: =560
+                            ZIndex: =1
+
+        "'show-attendees_Container' As groupContainer.manualLayoutContainer":
+            DropShadow: =DropShadow.Regular
+            Height: =500
+            RadiusBottomLeft: =30
+            RadiusBottomRight: =30
+            RadiusTopLeft: =30
+            RadiusTopRight: =30
+            Width: =606
+            X: =17
+            Y: =513
+            ZIndex: =5
+
+            all_attendees_Label As label:
+                Fill: =RGBA(219, 219, 219, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                PaddingLeft: =15
+                Size: =18
+                Text: ="All Attendees"&" ("&CountRows(col_attendees)&")"                           
+                Width: =Parent.Width-40
+                X: =20
+                Y: =23
+                ZIndex: =1
+
+            Gal_allAttendees As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =407
+                Items: =SortByColumns(col_attendees,"Name",sort_order)
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateFill: =RGBA(0, 0, 0, .050)
+                TemplatePadding: =10
+                TemplateSize: =50
+                Width: =Parent.Width-20
+                X: =10
+                Y: =93
+                ZIndex: =2
+
+                name_Container As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =Parent.TemplateHeight
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Width: =Parent.TemplateWidth
+                    ZIndex: =1
+
+                    name_Label As label:
+                        Height: =Parent.Height
+                        PaddingLeft: =12
+                        Size: =15
+                        Text: =ThisItem.Name
+                        Width: =Parent.Width-Checkbox2.Width
+                        X: =Checkbox2.Width
+                        ZIndex: =1
+
+                    Checkbox2 As checkbox:
+                        BorderStyle: =BorderStyle.None
+                        CheckboxSize: =25
+                        Height: =Parent.Height
+                        OnCheck: =Collect(col_attendeeListdelete,ThisItem)
+                        OnUncheck: =Remove(col_attendeeListdelete,ThisItem)
+                        PaddingLeft: =10
+                        Size: =21
+                        Text: =""
+                        Width: =40
+                        ZIndex: =2
+
+                Icon1 As icon.CancelBadge:
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledBorderColor: =RGBA(79, 90, 94, 1)
+                    DisplayMode: =If(CountRows(col_attendeeListdelete)>0 ||PopUp1,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =35
+                    Icon: =Icon.CancelBadge
+                    OnSelect: |+
+                        =/*Patch(
+                            col_allAttendee,
+                            LookUp(
+                                col_allAttendee,
+                                Attendees = ThisItem.GUID
+                            ),
+                            (LookUp(
+                                Attendees,
+                                Attendees = ThisItem.GUID
+                            ))
+                        );*/
+                        /*If(
+                            ThisItem.GUID in col_allAttendee[@Attendees],
+                            "",
+                            Collect(
+                                col_allAttendee,
+                                LookUp(
+                                    Attendees,
+                                    Attendees = ThisItem.GUID
+                                )
+                            );
+                            
+                        );
+                        Remove(
+                            col_attendees,
+                            ThisItem
+                        );*/
+                        Set(_V_selectedItem,ThisItem);
+                        //Collect(col_attendeeListdelete,ThisItem);
+                        Set(PopUp2,true);
+                        
+                    Width: =27
+                    X: =534
+                    Y: =9
+                    ZIndex: =2
+
+            Icon7 As icon.Trash:
+                Color: =RGBA(184, 0, 0, 1)
+                Height: =50
+                Icon: =Icon.Trash
+                OnSelect: =Set(PopUp1,true);
+                Visible: =If(CountRows(col_attendeeListdelete)>0,true,false)
+                Width: =50
+                X: =530
+                Y: =18
+                ZIndex: =3
+
+            Icon10 As icon.ArrowsUpDown:
+                Height: =30
+                Icon: =Icon.Sort
+                OnSelect: |-
+                    =If(sort_order=SortOrder.Ascending,
+                        Set(sort_order,SortOrder.Descending),
+                        Set(sort_order,SortOrder.Ascending)
+                    );
+                Width: =61
+                X: =519
+                Y: =38
+                ZIndex: =4
+
+        manual_container As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =290
+            RadiusBottomLeft: =30
+            RadiusBottomRight: =30
+            RadiusTopLeft: =30
+            RadiusTopRight: =30
+            Visible: |
+                =_V_manualvisible
+            Width: =606
+            X: =17
+            Y: =200
+            ZIndex: =6
+
+            attendees_Label As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                Size: =18
+                Text: |-
+                    ="Attendee Name:"
+                Width: =299
+                X: =3
+                Y: =13
+                ZIndex: =1
+
+            attendees_combobox As combobox:
+                ChevronBackground: =RGBA(172, 62, 11, 1)
+                ChevronDisabledFill: =RGBA(172, 62, 11, 1)
+                ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                DisplayFields: =["ulcq_name"]
+                DisplayMode: |
+                    =DisplayMode.Edit
+                Fill: =RGBA(253, 222, 207, 1)
+                Height: =50
+                InputTextPlaceholder: ="Select Attendee Name"
+                Items: |-
+                    =//col_allAttendee
+                    col_examattendee
+                PressedBorderColor: =Self.ChevronBackground
+                PressedFill: =Self.ChevronBackground
+                SearchFields: =["ulcq_name"]
+                SearchItems: |-
+                    =Search(//col_allAttendee
+                    col_examattendee,attendees_combobox.SearchText,"ulcq_name")
+                SelectionFill: =Self.ChevronBackground
+                SelectMultiple: =false
+                Size: =15
+                Width: =520
+                X: =46
+                Y: =83
+                ZIndex: =2
+
+            submit_Button As button:
+                DisplayMode: =If(IsBlank(attendees_combobox.Selected),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(
+                        _V_name,
+                        attendees_combobox.Selected.Name
+                    );
+                    If(
+                        LookUp(
+                            //Attendees,
+                            col_examattendee,
+                            Name = _V_name
+                        ).Attendees in col_attendees[@GUID],
+                        Set(
+                            _V_alreadyPresentPopup,
+                            true
+                        );
+                        Reset(attendees_combobox),
+                        UpdateContext({attendeeID: attendeeID + 1});
+                        Set(
+                            _V_questionID,
+                            1
+                        );
+                        If(
+                            CountRows(col_attendees) < 1,
+                            ClearCollect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox.Selected.Attendees,
+                                    Total:0
+                                }
+                            ),
+                            Collect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox.Selected.Attendees,
+                                    Total:0
+                                }
+                            )
+                        );
+                        
+                    //Set(col_CopyAttendees,col_attendees);
+                    ClearCollect(
+                            col_CopyAttendees,
+                            col_attendees
+                        );
+                        RemoveIf(
+                            col_examattendee,
+                            Name = attendees_combobox.Selected.Name
+                        );
+                        Reset(attendees_combobox)
+                    
+                    )
+                    
+                    
+                    
+                    
+                    
+                    /*
+                    UpdateContext({attendeeID: attendeeID + 1});
+                    Set(
+                        _V_questionID,
+                        1
+                    );
+                    If(
+                        CountRows(col_attendees) < 1,
+                        ClearCollect(
+                            col_attendees,
+                            {
+                                Name: attendees_combobox.Selected.Name,
+                                attendeeId: attendeeID,
+                                QuestionID: _V_questionID,
+                                GUID: attendees_combobox.Selected.Attendees
+                            }
+                        ),
+                        Collect(
+                            col_attendees,
+                            {
+                                Name: attendees_combobox.Selected.Name,
+                                attendeeId: attendeeID,
+                                QuestionID: _V_questionID,
+                                GUID: attendees_combobox.Selected.Attendees
+                            }
+                        )
+                    );
+                    //Set(col_CopyAttendees,col_attendees);
+                    ClearCollect(
+                        col_CopyAttendees,
+                        col_attendees
+                    );
+                    RemoveIf(
+                        col_allAttendee,
+                        Name = attendees_combobox.Selected.Name
+                    );
+                    Reset(attendees_combobox);
+                    If(
+                        LookUp(Attendees,Name=_V_name).Attendees in col_attendees[@GUID],
+                        Set(
+                            _V_alreadyPresentPopup,
+                            true
+                        )
+                    )*/
+                Text: ="Add"
+                Tooltip: =If(IsBlank(attendees_combobox.Selected),"Please select a attendee to proceed","")
+                Width: =200
+                X: =333
+                Y: =177
+                ZIndex: =3
+
+            submit_Button_1 As button:
+                Fill: =RGBA(99, 139, 44, 1)
+                Height: =52
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =ResetForm(Form1_3);
+                    NewForm(Form1_3);
+                    Set(_V_entrypopup_visible,true);
+                    UpdateContext({_V_textPopup:false})
+                Text: ="Add New Attendee"
+                Width: =200
+                X: =84
+                Y: =177
+                ZIndex: =7
+
+        proceed_Button As button:
+            DisplayMode: =If(IsEmpty(col_attendees),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(99, 139, 44, 1)
+            Height: =55
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Set(_V_popupvisible,true);Reset(moduleComboBox);
+                Clear(col_resultdata_1);
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =17
+            Text: ="Proceed"
+            Width: =180
+            X: =424
+            Y: =1050
+            ZIndex: =7
+
+        scan_Container As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =291
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Visible: =_V_scanvisible
+            Width: =605
+            X: =17
+            Y: =230
+            ZIndex: =8
+
+            scan_button As button:
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =Set(_V_cameravisible,false);
+                RadiusBottomLeft: =12
+                RadiusBottomRight: =12
+                RadiusTopLeft: =12
+                RadiusTopRight: =12
+                Size: =21
+                Text: ="Scan"
+                Width: =137
+                X: =444
+                Y: =226
+                ZIndex: =1
+
+            Camera2 As camera:
+                Camera: =0
+                DisplayMode: =If(_V_cameravisible,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =214
+                Width: =232
+                X: =191
+                Y: =12
+                ZIndex: =2
+
+            camera_hide_Container As groupContainer.manualLayoutContainer:
+                Fill: =Color.DimGrey
+                Height: =214
+                Visible: =_V_cameravisible
+                Width: =232
+                X: =191
+                Y: =12
+                ZIndex: =3
+
+                camera_icon As icon.Camera:
+                    Color: =RGBA(255,255,255, 1)
+                    Icon: =Icon.Camera
+                    X: =84
+                    Y: =70
+                    ZIndex: =1
+
+        HeaderComponent_5 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =9
+
+    entry_popupcontainer As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: |
+            =_V_entrypopup_visible
+        Width: =Parent.Width
+        ZIndex: =4
+
+        Container12_3 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =Parent.Height*.75
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =Parent.Width*.94
+            X: =20
+            Y: =150
+            ZIndex: =1
+
+            Form1_3 As form:
+                DataSource: =Attendees
+                DefaultMode: =FormMode.New
+                Height: =695
+                Item: =LookUp(Attendees, Attendees=_V_id)
+                Width: =Parent.Width
+                Y: =10
+                ZIndex: =1
+
+                Email_DataCard2 As typedDataCard.textualEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_email"
+                    Default: =ThisItem.Email
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_email")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =If(Label11.Visible=true&&lbl_alreadyExist.Visible=true,150,127)
+                    MaxLength: =DataSourceInfo([@Attendees], DataSourceInfo.MaxLength, "ulcq_email")
+                    Required: =false
+                    Update: =DataCardValue10.Text
+                    Width: =601
+                    X: =0
+                    Y: =1
+                    ZIndex: =1
+
+                    DataCardKey10 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue10 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =Parent.Default
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        HintText: ="example@email.com"
+                        MaxLength: =Parent.MaxLength
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage8 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue10.Y + DataCardValue10.Height
+                        ZIndex: =3
+
+                    StarVisible8 As label:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =DataCardKey10.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: |-
+                            =//And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                            true
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey10.Y
+                        ZIndex: =4
+
+                    Label11 As label:
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =26
+                        Size: =12
+                        Text: ="*Please Enter a Valid Email"
+                        Visible: =If(IsMatch(DataCardValue10.Text,Match.Email) || IsBlank(DataCardValue10.Text),false,true)
+                        Width: =541
+                        X: =30
+                        Y: =104
+                        ZIndex: =5
+
+                    lbl_alreadyExist As label:
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =Label11.Height
+                        Size: =12
+                        Text: ="*This email Id is alreday exist"
+                        Visible: =If(DataCardValue10.Text exactin Attendees[@ulcq_email],true,false)
+                        Width: =Label11.Width
+                        X: =Label11.X
+                        Y: =Label11.Y
+                        ZIndex: =6
+
+                Area_DataCard1 As typedDataCard.comboBoxEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_Area"
+                    Default: =ThisItem.Area
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_Area")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =true
+                    Update: =DataCardValue8.Selected
+                    Width: =601
+                    X: =0
+                    Y: =2
+                    ZIndex: =1
+
+                    DataCardKey8 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue8 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(255, 139, 76, 1)
+                        DefaultSelectedItems: =Parent.Default
+                        DisplayFields: =["ulcq_name"]
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        HoverFill: =RGBA(255, 139, 76, 1)
+                        InputTextPlaceholder: =
+                        Items: =Choices([@Attendees].ulcq_Area)
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["ulcq_name"]
+                        SearchItems: =Search(Choices([@Attendees].ulcq_Area),DataCardValue8.SearchText,"ulcq_name")
+                        SelectMultiple: =false
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey8.Y + DataCardKey8.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage6 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue8.Y + DataCardValue8.Height
+                        ZIndex: =3
+
+                    StarVisible6 As label:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =DataCardKey8.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey8.Y
+                        ZIndex: =4
+
+                Territory_DataCard1 As typedDataCard.textualEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_territory"
+                    Default: =ThisItem.Territory
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_territory")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    MaxLength: =DataSourceInfo([@Attendees], DataSourceInfo.MaxLength, "ulcq_territory")
+                    Required: =false
+                    Update: =DataCardValue11.Text
+                    Width: =601
+                    X: =0
+                    Y: =3
+                    ZIndex: =1
+
+                    DataCardKey11 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue11 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =territory_Combo_1.Selected.Territory
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        MaxLength: =Parent.MaxLength
+                        PaddingLeft: =5
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Size: =21
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey11.Y + DataCardKey11.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage10 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue11.Y + DataCardValue11.Height
+                        ZIndex: =3
+
+                    StarVisible10 As label:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =DataCardKey11.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: |-
+                            =//And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                            true
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey11.Y
+                        ZIndex: =4
+
+                    territory_Combo_1 As combobox:
+                        ChevronBackground: =RGBA(255, 139, 76, 1)
+                        DefaultSelectedItems: =[Parent.Default]
+                        DisplayFields: =["ulcq_name"]
+                        Height: =50
+                        HoverFill: =RGBA(251, 188, 159, 1)
+                        IsSearchable: =false
+                        Items: =Filter(Area_Territories,Area.Name=DataCardValue8.Selected.Name)
+                        SearchFields: =["ulcq_name"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey11.Y + DataCardKey11.Height + 5
+                        ZIndex: =5
+
+                Class_DataCard1 As typedDataCard.comboBoxOptionSetSingleEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_class"
+                    Default: =ThisItem.Class
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_class")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =DataCardValue9.Selected.Value
+                    Width: =601
+                    X: =0
+                    Y: =4
+                    ZIndex: =1
+
+                    DataCardKey9 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue9 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(255, 139, 76, 1)
+                        DefaultSelectedItems: =[Parent.Default]
+                        DisplayFields: =["Value"]
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        HoverFill: =RGBA(255, 139, 76, 1)
+                        IsSearchable: =false
+                        Items: =Choices('Class Set')
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["Value"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey9.Y + DataCardKey9.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage7 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue9.Y + DataCardValue9.Height
+                        ZIndex: =3
+
+                    StarVisible7 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey9.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey9.Y
+                        ZIndex: =4
+
+                Channel_DataCard1 As typedDataCard.comboBoxOptionSetSingleEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_channel"
+                    Default: =ThisItem.Channel
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_channel")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =DataCardValue12.Selected.Value
+                    Width: =601
+                    X: =0
+                    Y: =5
+                    ZIndex: =1
+
+                    DataCardKey14 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue12 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(255, 139, 76, 1)
+                        DefaultSelectedItems: =[Parent.Default]
+                        DisplayFields: =["Value"]
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        HoverFill: =RGBA(255, 139, 76, 1)
+                        IsSearchable: =false
+                        Items: =Choices('Channel Set')
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["Value"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey14.Y + DataCardKey14.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage13 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue12.Y + DataCardValue12.Height
+                        ZIndex: =3
+
+                    StarVisible13 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey14.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey14.Y
+                        ZIndex: =4
+
+                "'QR Code_DataCard1' As typedDataCard.addLargePictureCard":
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="cr86f_qrcode"
+                    Default: =ThisItem.'QR Code'
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"cr86f_qrcode")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =Image4.Image
+                    Visible: =true
+                    Width: =601
+                    X: =0
+                    Y: =6
+                    ZIndex: =1
+
+                    DataCardKey12 As label:
+                        AutoHeight: =true
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    Image4 As image:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =AddPicture1.Height
+                        Image: |-
+                            =If(IsBlank(DataCardValue10.Text),SampleImage,"https://quickchart.io/qr?text="&DataCardValue10.Text)
+                        ImagePosition: =ImagePosition.Center
+                        Tooltip: =Parent.DisplayName
+                        Width: =AddPicture1.Width
+                        X: =AddPicture1.X
+                        Y: =AddPicture1.Y
+                        ZIndex: =2
+
+                    AddPicture1 As addMedia:
+                        Height: =320
+                        Text: =""
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey12.Y + DataCardKey12.Height + 5
+                        ZIndex: =3
+
+                    ErrorMessage11 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =Image4.Y + Image4.Height
+                        ZIndex: =4
+
+                    StarVisible11 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey12.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey12.Y
+                        ZIndex: =5
+
+                    Image4_1 As image:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =AddPicture1.Height
+                        Image: =Image4.Image
+                        ImagePosition: =ImagePosition.Center
+                        Tooltip: =Parent.DisplayName
+                        Visible: =false
+                        Width: =AddPicture1.Width
+                        X: =AddPicture1.X
+                        Y: =AddPicture1.Y
+                        ZIndex: =6
+
+                Name_DataCard1 As typedDataCard.textualEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_name"
+                    Default: =ThisItem.Name
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Attendees],DataSourceInfo.DisplayName,"ulcq_name")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    MaxLength: =DataSourceInfo([@Attendees], DataSourceInfo.MaxLength, "ulcq_name")
+                    Required: =true
+                    Update: =DataCardValue2.Text
+                    Width: =601
+                    X: =0
+                    Y: =0
+                    ZIndex: =2
+
+                    DataCardKey2 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        Size: =16
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue2 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =Parent.Default
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =50
+                        HintText: ="LastName, FirstName"
+                        MaxLength: =Parent.MaxLength
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey2.Y + DataCardKey2.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage5 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue2.Y + DataCardValue2.Height
+                        ZIndex: =3
+
+                    StarVisible5 As label:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =DataCardKey2.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey2.Y
+                        ZIndex: =4
+
+            submitButton2_5 As button:
+                BorderThickness: =1
+                DisabledColor: =RGBA(116, 116, 116, 1)
+                DisabledFill: =RGBA(219, 219, 219, 1)
+                DisplayMode: |-
+                    =/*If(
+                        IsBlank(DataCardValue1_3.Text) || IsBlank(DataCardValue1_2.Text) || IsBlank(DataCardValue4_3.Selected) || IsBlank(territory_Combo_1.Selected) || IsBlank(DataCardValue5_3.Selected),
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )*/
+                    DisplayMode.Edit
+                Fill: =RGBA(99, 139, 44, 1)
+                Height: =56
+                HoverFill: =ColorFade(Self.Fill,-20%)
+                OnSelect: |-
+                    =UpdateContext({lcqr:Image4.Image});
+                    If(
+                        DataCardValue10.Text exactin Attendees[@Email] && !IsMatch(
+                            DataCardValue10.Text,
+                            Match.Email
+                        ),
+                        "",
+                        If(
+                            IsBlank(DataCardValue2.Text) || IsBlank(DataCardValue11.Text) || IsBlank(DataCardValue9.Selected) || IsBlank(DataCardValue10.Text) || IsBlank(DataCardValue8.Selected.Name)||IsBlank(DataCardValue12.Selected.Value),
+                            UpdateContext({_V_textPopup: true}),
+                        /*Patch(
+                            col_allAttendee,
+                            Defaults(col_allAttendee),
+                            {
+                                Name: DataCardValue2.Text,
+                                Territory: DataCardValue11.Text,
+                                Class: DataCardValue9.Selected.Value,
+                                Area: DataCardValue8.Selected.Value,
+                                Email: DataCardValue10.Text,
+                                'QR Code': Image4.Image
+                            }
+                        );*/
+                    //SubmitForm(Form1_3);
+                            UpdateContext({_V_email: DataCardValue10.Text});
+                            Patch(
+                                col_allAttendee,
+                                Defaults(col_allAttendee),
+                                {
+                                    Name: DataCardValue2.Text,
+                                    Territory: DataCardValue11.Text,
+                                    Class: DataCardValue9.Selected.Value,
+                                    Channel:DataCardValue12.Selected.Value,
+                                    Area: LookUp(col_allAttendee,Area.Name=DataCardValue8.Selected.Name,Area),
+                                    Email: DataCardValue10.Text,
+                                    'QR Code': Image4_1.Image,
+                                    //QR:Image4
+                                    QR_Link: "https://quickchart.io/qr?text=" & _V_email
+                                }
+                            );
+                        /*Patch(Attendees,LookUp(Attendees=Last(Attendees).Attendees),{'QR Code':"http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl="&_V_email});*/
+                    /*ClearCollect(
+                                col_allAttendee,
+                                Attendees
+                            );*/
+                            Set(
+                                _V_entrypopup_visible,
+                                false
+                            );
+                            UpdateContext({_V_textPopup: false})
+                        )
+                    )
+                PressedFill: =RGBA(204, 72, 0, 1)
+                Text: ="Submit"
+                Width: =156
+                X: =362
+                Y: =Form1_3.Y+Form1_3.Height+50
+                ZIndex: =2
+
+            cancelButton2_4 As button:
+                BorderThickness: =1
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: =56
+                HoverFill: =ColorFade(Self.Fill,-20%)
+                OnSelect: =Set(_V_entrypopup_visible,false);
+                PressedFill: =RGBA(204, 72, 0, 1)
+                Text: ="Cancel"
+                Width: =156
+                X: =56
+                Y: =Form1_3.Y+Form1_3.Height+50
+                ZIndex: =3
+
+            Label14 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =23
+                PaddingLeft: =20
+                Size: =12
+                Text: ="* Please fill all the mandatory fields"
+                Visible: =_V_textPopup
+                Width: =304
+                X: =297
+                Y: =804
+                ZIndex: =4
+
+    Popup_ScanDetailsContainer As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =_V_cofirmationPOPUP
+        Width: =Parent.Width
+        ZIndex: =5
+
+        Popup_ScanDetails_1 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =527
+            Width: =430
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            Button3_3 As button:
+                Fill: =RGBA(99, 139, 44, 1)
+                Height: =41
+                OnSelect: |
+                    =Set(
+                        _V_cofirmationPOPUP,
+                        false
+                    );
+                    Set(
+                        _V_isSelect_ManualEntry,
+                        true
+                    );
+                    If(
+                        _V_scannedAttendee.Attendees in col_attendees[@GUID],
+                        Set(
+                            _V_alreadyPresentPopup,
+                            true
+                        ),
+                        UpdateContext({attendeeID: attendeeID + 1});
+                        Set(
+                            _V_questionID,
+                            1
+                        );
+                        If(
+                            CountRows(col_attendees) < 1,
+                            ClearCollect(
+                                col_attendees,
+                                {
+                                    Name: LookUp(
+                                        Attendees,
+                                        Email = Last(col_scanAttendees).Value
+                                    ).Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: LookUp(
+                                        Attendees,
+                                        Email = Last(col_scanAttendees).Value
+                                    ).Attendees
+                                }
+                            ),
+                            Collect(
+                                col_attendees,
+                                {
+                                    Name: LookUp(
+                                        Attendees,
+                                        Email = Last(col_scanAttendees).Value
+                                    ).Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: LookUp(
+                                        Attendees,
+                                        Email = Last(col_scanAttendees).Value
+                                    ).Attendees
+                                }
+                            )
+                        )
+                    );
+                Text: ="Confirm"
+                Width: =126
+                X: =244
+                Y: =408
+                ZIndex: =5
+
+            Button3_2 As button:
+                Fill: =RGBA(149, 149, 149, 1)
+                Height: =41
+                OnSelect: |-
+                    =Set(_V_cofirmationPOPUP, false);
+                    Set(_V_isSelect_ManualEntry,true);
+                Text: ="Cancel"
+                Width: =126
+                X: =62
+                Y: =408
+                ZIndex: =7
+
+            Label6_10 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 255, 255, 1)
+                Fill: =RGBA(172, 62, 11, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                PaddingLeft: =15
+                Size: =18
+                Text: ="Attendee Details"
+                Width: =430
+                ZIndex: =8
+
+            cont_AllScanDetails As groupContainer.verticalAutoLayoutContainer:
+                DropShadow: =DropShadow.None
+                Height: =Popup_ScanDetails_1.Height/2
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMode: =LayoutMode.Auto
+                PaddingBottom: =20
+                PaddingTop: =20
+                Width: =430
+                Y: =Label6_10.Height
+                ZIndex: =9
+
+                Container3 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =225
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    ZIndex: =1
+
+                    Label17 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =15
+                        Size: =16
+                        Text: |-
+                            ="Name :"
+                        Width: =Parent.Width/3.5
+                        ZIndex: =1
+
+                    Label21 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =_V_scannedAttendee.Name
+                        Width: =Parent.Width*2/3
+                        ZIndex: =2
+
+                Container3_1 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =225
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    ZIndex: =2
+
+                    Label17_1 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =15
+                        Size: =16
+                        Text: |-
+                            ="Email :"
+                        Width: =Parent.Width/3.5
+                        ZIndex: =1
+
+                    Label21_1 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =_V_scannedAttendee.Email
+                        Width: =Parent.Width*2/3
+                        ZIndex: =2
+
+                Container3_2 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =225
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    ZIndex: =3
+
+                    Label17_2 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =15
+                        Size: =16
+                        Text: |-
+                            ="Area :"
+                        Width: =Parent.Width/3.5
+                        ZIndex: =1
+
+                    Label21_2 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =_V_scannedAttendee.Area.Name
+                        Width: =Parent.Width*2/3
+                        ZIndex: =2
+
+                Container3_3 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =225
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    ZIndex: =4
+
+                    Label17_3 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =15
+                        Size: =16
+                        Text: |-
+                            ="Territory :"
+                        Width: =Parent.Width/3.5
+                        ZIndex: =1
+
+                    Label21_3 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =_V_scannedAttendee.Territory
+                        Width: =Parent.Width*2/3
+                        ZIndex: =2
+
+                Container3_4 As groupContainer.horizontalAutoLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =225
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    ZIndex: =5
+
+                    Label17_4 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        PaddingLeft: =15
+                        Size: =16
+                        Text: |-
+                            ="Class :"
+                        Width: =Parent.Width/3.5
+                        ZIndex: =1
+
+                    Label21_4 As label:
+                        Height: =Parent.Height
+                        LayoutMinHeight: =70
+                        LayoutMinWidth: =560
+                        Size: =15
+                        Text: =_V_scannedAttendee.Class
+                        Width: =Parent.Width*2/3
+                        ZIndex: =2
+
+    Popup_AlreadyPresentContainer As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =_V_alreadyPresentPopup
+        Width: =Parent.Width
+        ZIndex: =6
+
+        Popup_AlreadyPresent_1 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(251, 188, 159, 1)
+            Height: =255
+            Width: =453
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            Label11_1 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =100
+                Size: =18
+                Text: ="This Attendee is already present in selected Attendee List"
+                Width: =453
+                Y: =36
+                ZIndex: =1
+
+            Button4_1 As button:
+                Fill: =RGBA(149, 149, 149, 1)
+                OnSelect: =Set(_V_alreadyPresentPopup,false)
+                Size: =20
+                Text: ="OK"
+                Width: =91
+                X: =181
+                Y: =185
+                ZIndex: =2
+
+    popup_delete_Container_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(191, 184, 184, 0.21)
+        Height: =1136
+        Visible: =PopUp1
+        Width: =640
+        ZIndex: =7
+
+        Delete_Container10_4 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            confirm_Label3_1 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =60
+                Size: =18
+                Text: ="Do you want to delete? "
+                Width: =Parent.Width-25
+                X: =7
+                ZIndex: =1
+
+            Gallery7 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =136
+                Items: =col_attendeeListdelete
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateSize: =40
+                Width: =500
+                Y: =60
+                ZIndex: =1
+
+                Label24 As label:
+                    OnSelect: =Select(Parent)
+                    PaddingLeft: =20
+                    Size: =16
+                    Text: =ThisItem.Name
+                    Width: =490
+                    Y: =6
+                    ZIndex: =1
+
+            cancelButton6_1 As button:
+                Fill: =RGBA(116, 116, 116, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =
+                    
+                    Set(PopUp1, false);
+                Text: ="No"
+                Width: =114
+                X: =188
+                Y: =220
+                ZIndex: =2
+
+            confirmButton_1 As button:
+                DisabledBorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =//RemoveIf(col_allattendees,Attendees=_V_deleteId);
+                    /*If(
+                        _V_selectedItem.GUID in col_allAttendee[@Attendees],
+                        "",
+                        Collect(
+                            col_allAttendee,
+                            LookUp(
+                                Attendees,
+                                Attendees = _V_selectedItem.GUID
+                            )
+                        );
+                        
+                    );*/
+                    ForAll(
+                        col_attendeeListdelete As COL,
+                        If(COL.GUID in col_examattendee[@Attendees],"",
+                        Collect(col_examattendee,
+                        LookUp(col_allAttendee,
+                        Attendees=COL.GUID
+                            )
+                        )
+                        ));
+                    //Collect(col_allAttendee,col_attendeeListdelete);
+                    Remove(
+                        col_attendees,
+                        col_attendeeListdelete
+                    );
+                    Clear(col_attendeeListdelete);
+                    Set(
+                        PopUp1,
+                        false
+                    );
+                Text: ="Confirm"
+                Width: =114
+                X: =347
+                Y: =220
+                ZIndex: =3
+
+    Container7 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =Parent.Height
+        Visible: =PopUp2
+        Width: =Parent.Width
+        ZIndex: =8
+
+        Delete_Container10_5 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            X: =(Parent.Width-Self.Width)/2
+            Y: =(Parent.Height-Self.Height)/2
+            ZIndex: =1
+
+            confirm_Label3_2 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =60
+                Size: =18
+                Text: ="Do you want to delete? "
+                Width: =Parent.Width-25
+                X: =7
+                ZIndex: =1
+
+            cancelButton6_2 As button:
+                Fill: =RGBA(116, 116, 116, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =
+                    
+                    Set(PopUp2, false);
+                Text: ="No"
+                Width: =114
+                X: =188
+                Y: =220
+                ZIndex: =2
+
+            confirmButton_2 As button:
+                DisabledBorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =//RemoveIf(col_allattendees,Attendees=_V_deleteId);
+                    /*If(
+                        _V_selectedItem.GUID in col_allAttendee[@Attendees],
+                        "",
+                        Collect(
+                            col_allAttendee,
+                            LookUp(
+                                Attendees,
+                                Attendees = _V_selectedItem.GUID
+                            )
+                        );
+                        
+                    );*/
+                    
+                        If(_V_selectedItem.GUID in col_examattendee[@Attendees],"",
+                        Collect(col_examattendee,
+                        LookUp(col_allAttendee,
+                        Attendees=Gal_allAttendees.Selected.GUID
+                        )
+                        )
+                        );
+                    //Collect(col_allAttendee,col_attendeeListdelete);
+                    Remove(
+                        col_attendees,
+                        _V_selectedItem
+                    );
+                    //Clear(col_attendeeListdelete);
+                    Set(
+                        PopUp2,
+                        false
+                    );
+                Text: ="Confirm"
+                Width: =114
+                X: =347
+                Y: =220
+                ZIndex: =3
+
+            Label25 As label:
+                Height: =70
+                PaddingLeft: =15
+                Size: =21
+                Text: =Gal_allAttendees.Selected.Name
+                Width: =500
+                Y: =60
+                ZIndex: =4
+
+    mainContainer3_1 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =9
+
+        buttonContainer_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =81
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Visible: =false
+            Width: =606
+            X: =16
+            Y: =100
+            ZIndex: =2
+
+            QR_code_Button_1 As button:
+                Fill: =If(_V_setcolor1,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                Height: =56
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_setcolor2,false);
+                    Set(_V_setcolor1,true);
+                    Set(_V_scanvisible,true);
+                    Set(_V_manualvisible,false);
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Text: ="Scan QR Code"
+                Visible: =false
+                Width: =156
+                X: =45
+                Y: =11
+                ZIndex: =1
+
+            manual_entry_Button_1 As button:
+                Fill: =If(_V_isSelect_ManualEntry,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                Height: =54
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_isSelect_ManualEntry,true);
+                    Set(_V_isSelectScanQR,false);
+                    Set(_V_setcolor2,true);
+                    Set(_V_setcolor1,false);
+                    Set(_V_manualvisible,true);
+                    Set(_V_scanvisible,false);
+                    Set(_V_cameravisible,true);
+                Text: ="Manual Entry"
+                Width: =156
+                X: =375
+                Y: =11
+                ZIndex: =2
+
+            btn_Test_1 As button:
+                Height: =54
+                OnSelect: |-
+                    =/*ClearCollect(
+                        col_scanAttendees,
+                        //BarcodeReader1.Barcodes
+                        {Name:"Soumyadeb Saha",
+                        Email:"abcd@gmail.com"
+                        }
+                    );
+                    
+                    Set(
+                        _V_scannedAttendee,
+                        Last(col_scanAttendees)
+                    )
+                    Set(_V_cofirmationPOPUP, true);
+                    Set(
+                        _V_scannedAttendee,
+                        LookUp(
+                            Attendees,
+                            Name = Last(col_scanAttendees).Name
+                        )
+                    );*/
+                    Set(_V_scanvisible,true)
+                Size: =24
+                Text: ="T"
+                Visible: =false
+                Width: =56
+                X: =31
+                Y: =13
+                ZIndex: =3
+
+            "BarcodeReader1_1 As 'Barcode Reader'":
+                BorderFillColor: =RGBA(246, 88, 16, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledContentColor: =RGBA(166, 166, 166, 1)
+                DisabledFillColor: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Edit
+                FillColor: =If(!_V_isSelect_ManualEntry,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                FontSize: =15
+                Height: =54
+                HoverBorderColor: =RGBA(88, 115, 171, 1)
+                HoverContentColor: =RGBA(255, 255, 255, 1)
+                HoverFillColor: =ColorFade(RGBA(246, 88, 16, 1),-20%)
+                OnCancel: =false
+                OnScan: |
+                    =ClearCollect(
+                        col_scanAttendees,
+                        BarcodeReader1_1.Barcodes
+                        //{Name:"Soumyadeb Saha",Email:"soumya@gmail.com"}
+                    );
+                    Set(
+                        _V_scannedAttendee,
+                        LookUp(
+                            Attendees,
+                            Email = Last(col_scanAttendees).Value
+                        )
+                    );
+                    Set(
+                        _V_cofirmationPOPUP,
+                        true
+                    );
+                    Set(_V_isSelect_ManualEntry,false);
+                    Set(_V_isSelectScanQR,true);
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedBorderColor: =RGBA(56, 96, 178, 1)
+                PressedContentColor: =RGBA(56, 96, 178, 1)
+                PressedFillColor: =RGBA(255, 255, 255, 1)
+                ScanningMode: ='BarcodeReader.ScanningMode'.AutomaticallyScan
+                Text: ="Scan QR Code"
+                TextAlignment: =Align.Center
+                TextColor: =RGBA(255, 255, 255, 1)
+                Width: =156
+                X: =120
+                Y: =11
+                ZIndex: =4
+
+        manual_entry_container_1 As groupContainer.manualLayoutContainer:
+            Height: =904
+            PaddingTop: =10
+            Visible: =false
+            Width: =640
+            Y: =230
+            ZIndex: =3
+
+            add_attendee_Container_1 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =281
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Width: =606
+                X: =14
+                Y: =24
+                ZIndex: =1
+
+                attendee_Label_1 As label:
+                    Align: =Align.Center
+                    Height: =70
+                    Size: =21
+                    Text: |-
+                        ="Attendee Name:"
+                    Width: =299
+                    X: =3
+                    Y: =13
+                    ZIndex: =1
+
+                attendee_ComboBox1_1 As combobox:
+                    Height: =59
+                    InputTextPlaceholder: ="Find Attendee"
+                    Items: =ComboBoxSample
+                    SearchItems: =Search(ComboBoxSample,attendee_ComboBox1_1.SearchText,"Value1")
+                    Size: =21
+                    Width: =522
+                    X: =46
+                    Y: =83
+                    ZIndex: =2
+
+            allattendee_Container_1 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =565
+                RadiusBottomLeft: =1
+                RadiusBottomRight: =1
+                RadiusTopLeft: =1
+                RadiusTopRight: =1
+                Width: =606
+                X: =14
+                Y: =330
+                ZIndex: =2
+
+                all_attendee_Label_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =70
+                    Size: =21
+                    Text: ="All Attendees"
+                    Width: =560
+                    X: =16
+                    Y: =10
+                    ZIndex: =1
+
+                Gallery4_1 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =485
+                    Items: =CustomGallerySample
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    TemplateSize: |-
+                        =//If(Self.Layout = Layout.Horizontal, Min(280, Self.Width - 60), Min(280, Self.Height - 60))
+                        80
+                    Width: =602
+                    X: =3
+                    Y: =80
+                    ZIndex: =2
+
+                    Container12_1 As groupContainer.manualLayoutContainer:
+                        Height: =78
+                        Width: =576
+                        X: =6
+                        Y: =10
+                        ZIndex: =1
+
+                        Label5_1 As label:
+                            Height: =70
+                            Size: =21
+                            Text: ="Text"
+                            Width: =560
+                            ZIndex: =1
+
+        "'show-attendees_Container_1' As groupContainer.manualLayoutContainer":
+            DropShadow: =DropShadow.ExtraBold
+            Height: =550
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Visible: =false
+            Width: =606
+            X: =17
+            Y: =470
+            ZIndex: =5
+
+            all_attendees_Label_1 As label:
+                Fill: =RGBA(219, 219, 219, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                PaddingLeft: =15
+                Size: =18
+                Text: ="All Attendees"&" ("&CountRows(col_attendees)&")"                           
+                Width: =Parent.Width-30
+                X: =16
+                Y: =10
+                ZIndex: =1
+
+            Gal_allAttendees_1 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =Parent.Height-all_attendees_Label_1.Height-10
+                Items: =SortByColumns(col_attendees,"Name",sort_order)
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateFill: =RGBA(0, 0, 0, .050)
+                TemplatePadding: =10
+                TemplateSize: =50
+                Width: =Parent.Width-10
+                X: =5
+                Y: =80
+                ZIndex: =2
+
+                name_Container_1 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =Parent.TemplateHeight
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Width: =Parent.TemplateWidth
+                    ZIndex: =1
+
+                    name_Label_1 As label:
+                        Height: =Parent.Height
+                        PaddingLeft: =12
+                        Size: =15
+                        Text: =ThisItem.Name
+                        Width: =560
+                        X: =Checkbox2_1.Width
+                        ZIndex: =1
+
+                    Checkbox2_1 As checkbox:
+                        BorderStyle: =BorderStyle.None
+                        CheckboxSize: =25
+                        Height: =Parent.Height
+                        OnCheck: =Collect(col_attendeeListdelete,ThisItem)
+                        OnUncheck: =Remove(col_attendeeListdelete,ThisItem)
+                        PaddingLeft: =10
+                        Size: =21
+                        Text: =""
+                        Width: =40
+                        ZIndex: =2
+
+                Icon1_1 As icon.CancelBadge:
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledBorderColor: =RGBA(79, 90, 94, 1)
+                    DisplayMode: =If(CountRows(col_attendeeListdelete)>0 ||PopUp1,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =35
+                    Icon: =Icon.CancelBadge
+                    OnSelect: |+
+                        =/*Patch(
+                            col_allAttendee,
+                            LookUp(
+                                col_allAttendee,
+                                Attendees = ThisItem.GUID
+                            ),
+                            (LookUp(
+                                Attendees,
+                                Attendees = ThisItem.GUID
+                            ))
+                        );*/
+                        /*If(
+                            ThisItem.GUID in col_allAttendee[@Attendees],
+                            "",
+                            Collect(
+                                col_allAttendee,
+                                LookUp(
+                                    Attendees,
+                                    Attendees = ThisItem.GUID
+                                )
+                            );
+                            
+                        );
+                        Remove(
+                            col_attendees,
+                            ThisItem
+                        );*/
+                        Set(_V_selectedItem,ThisItem);
+                        //Collect(col_attendeeListdelete,ThisItem);
+                        Set(PopUp2,true);
+                        
+                    Width: =27
+                    X: =534
+                    Y: =9
+                    ZIndex: =2
+
+            Icon7_1 As icon.Trash:
+                Color: =RGBA(184, 0, 0, 1)
+                Height: =50
+                Icon: =Icon.Trash
+                OnSelect: =Set(PopUp1,true);
+                Visible: =If(CountRows(col_attendeeListdelete)>0,true,false)
+                Width: =50
+                X: =530
+                Y: =18
+                ZIndex: =3
+
+            Icon10_1 As icon.ArrowsUpDown:
+                Height: =40
+                Icon: =Icon.Sort
+                OnSelect: |-
+                    =If(sort_order=SortOrder.Ascending,
+                        Set(sort_order,SortOrder.Descending),
+                        Set(sort_order,SortOrder.Ascending)
+                    );
+                Width: =74
+                X: =480
+                Y: =25
+                ZIndex: =4
+
+        manual_container_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Height: =250
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Visible: |-
+                =//_V_manualvisible
+                false
+            Width: =606
+            X: =17
+            Y: =200
+            ZIndex: =6
+
+            attendees_Label_1 As label:
+                FontWeight: =FontWeight.Bold
+                Height: =70
+                Size: =18
+                Text: |-
+                    ="Attendee Name:"
+                Width: =299
+                X: =48
+                Y: =13
+                ZIndex: =1
+
+            attendees_combobox_1 As combobox:
+                ChevronBackground: =RGBA(172, 62, 11, 1)
+                ChevronDisabledFill: =RGBA(172, 62, 11, 1)
+                ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                DisplayFields: =["ulcq_name"]
+                DisplayMode: |
+                    =DisplayMode.Edit
+                Fill: =RGBA(253, 222, 207, 1)
+                Height: =50
+                InputTextPlaceholder: ="Select Attendee Name"
+                Items: |-
+                    =//col_allAttendee
+                    col_examattendee
+                PressedBorderColor: =Self.ChevronBackground
+                PressedFill: =Self.ChevronBackground
+                SearchFields: =["ulcq_name"]
+                SearchItems: |-
+                    =Search(//col_allAttendee
+                    col_examattendee,attendees_combobox_1.SearchText,"ulcq_name")
+                SelectionFill: =Self.ChevronBackground
+                SelectMultiple: =false
+                Size: =15
+                Width: =520
+                X: =46
+                Y: =83
+                ZIndex: =2
+
+            submit_Button_3 As button:
+                DisplayMode: =If(IsBlank(attendees_combobox_1.Selected),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =45
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(
+                        _V_name,
+                        attendees_combobox_1.Selected.Name
+                    );
+                    If(
+                        LookUp(
+                            //Attendees,
+                            col_examattendee,
+                            Name = _V_name
+                        ).Attendees in col_attendees[@GUID],
+                        Set(
+                            _V_alreadyPresentPopup,
+                            true
+                        );
+                        Reset(attendees_combobox_1),
+                        UpdateContext({attendeeID: attendeeID + 1});
+                        Set(
+                            _V_questionID,
+                            1
+                        );
+                        If(
+                            CountRows(col_attendees) < 1,
+                            ClearCollect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox_1.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox_1.Selected.Attendees,
+                                    Total:0
+                                }
+                            ),
+                            Collect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox_1.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox_1.Selected.Attendees,
+                                    Total:0
+                                }
+                            )
+                        );
+                        
+                    //Set(col_CopyAttendees,col_attendees);
+                    ClearCollect(
+                            col_CopyAttendees,
+                            col_attendees
+                        );
+                        RemoveIf(
+                            col_examattendee,
+                            Name = attendees_combobox_1.Selected.Name
+                        );
+                        Reset(attendees_combobox_1)
+                    
+                    )
+                    
+                    
+                    
+                    
+                    
+                    /*
+                    UpdateContext({attendeeID: attendeeID + 1});
+                    Set(
+                        _V_questionID,
+                        1
+                    );
+                    If(
+                        CountRows(col_attendees) < 1,
+                        ClearCollect(
+                            col_attendees,
+                            {
+                                Name: attendees_combobox.Selected.Name,
+                                attendeeId: attendeeID,
+                                QuestionID: _V_questionID,
+                                GUID: attendees_combobox.Selected.Attendees
+                            }
+                        ),
+                        Collect(
+                            col_attendees,
+                            {
+                                Name: attendees_combobox.Selected.Name,
+                                attendeeId: attendeeID,
+                                QuestionID: _V_questionID,
+                                GUID: attendees_combobox.Selected.Attendees
+                            }
+                        )
+                    );
+                    //Set(col_CopyAttendees,col_attendees);
+                    ClearCollect(
+                        col_CopyAttendees,
+                        col_attendees
+                    );
+                    RemoveIf(
+                        col_allAttendee,
+                        Name = attendees_combobox.Selected.Name
+                    );
+                    Reset(attendees_combobox);
+                    If(
+                        LookUp(Attendees,Name=_V_name).Attendees in col_attendees[@GUID],
+                        Set(
+                            _V_alreadyPresentPopup,
+                            true
+                        )
+                    )*/
+                Text: ="Add"
+                Tooltip: =If(IsBlank(attendees_combobox_1.Selected),"Please select a attendee to proceed","")
+                Width: =250
+                X: =315
+                Y: =168
+                ZIndex: =3
+
+            submit_Button_2 As button:
+                Fill: =RGBA(99, 139, 44, 1)
+                Height: =45
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =ResetForm(Form1_3);
+                    NewForm(Form1_3);
+                    Set(_V_entrypopup_visible,true);
+                    UpdateContext({_V_textPopup:false})
+                Text: ="Add New Attendee"
+                Width: =250
+                X: =48
+                Y: =168
+                ZIndex: =7
+
+        proceed_Button_1 As button:
+            DisplayMode: =If(IsEmpty(col_attendees),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(99, 139, 44, 1)
+            Height: =45
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Set(_V_popupvisible,true);Reset(moduleComboBox);
+                Clear(col_resultdata_1);
+            Size: =17
+            Text: ="Proceed"
+            Visible: =false
+            Width: =225
+            X: =388
+            Y: =1050
+            ZIndex: =7
+
+        scan_Container_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =291
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Visible: |-
+                =//_V_scanvisible
+                false
+            Width: =605
+            X: =17
+            Y: =230
+            ZIndex: =8
+
+            scan_button_1 As button:
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =Set(_V_cameravisible,false);
+                RadiusBottomLeft: =12
+                RadiusBottomRight: =12
+                RadiusTopLeft: =12
+                RadiusTopRight: =12
+                Size: =21
+                Text: ="Scan"
+                Width: =137
+                X: =444
+                Y: =226
+                ZIndex: =1
+
+            Camera2_1 As camera:
+                Camera: =0
+                DisplayMode: =If(_V_cameravisible,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =214
+                Width: =232
+                X: =191
+                Y: =12
+                ZIndex: =2
+
+            camera_hide_Container_1 As groupContainer.manualLayoutContainer:
+                Fill: =Color.DimGrey
+                Height: =214
+                Visible: =_V_cameravisible
+                Width: =232
+                X: =191
+                Y: =12
+                ZIndex: =3
+
+                camera_icon_1 As icon.Camera:
+                    Color: =RGBA(255,255,255, 1)
+                    Icon: =Icon.Camera
+                    X: =84
+                    Y: =70
+                    ZIndex: =1
+
+        HeaderComponent_27 As HeaderComponent_26:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =9
+
+        Container11_1 As groupContainer.horizontalAutoLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =Parent.Height/16
+            LayoutMode: =LayoutMode.Auto
+            Visible: =false
+            Width: =Parent.Width-40
+            X: =20
+            Y: =HeaderComponent_27.Height+20
+            ZIndex: =10
+
+            "BarcodeReader1_2 As 'Barcode Reader'":
+                AlignInContainer: =AlignInContainer.Stretch
+                BorderFillColor: =RGBA(0, 0, 0, 1)
+                BorderThickness: =0
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledContentColor: =RGBA(166, 166, 166, 1)
+                DisabledFillColor: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Edit
+                FillColor: |-
+                    =//If(!_V_isSelect_ManualEntry,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                    If(!_V_isSelect_ManualEntry,Color.LightGray,Color.White)
+                FillPortions: =1
+                FontSize: =15
+                Height: =54
+                HoverBorderColor: =RGBA(88, 115, 171, 1)
+                HoverContentColor: =RGBA(255, 255, 255, 1)
+                HoverFillColor: =ColorFade(RGBA(246, 88, 16, 1),-20%)
+                LayoutMinHeight: =70
+                LayoutMinWidth: =280
+                OnCancel: =false
+                OnScan: |
+                    =ClearCollect(
+                        col_scanAttendees,
+                        BarcodeReader1_2.Barcodes
+                        //{Name:"Soumyadeb Saha",Email:"soumya@gmail.com"}
+                    );
+                    Set(
+                        _V_scannedAttendee,
+                        LookUp(
+                            Attendees,
+                            Email = Last(col_scanAttendees).Value
+                        )
+                    );
+                    Set(
+                        _V_cofirmationPOPUP,
+                        true
+                    );
+                    Set(_V_isSelect_ManualEntry,false);
+                    Set(_V_isSelectScanQR,true);
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedBorderColor: =RGBA(56, 96, 178, 1)
+                PressedContentColor: =RGBA(56, 96, 178, 1)
+                PressedFillColor: =RGBA(255, 255, 255, 1)
+                ScanningMode: ='BarcodeReader.ScanningMode'.AutomaticallyScan
+                Text: ="Scan QR Code"
+                TextAlignment: =Align.Center
+                TextColor: =RGBA(0, 0, 0, 1)
+                Width: =156
+                X: =120
+                Y: =11
+                ZIndex: =1
+
+            Rectangle3_1 As rectangle:
+                Fill: =RGBA(0, 0, 0, 1)
+                Height: =Parent.Height
+                Width: =1
+                ZIndex: =2
+
+            Button8_2 As button:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                BorderThickness: =0
+                Color: =RGBA(0, 0, 0, 1)
+                Fill: =If(_V_isSelect_ManualEntry,Color.LightGray,Color.White)
+                FillPortions: =1
+                FocusedBorderThickness: =0
+                Height: =70
+                LayoutMinHeight: =70
+                LayoutMinWidth: =280
+                OnSelect: |-
+                    =Set(_V_isSelect_ManualEntry,true);
+                    Set(_V_isSelectScanQR,false);
+                    Set(_V_setcolor2,true);
+                    Set(_V_setcolor1,false);
+                    Set(_V_manualvisible,true);
+                    Set(_V_scanvisible,false);
+                    Set(_V_cameravisible,true);
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Text: ="Manual Entry"
+                Width: =280
+                ZIndex: =3
+
+        Container14_1 As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =Parent.Height-HeaderComponent_27.Height-60
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =Parent.Width
+            Y: =HeaderComponent_27.Height+70
+            ZIndex: =11
+
+            manual_entry_container_2 As groupContainer.manualLayoutContainer:
+                Height: =904
+                PaddingTop: =10
+                Visible: =false
+                Width: =640
+                Y: =52
+                ZIndex: =1
+
+                add_attendee_Container_2 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =281
+                    RadiusBottomLeft: =20
+                    RadiusBottomRight: =20
+                    RadiusTopLeft: =20
+                    RadiusTopRight: =20
+                    Width: =606
+                    X: =14
+                    Y: =24
+                    ZIndex: =1
+
+                    attendee_Label_2 As label:
+                        Align: =Align.Center
+                        Height: =70
+                        Size: =21
+                        Text: |-
+                            ="Attendee Name:"
+                        Width: =299
+                        X: =3
+                        Y: =13
+                        ZIndex: =1
+
+                    attendee_ComboBox1_2 As combobox:
+                        Height: =59
+                        InputTextPlaceholder: ="Find Attendee"
+                        Items: =ComboBoxSample
+                        SearchItems: =Search(ComboBoxSample,attendee_ComboBox1_2.SearchText,"Value1")
+                        Size: =21
+                        Width: =522
+                        X: =46
+                        Y: =83
+                        ZIndex: =2
+
+                allattendee_Container_2 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.Regular
+                    Height: =565
+                    RadiusBottomLeft: =1
+                    RadiusBottomRight: =1
+                    RadiusTopLeft: =1
+                    RadiusTopRight: =1
+                    Width: =606
+                    X: =14
+                    Y: =330
+                    ZIndex: =2
+
+                    all_attendee_Label_2 As label:
+                        FontWeight: =FontWeight.Semibold
+                        Height: =70
+                        Size: =21
+                        Text: ="All Attendees"
+                        Width: =560
+                        X: =16
+                        Y: =10
+                        ZIndex: =1
+
+                    Gallery4_2 As gallery.galleryVertical:
+                        DelayItemLoading: =true
+                        Height: =485
+                        Items: =CustomGallerySample
+                        Layout: =Layout.Vertical
+                        LoadingSpinner: =LoadingSpinner.Data
+                        TemplateSize: |-
+                            =//If(Self.Layout = Layout.Horizontal, Min(280, Self.Width - 60), Min(280, Self.Height - 60))
+                            80
+                        Width: =602
+                        X: =3
+                        Y: =80
+                        ZIndex: =2
+
+                        Container12_2 As groupContainer.manualLayoutContainer:
+                            Height: =78
+                            Width: =576
+                            X: =6
+                            Y: =10
+                            ZIndex: =1
+
+                            Label5_2 As label:
+                                Height: =70
+                                Size: =21
+                                Text: ="Text"
+                                Width: =560
+                                ZIndex: =1
+
+            "'show-attendees_Container_2' As groupContainer.manualLayoutContainer":
+                DropShadow: =DropShadow.ExtraBold
+                Height: =520
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Width: =606
+                X: =17
+                Y: =manual_container_2.Height+120
+                ZIndex: =2
+
+                all_attendees_Label_2 As label:
+                    Fill: =RGBA(219, 219, 219, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =70
+                    PaddingLeft: =15
+                    Size: =18
+                    Text: ="All Attendees"&" ("&CountRows(col_attendees)&")"                           
+                    Width: =Parent.Width-30
+                    X: =16
+                    Y: =10
+                    ZIndex: =1
+
+                Gal_allAttendees_2 As gallery.galleryVertical:
+                    DelayItemLoading: =true
+                    Height: =Parent.Height-all_attendees_Label_2.Height-10
+                    Items: =SortByColumns(col_attendees,"Name",sort_order)
+                    Layout: =Layout.Vertical
+                    LoadingSpinner: =LoadingSpinner.Data
+                    TemplateFill: =RGBA(0, 0, 0, .050)
+                    TemplatePadding: =10
+                    TemplateSize: =50
+                    Width: =Parent.Width-10
+                    X: =5
+                    Y: =80
+                    ZIndex: =2
+
+                    name_Container_2 As groupContainer.manualLayoutContainer:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.TemplateHeight
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.TemplateWidth
+                        ZIndex: =1
+
+                        name_Label_2 As label:
+                            Height: =Parent.Height
+                            PaddingLeft: =12
+                            Size: =15
+                            Text: =ThisItem.Name
+                            Width: =400
+                            X: =30
+                            ZIndex: =1
+
+                        Checkbox2_2 As checkbox:
+                            BorderStyle: =BorderStyle.None
+                            CheckboxSize: =25
+                            Height: =Parent.Height
+                            OnCheck: =Collect(col_attendeeListdelete,ThisItem)
+                            OnUncheck: =Remove(col_attendeeListdelete,ThisItem)
+                            PaddingLeft: =10
+                            Size: =21
+                            Text: =""
+                            Width: =40
+                            ZIndex: =2
+
+                    Icon1_2 As icon.CancelBadge:
+                        Color: =RGBA(255, 0, 0, 1)
+                        DisabledBorderColor: =RGBA(79, 90, 94, 1)
+                        DisplayMode: =If(CountRows(col_attendeeListdelete)>0 ||PopUp1,DisplayMode.Disabled,DisplayMode.Edit)
+                        Height: =35
+                        Icon: =Icon.CancelBadge
+                        OnSelect: |+
+                            =/*Patch(
+                                col_allAttendee,
+                                LookUp(
+                                    col_allAttendee,
+                                    Attendees = ThisItem.GUID
+                                ),
+                                (LookUp(
+                                    Attendees,
+                                    Attendees = ThisItem.GUID
+                                ))
+                            );*/
+                            /*If(
+                                ThisItem.GUID in col_allAttendee[@Attendees],
+                                "",
+                                Collect(
+                                    col_allAttendee,
+                                    LookUp(
+                                        Attendees,
+                                        Attendees = ThisItem.GUID
+                                    )
+                                );
+                                
+                            );
+                            Remove(
+                                col_attendees,
+                                ThisItem
+                            );*/
+                            Set(_V_selectedItem,ThisItem);
+                            //Collect(col_attendeeListdelete,ThisItem);
+                            Set(PopUp2,true);
+                            
+                        Width: =27
+                        X: =534
+                        Y: =9
+                        ZIndex: =2
+
+                Icon7_2 As icon.Trash:
+                    Color: =RGBA(184, 0, 0, 1)
+                    Height: =50
+                    Icon: =Icon.Trash
+                    OnSelect: =Set(PopUp1,true);
+                    Visible: =If(CountRows(col_attendeeListdelete)>0,true,false)
+                    Width: =50
+                    X: =530
+                    Y: =18
+                    ZIndex: =3
+
+                Icon10_2 As icon.ArrowsUpDown:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Height: =35
+                    Icon: =Icon.Sort
+                    OnSelect: |-
+                        =If(sort_order=SortOrder.Ascending,
+                            Set(sort_order,SortOrder.Descending),
+                            Set(sort_order,SortOrder.Ascending)
+                        );
+                    Width: =35
+                    X: =480
+                    Y: =25
+                    ZIndex: =4
+
+            manual_container_2 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Bold
+                Height: =250
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Visible: |
+                    =_V_manualvisible
+                Width: =606
+                X: =17
+                Y: =Container11_3.Height+40
+                ZIndex: =3
+
+                attendees_Label_2 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =70
+                    Size: =18
+                    Text: |-
+                        ="Attendee Name:"
+                    Width: =299
+                    X: =48
+                    Y: =13
+                    ZIndex: =1
+
+                attendees_combobox_2 As combobox:
+                    ChevronBackground: =RGBA(172, 62, 11, 1)
+                    ChevronDisabledFill: =RGBA(172, 62, 11, 1)
+                    ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                    DisplayFields: =["ulcq_name"]
+                    DisplayMode: |
+                        =DisplayMode.Edit
+                    Fill: =RGBA(253, 222, 207, 1)
+                    Height: =50
+                    InputTextPlaceholder: ="Select Attendee Name"
+                    Items: |-
+                        =//col_allAttendee
+                        col_examattendee
+                    PressedBorderColor: =Self.ChevronBackground
+                    PressedFill: =Self.ChevronBackground
+                    SearchFields: =["ulcq_name"]
+                    SearchItems: |-
+                        =Search(//col_allAttendee
+                        col_examattendee,attendees_combobox_2.SearchText,"ulcq_name")
+                    SelectionFill: =Self.ChevronBackground
+                    SelectMultiple: =false
+                    Size: =15
+                    Width: =520
+                    X: =46
+                    Y: =83
+                    ZIndex: =2
+
+                submit_Button_5 As button:
+                    DisplayMode: =If(IsBlank(attendees_combobox_2.Selected),DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(204, 72, 0, 1)
+                    Height: =45
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |-
+                        =Set(
+                            _V_name,
+                            attendees_combobox_2.Selected.Name
+                        );
+                        If(
+                            LookUp(
+                                //Attendees,
+                                col_examattendee,
+                                Name = _V_name
+                            ).Attendees in col_attendees[@GUID],
+                            Set(
+                                _V_alreadyPresentPopup,
+                                true
+                            );
+                            Reset(attendees_combobox_2),
+                            UpdateContext({attendeeID: attendeeID + 1});
+                            Set(
+                                _V_questionID,
+                                1
+                            );
+                            If(
+                                CountRows(col_attendees) < 1,
+                                ClearCollect(
+                                    col_attendees,
+                                    {
+                                        Name: attendees_combobox_2.Selected.Name,
+                                        attendeeId: attendeeID,
+                                        QuestionID: _V_questionID,
+                                        GUID: attendees_combobox_2.Selected.Attendees,
+                                        Total:0
+                                    }
+                                ),
+                                Collect(
+                                    col_attendees,
+                                    {
+                                        Name: attendees_combobox_2.Selected.Name,
+                                        attendeeId: attendeeID,
+                                        QuestionID: _V_questionID,
+                                        GUID: attendees_combobox_2.Selected.Attendees,
+                                        Total:0
+                                    }
+                                )
+                            );
+                            
+                        //Set(col_CopyAttendees,col_attendees);
+                        ClearCollect(
+                                col_CopyAttendees,
+                                col_attendees
+                            );
+                            RemoveIf(
+                                col_examattendee,
+                                Name = attendees_combobox_2.Selected.Name
+                            );
+                            Reset(attendees_combobox_2)
+                        
+                        )
+                        
+                        
+                        
+                        
+                        
+                        /*
+                        UpdateContext({attendeeID: attendeeID + 1});
+                        Set(
+                            _V_questionID,
+                            1
+                        );
+                        If(
+                            CountRows(col_attendees) < 1,
+                            ClearCollect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox.Selected.Attendees
+                                }
+                            ),
+                            Collect(
+                                col_attendees,
+                                {
+                                    Name: attendees_combobox.Selected.Name,
+                                    attendeeId: attendeeID,
+                                    QuestionID: _V_questionID,
+                                    GUID: attendees_combobox.Selected.Attendees
+                                }
+                            )
+                        );
+                        //Set(col_CopyAttendees,col_attendees);
+                        ClearCollect(
+                            col_CopyAttendees,
+                            col_attendees
+                        );
+                        RemoveIf(
+                            col_allAttendee,
+                            Name = attendees_combobox.Selected.Name
+                        );
+                        Reset(attendees_combobox);
+                        If(
+                            LookUp(Attendees,Name=_V_name).Attendees in col_attendees[@GUID],
+                            Set(
+                                _V_alreadyPresentPopup,
+                                true
+                            )
+                        )*/
+                    Text: ="Add"
+                    Tooltip: =If(IsBlank(attendees_combobox_2.Selected),"Please select a attendee to proceed","")
+                    Width: =250
+                    X: =315
+                    Y: =168
+                    ZIndex: =3
+
+                submit_Button_4 As button:
+                    Fill: =RGBA(99, 139, 44, 1)
+                    Height: =45
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |-
+                        =ResetForm(Form1_3);
+                        NewForm(Form1_3);
+                        Set(_V_entrypopup_visible,true);
+                        UpdateContext({_V_textPopup:false})
+                    Text: ="Add New Attendee"
+                    Width: =250
+                    X: =48
+                    Y: =168
+                    ZIndex: =7
+
+            proceed_Button_2 As button:
+                DisplayMode: =If(IsEmpty(col_attendees),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(99, 139, 44, 1)
+                Height: =45
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(_V_popupvisible,true);Reset(moduleComboBox);
+                    Clear(col_resultdata_1);
+                Size: =17
+                Text: ="Proceed"
+                Width: =225
+                X: =388
+                Y: ='show-attendees_Container_2'.Y+'show-attendees_Container_2'.Height+20
+                ZIndex: =4
+
+            scan_Container_2 As groupContainer.manualLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =291
+                RadiusBottomLeft: =20
+                RadiusBottomRight: =20
+                RadiusTopLeft: =20
+                RadiusTopRight: =20
+                Visible: =_V_scanvisible
+                Width: =605
+                X: =17
+                Y: =52
+                ZIndex: =5
+
+                scan_button_2 As button:
+                    Fill: =RGBA(204, 72, 0, 1)
+                    Height: =50
+                    HoverFill: =ColorFade(Self.Fill, -20%)
+                    OnSelect: |
+                        =Set(_V_cameravisible,false);
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    Size: =21
+                    Text: ="Scan"
+                    Width: =137
+                    X: =444
+                    Y: =226
+                    ZIndex: =1
+
+                Camera2_2 As camera:
+                    Camera: =0
+                    DisplayMode: =If(_V_cameravisible,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =214
+                    Width: =232
+                    X: =191
+                    Y: =12
+                    ZIndex: =2
+
+                camera_hide_Container_2 As groupContainer.manualLayoutContainer:
+                    Fill: =Color.DimGrey
+                    Height: =214
+                    Visible: =_V_cameravisible
+                    Width: =232
+                    X: =191
+                    Y: =12
+                    ZIndex: =3
+
+                    camera_icon_2 As icon.Camera:
+                        Color: =RGBA(255,255,255, 1)
+                        Icon: =Icon.Camera
+                        X: =84
+                        Y: =70
+                        ZIndex: =1
+
+            Container11_3 As groupContainer.horizontalAutoLayoutContainer:
+                DropShadow: =DropShadow.Regular
+                Height: =Parent.Height/16
+                LayoutMode: =LayoutMode.Auto
+                Width: =Parent.Width-40
+                X: =20
+                Y: =20
+                ZIndex: =6
+
+                "BarcodeReader1_3 As 'Barcode Reader'":
+                    AlignInContainer: =AlignInContainer.Stretch
+                    BorderFillColor: =RGBA(0, 0, 0, 1)
+                    BorderThickness: =0
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledContentColor: =RGBA(166, 166, 166, 1)
+                    DisabledFillColor: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =DisplayMode.Edit
+                    FillColor: |-
+                        =//If(!_V_isSelect_ManualEntry,RGBA(255, 90, 0, 1),RGBA(255,139,76,1))
+                        If(!_V_isSelect_ManualEntry,Color.LightGray,Color.White)
+                    FillPortions: =1
+                    FontSize: =15
+                    Height: =54
+                    HoverBorderColor: =RGBA(88, 115, 171, 1)
+                    HoverContentColor: =RGBA(255, 255, 255, 1)
+                    HoverFillColor: =ColorFade(RGBA(246, 88, 16, 1),-20%)
+                    LayoutMinHeight: =70
+                    LayoutMinWidth: =280
+                    OnCancel: =false
+                    OnScan: |
+                        =ClearCollect(
+                            col_scanAttendees,
+                            BarcodeReader1_3.Barcodes
+                            //{Name:"Soumyadeb Saha",Email:"soumya@gmail.com"}
+                        );
+                        Set(
+                            _V_scannedAttendee,
+                            LookUp(
+                                Attendees,
+                                Email = Last(col_scanAttendees).Value
+                            )
+                        );
+                        Set(
+                            _V_cofirmationPOPUP,
+                            true
+                        );
+                        Set(_V_isSelect_ManualEntry,false);
+                        Set(_V_isSelectScanQR,true);
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    PressedBorderColor: =RGBA(56, 96, 178, 1)
+                    PressedContentColor: =RGBA(56, 96, 178, 1)
+                    PressedFillColor: =RGBA(255, 255, 255, 1)
+                    ScanningMode: ='BarcodeReader.ScanningMode'.AutomaticallyScan
+                    Text: ="Scan QR Code"
+                    TextAlignment: =Align.Center
+                    TextColor: =RGBA(0, 0, 0, 1)
+                    Width: =156
+                    X: =120
+                    Y: =11
+                    ZIndex: =1
+
+                Rectangle3_2 As rectangle:
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =Parent.Height
+                    Width: =1
+                    ZIndex: =2
+
+                Button8_3 As button:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    BorderThickness: =0
+                    Color: =RGBA(0, 0, 0, 1)
+                    Fill: =If(_V_isSelect_ManualEntry,Color.LightGray,Color.White)
+                    FillPortions: =1
+                    FocusedBorderThickness: =0
+                    Height: =70
+                    LayoutMinHeight: =70
+                    LayoutMinWidth: =280
+                    OnSelect: |-
+                        =Set(_V_isSelect_ManualEntry,true);
+                        Set(_V_isSelectScanQR,false);
+                        Set(_V_setcolor2,true);
+                        Set(_V_setcolor1,false);
+                        Set(_V_manualvisible,true);
+                        Set(_V_scanvisible,false);
+                        Set(_V_cameravisible,true);
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Text: ="Manual Entry"
+                    Width: =280
+                    ZIndex: =3
+
+    Image10 As image:
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =40
+        Image: =backarrow
+        ImagePosition: =ImagePosition.Fill
+        OnSelect: =Navigate(Dashboard_Screen,ScreenTransition.Fade)
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Width: =40
+        X: =40
+        Y: =HeaderComponent_5.Height+15
+        ZIndex: =10
+
+    Label29_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Size: =21
+        Text: ="Exam"
+        Width: =200
+        X: =Parent.Width/2-Self.Width/2
+        Y: =HeaderComponent_5.Height+15
+        ZIndex: =11
+
+    popup_Container As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =1136
+        Visible: =_V_popupvisible
+        Width: =640
+        ZIndex: =12
+
+        module_Container As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =327
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =523
+            X: =58
+            Y: =390
+            ZIndex: =1
+
+            moduleComboBox As combobox:
+                ChevronBackground: =RGBA(204, 72, 0, 1)
+                ChevronHoverBackground: =ColorFade(Self.ChevronBackground, -20%)
+                DisplayFields: =["ulcq_name"]
+                Height: =59
+                InputTextPlaceholder: ="Select Module"
+                IsSearchable: =false
+                Items: ='Module Names'
+                OnChange: |-
+                    =Set(
+                        totalQuestions,
+                        CountRows(
+                            Filter(
+                                Modules,
+                                'Module Type'.Name = moduleComboBox.Selected.Name
+                            )
+                        )*CountRows(col_CopyAttendees)
+                    )
+                SearchFields: =["ulcq_name"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =12
+                Width: =439
+                X: =40
+                Y: =114
+                ZIndex: =1
+
+            ok_Button As button:
+                DisplayMode: =If(IsBlank(moduleComboBox.Selected),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =53
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |
+                    =Set(
+                        _V_module,
+                        moduleComboBox.Selected.Name
+                    );
+                    Set(
+                        _V_popupvisible,
+                        false
+                    );
+                    Set(
+                        _V_currentindex,
+                        1
+                    );
+                    Clear(col_resultdata_1);
+                    Navigate(Marking_screen);
+                Size: =20
+                Text: ="OK"
+                Width: =149
+                X: =90
+                Y: =233
+                ZIndex: =2
+
+            cancel_Button As button:
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =53
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Set(_V_popupvisible,false);
+                Size: =20
+                Text: ="Cancel"
+                Width: =149
+                X: =300
+                Y: =233
+                ZIndex: =3
+
+            Label15 As label:
+                Height: =46
+                PaddingLeft: =0
+                Size: =21
+                Text: ="Select Module"
+                Width: =426
+                X: =40
+                Y: =53
+                ZIndex: =4
+
+            Label1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =12
+                Text: =If(IsBlank(moduleComboBox.Selected),"* Please Select one module","")
+                Width: =Parent.Width-60
+                X: =moduleComboBox.X
+                Y: =moduleComboBox.Y+moduleComboBox.Height
+                ZIndex: =5
+

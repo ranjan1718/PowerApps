@@ -1,0 +1,100 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_area_territories",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_area_territory",
+    "MaxGetRowsCount": 500,
+    "Name": "Area_Territories",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_Area": "Area",
+      "ulcq_area_territory_AsyncOperations": "System Jobs",
+      "ulcq_area_territory_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_area_territory_DuplicateBaseRecord": "Duplicate Records (ulcq_area_territory_DuplicateBaseRecord)",
+      "ulcq_area_territory_DuplicateMatchingRecord": "Duplicate Records (ulcq_area_territory_DuplicateMatchingRecord)",
+      "ulcq_area_territory_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_area_territory_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_area_territory_ProcessSession": "Process Sessions",
+      "ulcq_area_territory_SyncErrors": "Sync Errors",
+      "ulcq_area_territoryid": "Area_Territory",
+      "ulcq_name": "Name",
+      "ulcq_systemuser_Territory_ulcq_area_territory": "Users",
+      "ulcq_territory": "Territory",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Area_Territories",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Area_Territories (Views)",
+    "Name": "_ulcq_area_territory_views",
+    "RelatedEntityName": "Area_Territories",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "75eca849-c4fb-4087-88a8-61b72fd91fd3": "Active Area_Territories",
+      "9a3857c7-c377-41a6-95fd-73fbe13ae0d4": "Inactive Area_Territories",
+      "9d97f4b0-30ae-40aa-87ce-50feb88c4e87": "Area_Territory Advanced Find View",
+      "d307e265-4633-4edb-a473-59a601ba2b9b": "Area_Territory Associated View",
+      "f02054f8-178b-40e6-83b0-b5bf0b031ecb": "Area_Territory Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Area_Territories)",
+    "Name": "ulcq_area_territory_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Area_Territories"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Area_Territories",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Area_Territories)",
+    "Name": "ulcq_area_territory_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Area_Territories"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Area_Territories",
+    "Type": "OptionSetInfo"
+  }
+]

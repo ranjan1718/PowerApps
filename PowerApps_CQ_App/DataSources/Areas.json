@@ -1,0 +1,100 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_areas",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_area",
+    "MaxGetRowsCount": 500,
+    "Name": "Areas",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_area_AsyncOperations": "System Jobs",
+      "ulcq_area_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_area_DuplicateBaseRecord": "Duplicate Records (ulcq_area_DuplicateBaseRecord)",
+      "ulcq_area_DuplicateMatchingRecord": "Duplicate Records (ulcq_area_DuplicateMatchingRecord)",
+      "ulcq_area_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_area_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_area_ProcessSession": "Process Sessions",
+      "ulcq_area_SyncErrors": "Sync Errors",
+      "ulcq_area_territory_Area_ulcq_area": "Area_Territories",
+      "ulcq_areaid": "Area",
+      "ulcq_attendees_Area_ulcq_area": "Attendees",
+      "ulcq_name": "Name",
+      "ulcq_systemuser_Area_ulcq_area": "Users",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Areas",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Areas (Views)",
+    "Name": "_ulcq_area_views",
+    "RelatedEntityName": "Areas",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "51ccf6e1-1903-4e07-931b-a4a9adfdd091": "Active Areas",
+      "814224a2-8c75-46b3-b79f-f65992726425": "Area Advanced Find View",
+      "d45d9d75-6084-404f-8782-fa6d67b99cd8": "Area Associated View",
+      "f38efec2-9f72-4956-82de-39f3d9d91612": "Inactive Areas",
+      "f430f8ea-7252-430a-adfa-a9e145bac133": "Area Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Areas)",
+    "Name": "ulcq_area_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Areas"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Areas",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Areas)",
+    "Name": "ulcq_area_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Areas"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Areas",
+    "Type": "OptionSetInfo"
+  }
+]

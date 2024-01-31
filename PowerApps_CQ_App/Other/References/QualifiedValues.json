@@ -1,0 +1,69 @@
+{
+  "QualifiedValues": [
+    {
+      "Kind": "default.cds_ulcq_module_forms",
+      "Namespace": "Modules (Forms)",
+      "Values": {
+        "Information": "d1112f02-a37e-493b-947e-d104320b68e2"
+      }
+    },
+    {
+      "Kind": "default.cds_ulcq_attendees_forms",
+      "Namespace": "Attendees (Forms)",
+      "Values": {
+        "Information": "d0456a12-32ca-4337-af0e-ae9078530e8f"
+      }
+    },
+    {
+      "Kind": "default.cds_ulcq_area_territory_forms",
+      "Namespace": "Area_Territories (Forms)",
+      "Values": {
+        "Information": "107dcf95-78ce-4e17-aa8d-db50b7747810"
+      }
+    },
+    {
+      "Kind": "default.cds_ulcq_results_forms",
+      "Namespace": "Results (Forms)",
+      "Values": {
+        "Information": "7a790f5a-e1cf-4da1-895d-84732cff279a"
+      }
+    },
+    {
+      "Kind": "default.cds_systemuser_forms",
+      "Namespace": "Users (Forms)",
+      "Values": {
+        "Application User": "d26924ef-4d80-46f7-ab1d-e6ae80a54ce8",
+        "Information": "094fb08a-77bb-49e0-b7ea-8dbddfd01294",
+        "User": "c2cd9e55-d4b4-4b55-9951-16ead79643e5",
+        "User form – Business": "c2413504-7eb2-4c59-a087-95d819866114",
+        "User Hierarchy Tile Form": "c68d6c09-d7a7-4959-8d0f-44b8cff9b452"
+      }
+    },
+    {
+      "Kind": "default.cds_bulkdeletefailure_forms",
+      "Namespace": "Bulk Delete Failures (Forms)",
+      "Values": {}
+    },
+    {
+      "Kind": "default.cds_ulcq_modulename_forms",
+      "Namespace": "Module Names (Forms)",
+      "Values": {
+        "Information": "bc1964cb-08d7-4b37-ab26-ab8dfc74b8ea"
+      }
+    },
+    {
+      "Kind": "default.cds_ulcq_role_forms",
+      "Namespace": "Roles (Forms)",
+      "Values": {
+        "Information": "d0232775-162d-46ea-ae35-aeb957606e21"
+      }
+    },
+    {
+      "Kind": "default.cds_ulcq_area_forms",
+      "Namespace": "Areas (Forms)",
+      "Values": {
+        "Information": "df2d0b9a-c8fe-495e-99f4-f37d3a592219"
+      }
+    }
+  ]
+}

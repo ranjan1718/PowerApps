@@ -1,0 +1,68 @@
+HeaderComponent_26 As CanvasComponent:
+    BackScreen: =App.ActiveScreen
+    Fill: =RGBA(204, 72, 0, 1)
+    Height: =90
+    Navigate_Screen: =App.ActiveScreen
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    Container13_6 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =5
+
+        Image2_5 As image:
+            Height: =Parent.Height
+            Image: =image
+            ImagePosition: =ImagePosition.Stretch
+            OnSelect: |+
+                =Navigate(HeaderComponent_26.BackScreen);
+                Set(ResetGallery,false);
+                
+                
+                
+                
+            Width: =160
+            ZIndex: =1
+
+        Label10_6 As label:
+            Align: =Align.Right
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =65
+            Size: =14
+            Text: ="Welcome,"&Char(10)&User().FullName
+            Width: =181
+            X: =376
+            Y: =12
+            ZIndex: =2
+
+        Image3_5 As image:
+            Height: =70
+            Image: =User().Image
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =70
+            X: =562
+            Y: =9
+            ZIndex: =3
+
+        Icon4_6 As icon.Home:
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =38
+            Icon: =Icon.Home
+            OnSelect: |+
+                =Navigate(HeaderComponent_26.BackScreen);
+                Set(ResetGallery,false);
+                
+                
+                
+            Tooltip: ="Back to Home Page"
+            Width: =38
+            X: =172
+            Y: =26
+            ZIndex: =4
+

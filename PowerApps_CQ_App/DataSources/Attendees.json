@@ -1,0 +1,150 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_attendeeses",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_attendees",
+    "MaxGetRowsCount": 500,
+    "Name": "Attendees",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cr86f_qr": "QR",
+      "cr86f_qr_link": "QR_Link",
+      "cr86f_qrcode": "QR Code",
+      "cr86f_qrcodeid": "cr86f_QRCodeId",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_Area": "Area",
+      "ulcq_attendees_AsyncOperations": "System Jobs",
+      "ulcq_attendees_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_attendees_DuplicateBaseRecord": "Duplicate Records (ulcq_attendees_DuplicateBaseRecord)",
+      "ulcq_attendees_DuplicateMatchingRecord": "Duplicate Records (ulcq_attendees_DuplicateMatchingRecord)",
+      "ulcq_attendees_FileAttachments": "FileAttachments",
+      "ulcq_attendees_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_attendees_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_attendees_ProcessSession": "Process Sessions",
+      "ulcq_attendees_SyncErrors": "Sync Errors",
+      "ulcq_attendeesid": "Attendees",
+      "ulcq_channel": "Channel",
+      "ulcq_class": "Class",
+      "ulcq_email": "Email",
+      "ulcq_name": "Name",
+      "ulcq_territory": "Territory",
+      "ulcq_uniqueid": "Unique Id",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Attendees",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Attendees (Views)",
+    "Name": "_ulcq_attendees_views",
+    "RelatedEntityName": "Attendees",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1cae51b6-5921-4973-82c0-64028156d699": "Attendees Advanced Find View",
+      "31387638-2e00-40fd-b7be-d2d819d81455": "Attendees Associated View",
+      "74e1e6e9-423f-4499-9d6a-ee5401f6afea": "Inactive Attendees",
+      "ea04819a-ea5d-43c7-85f4-952e450b0245": "Active Attendees",
+      "f8dffa19-385a-4eff-b0c9-10861642a37e": "Attendees Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Attendees)",
+    "Name": "ulcq_attendees_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Attendees"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Attendees",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Attendees)",
+    "Name": "ulcq_attendees_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Attendees"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Attendees",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Channel Set",
+    "Name": "ulcq_channelset",
+    "OptionSetInfoNameMapping": {
+      "1": "DT",
+      "2": "MT",
+      "3": "Chains"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "ulcq_channel",
+        "OptionSetReferenceEntityName": "Attendees"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "ulcq_channel",
+    "RelatedEntityName": "Attendees",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Class Set",
+    "Name": "ulcq_classset",
+    "OptionSetInfoNameMapping": {
+      "1": "HYBRID",
+      "2": "PULL",
+      "3": "DC CHEF"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "ulcq_class",
+        "OptionSetReferenceEntityName": "Attendees"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "ulcq_class",
+    "RelatedEntityName": "Attendees",
+    "Type": "OptionSetInfo"
+  }
+]

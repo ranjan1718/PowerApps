@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_modulenames",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_modulename",
+    "MaxGetRowsCount": 500,
+    "Name": "Module Names",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_module_ModuleType_ulcq_modulename": "Modules",
+      "ulcq_modulename_AsyncOperations": "System Jobs",
+      "ulcq_modulename_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_modulename_DuplicateBaseRecord": "Duplicate Records (ulcq_modulename_DuplicateBaseRecord)",
+      "ulcq_modulename_DuplicateMatchingRecord": "Duplicate Records (ulcq_modulename_DuplicateMatchingRecord)",
+      "ulcq_modulename_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_modulename_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_modulename_ProcessSession": "Process Sessions",
+      "ulcq_modulename_SyncErrors": "Sync Errors",
+      "ulcq_modulenameid": "Module Name",
+      "ulcq_name": "Name",
+      "ulcq_results_ModuleType_ulcq_modulename": "Results",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Module Names",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Module Names (Views)",
+    "Name": "_ulcq_modulename_views",
+    "RelatedEntityName": "Module Names",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "19836182-ea8b-48c5-9a68-0ad56399bb4e": "Module Name Associated View",
+      "39d411f8-a1be-47db-99e8-51353b4168c1": "Inactive Module Names",
+      "c5c2b2ae-6803-423e-b669-ec2dcb25ee87": "Module Name Lookup View",
+      "d98e82eb-269c-4065-876c-39379a98c42d": "Active Module Names",
+      "f17949c4-78ac-409d-a3db-049178e59ea4": "Module Name Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Module Names)",
+    "Name": "ulcq_modulename_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Module Names"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Module Names",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Module Names)",
+    "Name": "ulcq_modulename_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Module Names"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Module Names",
+    "Type": "OptionSetInfo"
+  }
+]

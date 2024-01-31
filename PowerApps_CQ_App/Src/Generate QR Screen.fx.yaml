@@ -1,0 +1,167 @@
+"'Generate QR Screen' As screen":
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+
+    TransparentContainer3 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Container10 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =2
+
+        MainContainer_5 As groupContainer.manualLayoutContainer:
+            Height: =1136
+            Width: =640
+            ZIndex: =1
+
+            Container1_20 As groupContainer.manualLayoutContainer:
+                Fill: =RGBA(204, 72, 0, 1)
+                Height: =90
+                RadiusBottomLeft: =10
+                RadiusBottomRight: =10
+                RadiusTopLeft: =10
+                RadiusTopRight: =10
+                Visible: =false
+                Width: =640
+                ZIndex: =1
+
+                Label2_41 As label:
+                    Color: =RGBA(255, 255, 255, 1)
+                    Height: =42
+                    Size: =15
+                    Text: =User().FullName
+                    Width: =192
+                    X: =371
+                    Y: =48
+                    ZIndex: =2
+
+                Label2_40 As label:
+                    Color: =RGBA(255, 255, 255, 1)
+                    Height: =45
+                    Size: =15
+                    Text: ="Welcome,"
+                    Width: =147
+                    X: =416
+                    Y: =2
+                    ZIndex: =3
+
+                Image3_20 As image:
+                    Height: =Parent.Height*.8
+                    Image: =image
+                    OnSelect: =Navigate(Dashboard_Screen)
+                    Width: =Parent.Width*.15
+                    X: =5
+                    Y: =10
+                    ZIndex: =4
+
+                Icon6_18 As icon.Home:
+                    Color: =RGBA(255, 255, 255, 1)
+                    Height: =50
+                    Icon: =Icon.Home
+                    OnSelect: =Navigate(Dashboard_Screen);
+                    Width: =50
+                    X: =140
+                    Y: =20
+                    ZIndex: =5
+
+                Image1_5 As image:
+                    Height: =Parent.Height
+                    Image: =User().Image
+                    Width: =Parent.Width*.12
+                    X: =560
+                    ZIndex: =6
+
+            subContainer1_5 As groupContainer.manualLayoutContainer:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =Parent.Height-180
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =30
+                RadiusTopRight: =30
+                Width: =Parent.Width
+                Y: =180
+                ZIndex: =2
+
+                Image9 As image:
+                    Height: =400
+                    Image: |-
+                        =//"http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl="&LookUp(Attendees,Email=User().Email).Email
+                        If(
+                            IsBlank(
+                                LookUp(
+                                    Attendees,
+                                    Name = User().FullName
+                                ).QR_Link
+                            ),
+                            "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" & LookUp(
+                                Attendees,
+                                Email = User().Email
+                            ).Email,
+                            LookUp(Attendees,Name=User().FullName).QR_Link
+                        )
+                    ImagePosition: =ImagePosition.Fill
+                    Width: =400
+                    X: =129
+                    Y: =90
+                    ZIndex: =1
+
+            HeaderComponent_25 As HeaderComponent_15:
+                BackScreen: =Dashboard_Screen
+                ZIndex: =3
+
+        Label18_6 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =70
+            Size: =21
+            Text: ="Generate QR"
+            Width: =292
+            X: =174
+            Y: =100
+            ZIndex: =2
+
+        Image8_1 As image:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =40
+            Image: =backarrow
+            OnSelect: |-
+                =Navigate(
+                    CDE_User_Profile_Screen,
+                    ScreenTransition.Fade
+                );
+                If(
+                    IsBlank(
+                        LookUp(
+                            Attendees,
+                            Name = User().FullName
+                        ).QR_Link
+                    ),
+                    Patch(
+                        Attendees,
+                        LookUp(
+                            Attendees,
+                            Name = User().FullName
+                        ),
+                        {
+                            'QR Code': Image9.Image,
+                            QR_Link: "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" & LookUp(
+                                Attendees,
+                                Email = User().Email
+                            ).Email
+                        }
+                    )
+                )
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =40
+            X: =37
+            Y: =115
+            ZIndex: =3
+

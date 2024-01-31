@@ -1,0 +1,336 @@
+Dashboard_Screen As screen:
+
+    Container2_2 As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =1
+
+        Label1_9 As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =50
+            OnSelect: =Navigate(Attendee_Screen)
+            PaddingLeft: =35
+            Size: =18
+            Text: ="Attendees"
+            Visible: =If(_V_cdeEdit,false,true)
+            Width: =193
+            X: =If(_V_editoption,((modulecontainer.X + modulecontainer.Width) - (modulecontainer.Width/2)) - (Self.Width/2),((attendeeContainer.X + attendeeContainer.Width) - (attendeeContainer.Width/2)) - (Self.Width/2))
+            Y: =If(_V_editoption,898,654 )
+            ZIndex: =13
+
+        Label1_8 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =55
+            Size: =18
+            Text: ="Exam"
+            Visible: =_V_editoption
+            Width: =193
+            X: =((analyticsContainer.X + analyticsContainer.Width) - (analyticsContainer.Width/2)) - (Self.Width/2)
+            Y: =647
+            ZIndex: =14
+
+        analyticsContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =120
+            X: =403
+            Y: =244
+            ZIndex: =16
+
+            Circle1_7 As circle:
+                DisabledFill: =ColorFade(Self.Fill,50%)
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon1_8 As icon.Person:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =73
+                Icon: =Icon.Trending
+                OnSelect: |-
+                    =Reset(ComboBox1_1);
+                    Reset(DatePicker1);
+                    Navigate(Analytics_Screen)
+                Width: =73
+                X: =(Parent.Width-Self.Width)/2
+                Y: =(Parent.Height-Self.Height)/2
+                ZIndex: =2
+
+        Label1_7 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =46
+            Size: =18
+            Text: ="Analytics"
+            Width: =193
+            X: =((analyticsContainer.X + analyticsContainer.Width) - (analyticsContainer.Width/2)) - (Self.Width/2)
+            Y: =383
+            ZIndex: =17
+
+        Label1_5 As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =46
+            PaddingLeft: =35
+            Size: =18
+            Text: ="My Profile"
+            Width: =193
+            X: =((myprofilecontainer.X + myprofilecontainer.Width) - (myprofilecontainer.Width/2)) - (Self.Width/2)
+            Y: =383
+            ZIndex: =18
+
+        myprofilecontainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =120
+            X: =111
+            Y: =244
+            ZIndex: =19
+
+            Circle1_5 As circle:
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon1_6 As icon.Person:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =73
+                Icon: =Icon.Person
+                OnSelect: |-
+                    =Refresh(Results);
+                    ClearCollect(col_ResultDetail,Table());
+                    ClearCollect(col_examsid,Table());
+                    If(
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CDE"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KAM"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KCM",
+                    Collect(col_examsid,Distinct(Filter( col_Results,Name=User().FullName, !IsBlank(ExamID)),ExamID));
+                    
+                    ForAll(col_examsid As ED,
+                    Collect(col_ResultDetail,
+                            {
+                                ModuleName:LookUp(col_Results,ExamID=ED.Value ,'Module Type'.Name),
+                                Percentage:Sum(Filter(col_Results,ExamID=ED.Value ),Percentage),
+                                Date:LookUp(col_Results,ExamID=ED.Value,Date),
+                                ExamID:ED.Value,
+                                Chef:LookUp(col_Results,ExamID=ED.Value,Chef)
+                            }
+                           )
+                    );
+                    Navigate(CDE_User_Profile_Screen)
+                    );
+                    If(
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="ASM"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="RSM"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="BEx"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="MD"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CAPABILITY"||
+                    LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CULINARY",
+                    ForAll (col_allAttendee As CAA,
+                    Collect(col_examsid,
+                                Distinct(
+                                            Filter(/*Results*/ col_Results, !IsBlank(ExamID), 
+                                             Name=CAA.Name),
+                                              ExamID 
+                                        )
+                                )
+                    );
+                    
+                    ForAll(col_examsid As ED,
+                    Collect(col_ResultDetail,
+                            {
+                                ModuleName:LookUp(col_Results,ExamID=ED.Value ,'Module Type'.Name),
+                                Percentage:Sum(Filter(col_Results,ExamID=ED.Value && Name=ThisRecord.Name),Percentage),
+                                Date:LookUp(col_Results,ExamID=ED.Value,Date),
+                                ExamID:ED.Value,
+                                Chef:LookUp(col_Results,ExamID=ED.Value,Chef)
+                            }
+                           )
+                    );
+                    Navigate(Chef_User_Profile)
+                    )
+                Width: =73
+                X: =23
+                Y: =24
+                ZIndex: =2
+
+        Label1_6 As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =50
+            PaddingLeft: =15
+            Size: =18
+            Text: ="View Modules"
+            Width: =193
+            X: =((modulecontainer.X + modulecontainer.Width) - (modulecontainer.Width/2)) - (Self.Width/2)
+            Y: =654
+            ZIndex: =20
+
+        modulecontainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =120
+            X: =111
+            Y: =517
+            ZIndex: =21
+
+            Circle1_6 As circle:
+                DisabledFill: =ColorFade(Self.Fill,50%)
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                OnSelect: =Navigate(view_module_screen)
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon1_7 As icon.Person:
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =73
+                Icon: =Icon.View
+                OnSelect: |-
+                    =ClearCollect(col_moduledata,Modules);
+                    Navigate(view_module_screen)
+                Width: =73
+                X: =24
+                Y: =23
+                ZIndex: =2
+
+        examcontainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Visible: =_V_editoption
+            Width: =120
+            X: =402
+            Y: =519
+            ZIndex: =22
+
+            Circle1_8 As circle:
+                DisabledFill: =ColorFade(Self.Fill,50%)
+                DisplayMode: =If(_V_cdeEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                OnSelect: =
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon1_9 As icon.Person:
+                Color: =RGBA(255, 255, 255, 1)
+                DisplayMode: =If(_V_cdeEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =73
+                Icon: =Icon.ColorPicker
+                OnSelect: |
+                    =
+                    Set(_V_setcolor2,true);
+                    //Set(_V_scanvisible,true);
+                    Set(_V_manualvisible,true);
+                    Navigate(QR_scan_screen);
+                    //Clear(col_CopyAttendees);
+                    ClearCollect(col_examattendee,col_allAttendee);
+                    Clear(col_attendees);
+                    Reset(Gal_allAttendees);
+                    Set(_V_isSelect_ManualEntry,true)
+                Width: =73
+                X: =23
+                Y: =23
+                ZIndex: =2
+
+        attendeeContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Fill: =RGBA(255, 90, 0, 1)
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Visible: =If(_V_cdeEdit,false,true)
+            Width: =120
+            X: =If(_V_editoption, 111,403)
+            Y: =If(_V_editoption, 758,517)
+            ZIndex: =23
+
+            Circle1_9 As circle:
+                DisabledFill: =ColorFade(Self.Fill,50%)
+                DisplayMode: =If(_V_cdeEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                OnSelect: =Navigate(Attendee_Screen)
+                Visible: =If(_V_cdeEdit,false,true)
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon1_10 As icon.Person:
+                Color: =RGBA(255, 255, 255, 1)
+                DisplayMode: =If(_V_cdeEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =73
+                Icon: =Icon.AddUser
+                OnSelect: =Navigate(Attendee_Screen)
+                Width: =73
+                X: =26
+                Y: =23
+                ZIndex: =2
+
+        HeaderComponent_1 As HeaderComponent:
+            ZIndex: =24
+
+        userContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Bold
+            Fill: =RGBA(255, 90, 0, 1)
+            Height: =120
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Visible: =_V_user
+            Width: =120
+            X: =403
+            Y: =758
+            ZIndex: =25
+
+            Circle1_10 As circle:
+                DisabledFill: =ColorFade(Self.Fill,50%)
+                DisplayMode: =If(_V_cdeEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(255, 90, 0, 1)
+                Height: =Parent.Height
+                OnSelect: =Navigate(Attendee_Screen)
+                Visible: =_V_user
+                Width: =Parent.Width
+                ZIndex: =1
+
+            Icon16 As icon.AddUser:
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.Settings
+                OnSelect: =Navigate(UserScreen)
+                X: =(Parent.Width-Self.Width)/2
+                Y: =(Parent.Height -Self.Height)/2
+                ZIndex: =2
+
+        Label1_10 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =50
+            OnSelect: =Navigate(Attendee_Screen)
+            PaddingLeft: =35
+            Size: =18
+            Text: ="Users"
+            Visible: =_V_user
+            Width: =193
+            X: =360
+            Y: =If(_V_editoption,898,654 )
+            ZIndex: =26
+

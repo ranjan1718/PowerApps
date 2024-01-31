@@ -1,0 +1,337 @@
+RoleChangeScreen As screen:
+
+    maincontainer5 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.1)
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =1
+
+        HeaderComponent_22 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+
+        Container5 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.None
+            Height: =823
+            Width: =640
+            Y: =160
+            ZIndex: =3
+
+            Form2 As form:
+                BorderStyle: =BorderStyle.None
+                DataSource: =Users
+                Height: =Parent.Height
+                Item: =UserGallery_1.Selected
+                Width: =Parent.Width
+                ZIndex: =1
+
+                Area_DataCard3 As typedDataCard.comboBoxEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_Area"
+                    Default: =ThisItem.Area
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,"ulcq_Area")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =DataCardValue15.Selected
+                    Width: =640
+                    X: =0
+                    Y: =1
+                    ZIndex: =1
+
+                    DataCardKey16 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =48
+                        Size: =21
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue15 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(247, 116, 38, 1)
+                        DefaultSelectedItems: |-
+                            =//Parent.Default
+                            ThisItem.Area
+                        DisplayFields: =["ulcq_name"]
+                        DisplayMode: =DisplayMode.View
+                        Height: =70
+                        Items: =Choices([@Users].ulcq_Area)
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["ulcq_name"]
+                        SearchItems: =Search(Choices([@Users].ulcq_Area),DataCardValue15.SearchText,"ulcq_name")
+                        SelectMultiple: =false
+                        Size: =21
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey16.Y + DataCardKey16.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage15 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue15.Y + DataCardValue15.Height
+                        ZIndex: =3
+
+                    StarVisible15 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey16.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey16.Y
+                        ZIndex: =4
+
+                Territory_DataCard3 As typedDataCard.comboBoxEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_Territory"
+                    Default: =ThisItem.Territory
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,"ulcq_Territory")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =DataCardValue16.Selected
+                    Width: =640
+                    X: =0
+                    Y: =2
+                    ZIndex: =1
+
+                    DataCardKey17 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =48
+                        Size: =21
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue16 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(247, 116, 38, 1)
+                        DefaultSelectedItems: =Parent.Default
+                        DisplayFields: =["ulcq_name"]
+                        DisplayMode: =DisplayMode.View
+                        Height: =70
+                        Items: =Choices([@Users].ulcq_Territory)
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["ulcq_name"]
+                        SearchItems: =Search(Choices([@Users].ulcq_Territory),DataCardValue16.SearchText,"ulcq_name")
+                        SelectMultiple: =false
+                        Size: =21
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey17.Y + DataCardKey17.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage16 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue16.Y + DataCardValue16.Height
+                        ZIndex: =3
+
+                    StarVisible16 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey17.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey17.Y
+                        ZIndex: =4
+
+                Roles_DataCard1 As typedDataCard.comboBoxEditCard:
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="ulcq_Roles"
+                    Default: =ThisItem.'Roles (ulcq_Roles)'
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,"ulcq_Roles")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =50
+                    Required: =false
+                    Update: =DataCardValue17.Selected
+                    Width: =640
+                    X: =0
+                    Y: =3
+                    ZIndex: =1
+
+                    DataCardKey18 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =48
+                        Size: =21
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue17 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =RGBA(247, 116, 38, 1)
+                        DefaultSelectedItems: =Parent.Default
+                        DisplayFields: =["ulcq_name"]
+                        DisplayMode: =Parent.DisplayMode
+                        Height: =70
+                        InputTextPlaceholder: =
+                        Items: =Choices([@Users].ulcq_Roles)
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["ulcq_name"]
+                        SearchItems: =Search(Choices([@Users].ulcq_Roles),DataCardValue17.SearchText,"ulcq_name")
+                        SelectMultiple: =false
+                        Size: =21
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey18.Y + DataCardKey18.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage17 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue17.Y + DataCardValue17.Height
+                        ZIndex: =3
+
+                    StarVisible17 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey18.Height
+                        Size: =21
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey18.Y
+                        ZIndex: =4
+
+                "'Full Name_DataCard1' As typedDataCard.textualViewCard":
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="fullname"
+                    Default: =ThisItem.'Full Name'
+                    DisplayMode: =DisplayMode.Edit
+                    DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,"fullname")
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =150
+                    Required: =false
+                    Width: =640
+                    X: =0
+                    Y: =0
+                    ZIndex: =3
+
+                    DataCardKey13 As label:
+                        AutoHeight: =true
+                        Color: =RGBA(0, 0, 0, 1)
+                        Height: =48
+                        Size: =21
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    ComboBox3 As combobox:
+                        ChevronBackground: =RGBA(247, 116, 38, 1)
+                        DefaultSelectedItems: =[ThisItem.'Full Name']
+                        DisplayFields: =["fullname"]
+                        DisplayMode: =DisplayMode.View
+                        Height: =70
+                        Items: =col_allUsers
+                        SearchFields: =["fullname"]
+                        SearchItems: =Search(col_allUsers,ComboBox3.SearchText,"fullname")
+                        SelectMultiple: =false
+                        Size: =21
+                        Width: =575
+                        X: =35
+                        Y: =58
+                        ZIndex: =3
+
+        Button8 As button:
+            Fill: =RGBA(79, 90, 94, 1)
+            Height: =60
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Navigate(UserScreen)
+            Size: =18
+            Text: ="Cancel"
+            Width: =150
+            X: =104
+            Y: =1020
+            ZIndex: =4
+
+        Button8_1 As button:
+            Fill: =RGBA(45, 128, 40, 1)
+            Height: =60
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =If(IsBlank(DataCardValue17.Selected.Name),
+                    UpdateContext({_V_msg:true}),
+                    Patch(col_allUsers,
+                    LookUp(col_allUsers,'Full Name'=ComboBox3.Selected.'Full Name'),
+                    {
+                        'Roles (ulcq_Roles)':DataCardValue17.Selected
+                    }
+                
+                
+                );
+                UpdateContext({_V_msg:false});
+                Navigate(UserScreen);
+                )
+            Size: =18
+            Text: ="Submit"
+            Width: =150
+            X: =371
+            Y: =1020
+            ZIndex: =5
+
+        Label29 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =31
+            Text: ="*Please fill all the fields"
+            Visible: =_V_msg
+            Width: =280
+            X: =360
+            Y: =1080
+            ZIndex: =6
+

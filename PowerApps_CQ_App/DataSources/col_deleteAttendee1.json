@@ -1,0 +1,9 @@
+[
+  {
+    "IsComponentScoped": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "col_deleteAttendee1",
+    "Type": "CollectionDataSourceInfo"
+  }
+]

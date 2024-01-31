@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "7fe69f6d-58dd-4d0a-aa01-65b488b57043",
+    "Name": "CQAppPercentageNotifyFlow1",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "09d4c147-1db9-ee11-9078-002248c5e225"
+  }
+]

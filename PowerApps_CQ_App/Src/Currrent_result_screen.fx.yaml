@@ -1,0 +1,193 @@
+Currrent_result_screen As screen:
+
+    Current_Results_Main_Container As groupContainer.manualLayoutContainer:
+        Height: =1136
+        Width: =640
+        ZIndex: =1
+
+        Container11_2 As groupContainer.manualLayoutContainer:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderThickness: =3
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 139, 76, 1)
+            Height: =80
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =Parent.Width-10
+            X: =5
+            Y: =105
+            ZIndex: =2
+
+            Icon4_7 As icon.BackArrow:
+                Color: =RGBA(0, 16, 96, 1)
+                Height: =50
+                Icon: =Icon.BackArrow
+                OnSelect: =Back()
+                Width: =50
+                X: =28
+                Y: =16
+                ZIndex: =1
+
+            Label3_2 As label:
+                FontWeight: =FontWeight.Semibold
+                Height: =Parent.Height
+                Size: =21
+                Text: ="Result"
+                Width: =292
+                X: =122
+                ZIndex: =2
+
+        Container4_6 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =96
+            PaddingLeft: =10
+            PaddingRight: =10
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =637
+            Y: =197
+            ZIndex: =3
+
+            Name_Label4_10 As label:
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                PaddingLeft: =30
+                Size: =18
+                Text: |-
+                    ="Name:"
+                Width: =122
+                ZIndex: =2
+
+            Label4_11 As label:
+                FontWeight: =FontWeight.Semibold
+                Height: =Parent.Height
+                PaddingLeft: =30
+                Size: =15
+                Text: =summary_Gallery.Selected.Name
+                Width: =472
+                X: =Name_Label4_10.Width
+                ZIndex: =3
+
+        Gal_Heading_Container4_4 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Fill: =RGBA(219, 219, 219, 1)
+            Height: =80
+            PaddingLeft: =10
+            PaddingRight: =10
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =637
+            Y: =308
+            ZIndex: =4
+
+            Question_Label4_12 As label:
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                PaddingLeft: =20
+                Size: =16.5
+                Text: ="Question"
+                Width: =Parent.Width/3
+                ZIndex: =2
+
+            Rating_Label4_13 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: =16.5
+                Text: ="Rating"
+                Width: =Parent.Width/5
+                X: =Question_Label4_12.Width
+                ZIndex: =3
+
+            Remarks_Label4_14 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: =16.5
+                Text: ="Remarks"
+                Width: =Parent.Width-(Question_Label4_12.Width+Rating_Label4_13.Width)
+                X: =Question_Label4_12.Width+Rating_Label4_13.Width
+                ZIndex: =4
+
+        Gal_Container8_2 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.None
+            Height: =714
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =637
+            X: =3
+            Y: =400
+            ZIndex: =5
+
+            Gallery3_6 As gallery.galleryVertical:
+                DelayItemLoading: =true
+                Height: =714
+                Items: |-
+                    =//Filter(Results,Name=Gal_name)
+                    Filter(col_resultdata_1,attendeeid=summary_Gallery.Selected.attendeeId,AttendeeName=summary_Gallery.Selected.Name)
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplateFill: =RGBA(0, 0, 0, 0.1)
+                TemplateSize: =Max(80,Gal_Remark_item_Label9_14.Height)
+                Width: =637
+                ZIndex: =1
+
+                Gal_Item_Container26_1 As groupContainer.manualLayoutContainer:
+                    DropShadow: =DropShadow.None
+                    Height: =Parent.TemplateHeight
+                    PaddingLeft: =10
+                    PaddingRight: =10
+                    RadiusBottomLeft: =5
+                    RadiusBottomRight: =5
+                    RadiusTopLeft: =5
+                    RadiusTopRight: =5
+                    Width: =Parent.TemplateWidth
+                    ZIndex: =5
+
+                    Gal_Remark_item_Label9_14 As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Height: |-
+                            =47
+                            //Max(50,remark_Label.Height)
+                        OnSelect: =//Navigate(Question_Info_Screen)
+                        Text: =ThisItem.Remarks
+                        Width: =Parent.Width-(Gal_Qus_item_Label9_12.Width+Gal_Rating_item_Label9_13.Width)
+                        X: =Gal_Qus_item_Label9_12.Width+Gal_Rating_item_Label9_13.Width
+                        ZIndex: =1
+
+                    Gal_Qus_item_Label9_12 As label:
+                        Height: =80
+                        OnSelect: |-
+                            =/*
+                            Set(Gal_mod_Type,Self.Text);
+                            Navigate(Question_Info_Screen);
+                            */
+                        PaddingLeft: =20
+                        Text: =ThisItem.Questions
+                        Width: =Parent.Width/3
+                        ZIndex: =2
+
+                    Gal_Rating_item_Label9_13 As label:
+                        Align: =Align.Center
+                        Height: =80
+                        OnSelect: |
+                            =//Navigate(Question_Info_Screen);
+                        Text: =ThisItem.Rating
+                        Width: =Parent.Width/5
+                        X: =Gal_Qus_item_Label9_12.Width
+                        ZIndex: =3
+
+        HeaderComponent_13 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =6
+

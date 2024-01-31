@@ -1,0 +1,172 @@
+view_module_screen As screen:
+    BackgroundImage: ='f2b6241e61447d42e2bc41f763078a55a5242da5-1920x1080'
+    ImagePosition: =ImagePosition.Fill
+
+    transparentContainer As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =1044
+        Width: =640
+        Y: =92
+        ZIndex: =1
+
+    main_container_1 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height
+        Width: =Parent.Width
+        ZIndex: =2
+
+        Gallery1_1 As gallery.galleryVertical:
+            DelayItemLoading: =true
+            Height: =936
+            Items: ='Module Names'
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            TemplateFill: =RGBA(0, 0, 0, 0.1)
+            TemplatePadding: =10
+            TemplateSize: =80
+            Visible: =false
+            Y: =200
+            ZIndex: =1
+
+            Container2_1 As groupContainer.horizontalAutoLayoutContainer:
+                DropShadow: =DropShadow.Semilight
+                Height: =80
+                LayoutMode: =LayoutMode.Auto
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =Parent.Width-25
+                X: =2
+                ZIndex: =2
+
+                module_value_1 As label:
+                    AlignInContainer: =AlignInContainer.Start
+                    FontWeight: =FontWeight.Semibold
+                    Height: =Parent.Height
+                    LayoutMinHeight: =70
+                    LayoutMinWidth: =560
+                    OnSelect: |-
+                        =Set(_V_module_name,ThisItem.Name);
+                        Set(_V_disableweight,true);
+                        Set(_V_btnvisible,true);
+                        Navigate(view_question_screen);
+                        ClearCollect(col_selectedModule,Filter(col_moduledata,'Module Type'.Name=_V_module_name))
+                    PaddingLeft: =30
+                    Size: =16
+                    Text: =ThisItem.Name
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+        modulenameContainer_1 As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.Regular
+            Height: =70
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            Visible: =false
+            Width: =610
+            X: =15
+            Y: =116
+            ZIndex: =2
+
+        HeaderComponent_17 As HeaderComponent:
+            BackScreen: =Dashboard_Screen
+            ZIndex: =3
+
+        bodyContainer As groupContainer.manualLayoutContainer:
+            DropShadow: =DropShadow.ExtraBold
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =950
+            RadiusTopLeft: =40
+            RadiusTopRight: =40
+            Width: =Parent.Width
+            Y: =186
+            ZIndex: =4
+
+            "Gallery1 As gallery.'BrowseLayout_Vertical_OneTextOneImageVariant_ver5.0'":
+                BorderColor: |-
+                    =//RGBA(0, 18, 107, 1)
+                    RGBA(0, 0, 0, 0)
+                DelayItemLoading: =true
+                Height: =Parent.Height
+                Items: =col_Modulenames
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                OnSelect: |-
+                    =Set(_V_module_name,ThisItem.Name);
+                    Set(_V_disableweight,true);
+                    Set(_V_btnvisible,true);
+                    Navigate(view_question_screen);
+                    ClearCollect(col_selectedModule,Filter(col_moduledata,'Module Type'.Name=_V_module_name))
+                TemplatePadding: =10
+                TemplateSize: =350
+                Width: =Parent.Width-60
+                WrapCount: =2
+                X: =30
+                Y: =46
+                ZIndex: =1
+
+                Image7 As image:
+                    Height: =295
+                    Image: =MCQT
+                    OnSelect: =Select(Parent)
+                    RadiusBottomLeft: =8
+                    RadiusBottomRight: =8
+                    RadiusTopLeft: =8
+                    RadiusTopRight: =8
+                    Width: =Parent.Width/2 - 20
+                    ZIndex: =1
+
+                Title4 As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =49
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =15
+                    Text: =ThisItem.Name
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =Parent.Width/2 - 20
+                    Y: =292
+                    ZIndex: =2
+
+                Rectangle4 As rectangle:
+                    Height: =Parent.TemplateHeight
+                    OnSelect: =Select(Parent)
+                    Visible: |-
+                        =//ThisItem.IsSelected
+                        false
+                    Width: =4
+                    ZIndex: =5
+
+        moduleLabel_3 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =96
+            PaddingLeft: =20
+            Size: =21
+            Text: ="Modules"
+            Width: =500
+            X: =57
+            Y: =90
+            ZIndex: =5
+
+        Image5_5 As image:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =40
+            Image: =backarrow
+            OnSelect: =Navigate(Dashboard_Screen,ScreenTransition.Fade)
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Width: =40
+            X: =29
+            Y: =116
+            ZIndex: =6
+

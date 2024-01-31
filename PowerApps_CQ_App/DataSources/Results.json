@@ -1,0 +1,106 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "ulcq_resultses",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "ulcq_results",
+    "MaxGetRowsCount": 500,
+    "Name": "Results",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cr86f_rating": "Rating",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "ulcq_Chef": "Chef",
+      "ulcq_date": "Date",
+      "ulcq_examid": "ExamID",
+      "ulcq_ModuleType": "Module Type",
+      "ulcq_name": "Name",
+      "ulcq_percentage": "Percentage",
+      "ulcq_questions": "Questions",
+      "ulcq_ratingtype": "Rating Type",
+      "ulcq_remarks": "Remarks",
+      "ulcq_results_AsyncOperations": "System Jobs",
+      "ulcq_results_BulkDeleteFailures": "Bulk Delete Failures",
+      "ulcq_results_DuplicateBaseRecord": "Duplicate Records (ulcq_results_DuplicateBaseRecord)",
+      "ulcq_results_DuplicateMatchingRecord": "Duplicate Records (ulcq_results_DuplicateMatchingRecord)",
+      "ulcq_results_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "ulcq_results_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "ulcq_results_ProcessSession": "Process Sessions",
+      "ulcq_results_SyncErrors": "Sync Errors",
+      "ulcq_resultsid": "Results",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Results",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Results (Views)",
+    "Name": "_ulcq_results_views",
+    "RelatedEntityName": "Results",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1088360d-017a-489c-8129-f18b899395a1": "Active Results",
+      "28d1d90d-ee5d-4038-828e-3df2fe11734c": "Results Associated View",
+      "72ee3467-412a-465b-a2db-aec0b1fb259e": "Results Advanced Find View",
+      "8689536c-5eca-4868-9059-bb209ac9f82e": "Results Lookup View",
+      "d7a1f14b-6a8d-4dfe-bd00-76e27fafdadf": "Inactive Results"
+    }
+  },
+  {
+    "DisplayName": "Status (Results)",
+    "Name": "ulcq_results_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Results"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Results",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Results)",
+    "Name": "ulcq_results_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Results"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Results",
+    "Type": "OptionSetInfo"
+  }
+]

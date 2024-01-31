@@ -1,0 +1,101 @@
+App As appinfo:
+    BackEnabled: =true
+    OnStart: |-
+        =Set(_V_edit_input,false);
+        Set(_V_visible,false);
+        Set(_V_setcolor1,false);
+        Set(_V_setcolor2,false);
+        Set(_V_cameravisible,true);
+        //All users
+        ClearCollect(col_allUsers,Users);
+        
+        //Attendees for each Role
+        If(LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="ASM",
+           ClearCollect(col_allAttendee, 
+                    Filter(Attendees, Territory = LookUp(Users,'Full Name'=User().FullName,Territory).Name
+                            )
+                        ),
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="RSM",
+            ClearCollect(col_allAttendee, 
+                    Filter(Attendees, Area.Name = LookUp(Users,'Full Name'=User().FullName,Area).Name
+                            )
+                        ),
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="BEx"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="MD"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CAPABILITY"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CULINARY",
+                ClearCollect(col_allAttendee,
+                                Attendees
+                            ),
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CDE"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KAM"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KCM",
+            ClearCollect(
+                col_allAttendee,
+                LookUp(Attendees,Name=LookUp(Users,'Full Name'=User().FullName,'Full Name'))
+            )                            
+           );
+        //Controls for MD ,CAPABILITY,CDE/KCM/KAM,RSM,ASM
+        If(
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="MD"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CAPABILITY"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="ASM"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="RSM"||
+             LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CDE"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KAM"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KCM"
+            ,
+            //Set(_V_editmodulevisible,false);
+            Set(_V_editoption,false),
+            Set(_V_editoption,true)
+            //Set(_V_editmodulevisible,true)
+        );
+        //Controls for CDE/KAM/KCM
+        If(
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KCM"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="KAM"||
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="CDE",
+            Set(_V_cdeEdit,true),
+            Set(_V_cdeEdit,false)
+        
+        );
+        
+        //Controls for BEx
+        If(
+            LookUp(Users,'Full Name'=User().FullName).'Roles (ulcq_Roles)'.Name="BEx",
+            Set(_V_user,true),
+            Set(_V_user,false)
+        );
+        
+        
+        //Result data for the attendees
+        ClearCollect(col_Results,Table());
+        ForAll(col_allAttendee As CAA,
+            Collect(col_Results,
+            Filter(Results,Name= CAA.Name)
+            
+            )
+        );
+        
+        //coleection for Modules/Module Names
+        ClearCollect(col_Modulenames,'Module Names');
+        ClearCollect(col_allModules,Modules);
+        
+        ClearCollect(col_attendees,Table());
+        ClearCollect(col_CopyAttendees,Table());
+        //ClearCollect(col_allattendees,Attendees);
+        //ClearCollect(col_allAttendee, Attendees);
+        ClearCollect(col_resultdata_1,Table());
+        ClearCollect(col_moduledata,Modules);
+        Set(_V_currentindex,1);
+        Set(_V_sortcolumn,Text("ulcq_name"));
+        Set(_V_sortmode,SortOrder.Ascending);
+    Theme: =PowerAppsTheme
+
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false
+
